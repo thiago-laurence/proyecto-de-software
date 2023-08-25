@@ -1,7 +1,7 @@
 # Proyecto de software - Grupo 10 **"Baguel"**
 
 ```Python
-print("Hello world!")
+print("Hola Mundo!, desde VSCode!")
 ```
 
 ## Tecnologías utilizadas
