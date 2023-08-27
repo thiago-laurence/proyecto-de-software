@@ -1,4 +1,6 @@
-# Proyecto de software - Grupo 10 **"Baguel"**
+
+# Grupo10
+# Proyecto de software - **"Baguel"**
 
 ```Python
 print("Hola Mundo!, desde VSCode!")
