@@ -1,6 +1,9 @@
 # Created by https://www.toptal.com/developers/gitignore/api/python,flask,vue
 # Edit at https://www.toptal.com/developers/gitignore?templates=python,flask,vue
 
+### Visual Studio Code ###
+.vscode/
+
 ### Flask ###
 instance/*
 !instance/.gitignore
