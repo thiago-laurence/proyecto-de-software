@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Favicon -->
+    <link rel="icon" href="{{ url_for('static', filename='img/icono.png') }}" type="image/png">
+
+    <title> {% block title %}-- Titulo --{% endblock %} </title>
+    {% block stylesheet %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/layout.css') }}">
+    {% endblock %}
+</head>
+<body>
+    <header class="sticky-header">
+        {% block header %}
+            <div class="header-content">
+                <img src="/static/img/logo.jpg" alt="Site Logo">
+                <a href="{{ url_for('home') }}">
+                    <button class="home-button">Inicio</button>
+                </a>
+            </div>
+        {% endblock %}
+    </header>
+    <main>
+        {% block main %}
+
+        {% endblock %}
+    </main>
+    <footer>
+        {% block footer %}
+
+        {% endblock %}
+    </footer>
+
+    {% block javascript %}
+        <script src="/static/js/layout.js"></script>
+        <script src="/static/js/jquery.min.js"></script>
+    {% endblock %}
+</body>
+</html>
