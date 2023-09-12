@@ -1,12 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h4>{{error_name}}</h4>
-    <h5>{{error_description}}</h5>
-</body>
-</html>
+{% extends "layout.html" %}
+
+<!-- OVERRIDE BLOCKS -->
+
+{% block title %} {{error_name}} {% endblock %}
+
+{% block stylesheet %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/error.css') }}">
+{% endblock %}
+
+{% block main %}
+    <div class="container">
+        <div class="content">
+            <h1 class="titulo">{{error_name}}</h1>
+            <p class="subtitulo">{{error_description}}</p>
+            <img class="img-error" src="{{error_image}}" alt="Error {{error_code}}">  
+        </div>
+    </div>
+{% endblock %}

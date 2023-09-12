@@ -1,0 +1,29 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent; /* Color de fondo del contenedor */
+}
+
+.content {
+    text-align: center;
+}
+
+/* Estilos para la imagen */
+.img-error {
+    max-width: 100%;
+    height: auto;
+    border-radius: 2.5%;
+}
+
+/* Estilos para el título y el subtítulo */
+.titulo {
+    font-size: 30px;
+    margin: 10px 0;
+}
+
+.subtitulo {
+    font-size: 22px;
+    color: #666;
+    margin: 10px 0;
+}
