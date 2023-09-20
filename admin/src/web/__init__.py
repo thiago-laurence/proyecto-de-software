@@ -3,6 +3,7 @@ from flask import render_template
 
 from src.web.config import config
 
+from src.core import models
 from src.core import database
 
 from src.web import error
@@ -24,7 +25,7 @@ def create_app(env="development", static_folder="../../static"):
     app.register_error_handler(404, error.not_found_error)
 
     #Comandos
-    @app.cli.command(name=resetdb)
+    @app.cli.command(name="resetdb")
     def resetdb():
         database.reset_db()
 

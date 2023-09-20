@@ -87,6 +87,32 @@ files = [
 ]
 
 [[package]]
+name = "direnv"
+version = "2020.12.3"
+description = "direnv (environment switcher) python implementation"
+optional = false
+python-versions = "*"
+files = [
+    {file = "direnv-2020.12.3.tar.gz", hash = "sha256:74ecba006eb12843fffd20e361edc2d4a043b4465c550b506ee626f42f7dd635"},
+]
+
+[package.dependencies]
+env-file = "*"
+
+[[package]]
+name = "env-file"
+version = "2020.12.3"
+description = ".env file handler. required for django, docker, etc"
+optional = false
+python-versions = "*"
+files = [
+    {file = "env-file-2020.12.3.tar.gz", hash = "sha256:34cbe53b99afaa81209953ee16febcd87121034aa7bf64e229802f51b9c38d66"},
+]
+
+[package.dependencies]
+values = "*"
+
+[[package]]
 name = "exceptiongroup"
 version = "1.1.3"
 description = "Backport of PEP 654 (exception groups)"
@@ -799,6 +825,16 @@ files = [
 ]
 
 [[package]]
+name = "values"
+version = "2020.12.3"
+description = "values.get(input) - create list from input"
+optional = false
+python-versions = "*"
+files = [
+    {file = "values-2020.12.3.tar.gz", hash = "sha256:30b1b74674b546188b77d8398de17ea49f3692191114da43c703bda5b54402f5"},
+]
+
+[[package]]
 name = "wcwidth"
 version = "0.2.6"
 description = "Measures the displayed width of unicode strings in a terminal"
@@ -844,4 +880,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8.10"
-content-hash = "451ddbcc382d3f67418691d3b034009e45a605c994e48fd68e3e318771695493"
+content-hash = "6ba88f7cd14521ad60da5a357e5542462a11b5bc1fd9d28b84a0fde213994f31"
