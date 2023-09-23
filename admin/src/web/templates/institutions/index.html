@@ -1,0 +1,149 @@
+{% extends "layout.html" %}
+{% block title%}Instituciones{% endblock %}
+{% block stylesheet %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/notifications.css') }}">
+{% endblock %}
+{% block contentMain %}
+<div class="">
+    <div class="content grid flex-col xl:grid-cols-3 xl:">
+        <div class="flex max-md:place-content-center mb-1 md:mb-0"> <!-- Agregar espacio vertical en resoluciones pequeñas -->
+            <h2 class=" text-2xl md:text-4xl font-bold dark:text-white">Instituciones</h2>
+        </div>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+            <div id="toast" class="max-sm:mb-1 md:mx-2 max-md:mb-1"> <!-- Agregar espacio vertical en resoluciones pequeñas -->
+                <div class="{{ category }} text-sm text-white rounded-md shadow-lg dark:bg-gray-900" role="alert">
+                    <div class="flex items-center p-2.5">
+                        <p>{{ message }}</p>
+                        <div class="mt-0 ml-auto">
+                            <button type="button" data-dismiss-target="#toast" class="ml-auto -mx-1.5 -my-1.5  text-gray-300 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700" data-dismiss-target="#toast-success" aria-label="Close">
+                                <span class="sr-only">Close</span>
+                                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <div class="flex flex-col  md:flex-row-reverse md:col-start-3">
+            <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal"
+                class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                type="button">
+                Añadir institución
+            </button>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<br>
+<ul>
+    {% for institution in institutions %}
+    <li>
+        <div class="container">
+            <div class="content font-bold">
+
+                <a href="#"
+                    class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 grid grid-cols-2">
+                    <div>
+                        <h6 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
+                            {{institution.name}}</h6>
+                        <p class="font-normal text-gray-700 dark:text-gray-400">{{institution.info}}</p>
+                    </div>
+                    <div class="items-end justify-end">
+                        {% if institution.services %}
+                        <p class="font-semibold text-gray-700 dark:text-gray-400">Servicios</p>
+                        {% for service in institution.services %}
+                        <p class="font-normal text-gray-700 dark:text-gray-400">{{service.name}}</p>
+                        {% endfor %}
+                        {% endif %}
+                    </div>
+                </a>
+            </div>
+        </div>
+    </li>
+    <br>
+    {% endfor %}
+</ul>
+
+
+
+<!-- Modal toggle -->
+
+
+<!-- Main modal -->
+<div id="authentication-modal" tabindex="-1" aria-hidden="true"
+    class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative w-full max-w-md max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <button type="button"
+                class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                data-modal-hide="authentication-modal">
+                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 14 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                </svg>
+                <span class="sr-only">Close modal</span>
+            </button>
+            <div class="px-6 py-6 lg:px-8">
+                <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Añadir una nueva institución</h3>
+
+                <form action="{{ url_for('institutions.institution_add')}}" method="post""> 
+                    <div class=" mb-6">
+                    <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre de la
+                        institución</label>
+                    <input type="text" id="name" name="name"
+                        class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                        placeholder="" required>
+            </div>
+            <div class="mb-6">
+                <label for="info" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                    Información de la institución
+                </label>
+                <input type="text" id="info" name="info"
+                    class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                    required>
+            </div>
+            <div class="mb-6">
+                <label for="address"
+                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Dirección</label>
+                <input type="text" id="address" name="address"
+                    class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                    required>
+            </div>
+            <div class="mb-6">
+                <label for="owner"
+                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Dueño</label>
+                <select required id="owner" name="owner" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                 {% if users %}
+                    {% for user in users %}
+                    <option value="{{user.id}}">{{user.name}}</option>
+                    {% endfor %}
+                {% endif %}
+                </select>
+
+            </div>
+
+            <button type="submit"
+                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                Registrar la nueva institución
+            </button>
+            </form>
+
+        </div>
+    </div>
+</div>
+</div>
+
+{% endblock %}

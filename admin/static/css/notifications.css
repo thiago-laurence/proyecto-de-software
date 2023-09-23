@@ -1,0 +1,8 @@
+.error{
+    --tw-bg-opacity: 1;
+    background-color: rgb(200 30 30 / var(--tw-bg-opacity));
+}
+.success{
+    --tw-bg-opacity: 1;
+    background-color: rgb(3 84 63 / var(--tw-bg-opacity));
+}
