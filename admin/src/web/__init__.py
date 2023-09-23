@@ -9,7 +9,9 @@ from src.core.models.users.user import User
 
 from src.web import error
 from src.web.config import config
-from src.web.controllers.users import users_blueprint
+from src.web.routes import register_blueprints
+
+
 
 
 def create_app(env="development", static_folder="../../static"):
@@ -28,7 +30,7 @@ def create_app(env="development", static_folder="../../static"):
     app.register_error_handler(404, error.not_found_error)
     
     #Blueprints
-    app.register_blueprint(users_blueprint)
+    register_blueprints(app)
 
     #Comandos
     @app.cli.command(name="resetdb")
