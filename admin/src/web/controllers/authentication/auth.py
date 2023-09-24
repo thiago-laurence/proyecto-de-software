@@ -31,7 +31,6 @@ def logout():
     if session.get("user"):
         del session["user"]
         session.clear()
-        flash("La sesión se cerró correctamente", "info")
     else:
         flash("No existe una sesión iniciada", "info")
         

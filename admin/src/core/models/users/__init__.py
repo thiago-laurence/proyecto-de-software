@@ -60,7 +60,7 @@ def check_state_user(user):
             True: si el usuario está activo y confirmado.
             False: caso contrario.
     """
-    if user.confirmed and user.state:
+    if user.confirmed and user.active:
         return True
     else:
         return False
