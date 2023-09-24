@@ -9,7 +9,7 @@ def index():
     """"
     Renderiza el template para las instituciones y las muestra.
     """
-    return render_template("institutions/index.html", institutions=institution.list_institutions(), users = users.list_users())
+    return render_template("institutions/index.html", institutions=institution.list_institutions(), users = users.get_users())
 
 @institutions_blueprint.post("/institution-add")
 def institution_add():
