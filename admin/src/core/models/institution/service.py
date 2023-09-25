@@ -10,5 +10,10 @@ class Service(db.Model):
     is_enabled = db.Column(db.Boolean(), default=False)
     institution_id = db.Column(db.Integer, db.ForeignKey('institutions.id'))
     institution = db.relationship("Institution", back_populates="services")
-    updated_at = db.Column(db.DateTime, default=datetime.utcnow)
-    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    
+    updated_at = db.Column(
+        db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
+    )
+    inserted_at = db.Column(
+        db.DateTime, default=datetime.utcnow
+    )

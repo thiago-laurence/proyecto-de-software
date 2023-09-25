@@ -11,5 +11,14 @@ def login_required(f):
         if not is_authenticated(session):
             return abort(401)
         return f(*args, **kwargs)
-    
     return decorated_function
+
+def roles_required(roles):
+    def decorator(f):
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            if not set(roles).intersection(session["user"]["roles"]):
+                return abort(403)
+            return f(*args, **kwargs)
+        return decorated_function
+    return decorator
