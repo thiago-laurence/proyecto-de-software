@@ -46,3 +46,9 @@ def create_service(**kwargs):
     db.session.add(service)
     db.session.commit()
     return service
+
+def get_institution_by_name(name):
+    """
+        Retorna una institucion por su nombre
+    """
+    return Institution.query.filter_by(name=name).first()

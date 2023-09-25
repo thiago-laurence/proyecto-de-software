@@ -1,4 +1,5 @@
-from src.core.models.users.user import User
+from src.core.models.user.user import User
+from src.core.models.user_institution.user_institution import UserInstitution
 from src.core.database import db
 from src.core.bcrypt import bcrypt
 
@@ -8,6 +9,23 @@ def get_users():
     """   
     users = User.query.all()
     return users
+
+def get_institutions_by_user(user):
+    """
+        Devuelte todas las instituciones de un usuario
+    """   
+    user.institutions = db.session.query(UserInstitution).filter_by(user_id=user.id).all()
+    
+    return user.institutions
+
+
+def assign_institution_and_role(user, role_institution_list):
+    """
+        Asigna un rol a un usuario en una institución
+    """
+    user.institutions.extend(role_institution_list)
+    db.session.add(user)
+    db.session.commit()
 
 def create_user(**kwargs):
     """

@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, session
-from src.core.models import users
+from src.core.models import user as Users
 
 auth_blueprint = Blueprint("auth", __name__, url_prefix="/login")
 
@@ -10,18 +10,22 @@ def login():
 @auth_blueprint.post("/authenticate")
 def authenticate():
     params = request.form
-    user = users.check_auth_user(params["email"], params["password"])
+    user = Users.check_auth_user(params["email"], params["password"])
     
     if not user:
         flash("Email/Nombre de usuario o contraseña incorrectos", "error")
         return redirect(url_for("auth.login"))
     
-    if not users.check_state_user(user):
+    if not Users.check_state_user(user):
         flash("El usuario no está activo o no está confirmado", "error")
         return redirect(url_for("auth.login"))
-    
-    session["user"] = user.email
-    session["username"] = user.username
+        
+    session["user"] = {
+        "email": user.email,
+        "username": user.username,
+        "institutions": [ui.institution.name for ui in user.institutions],
+        "roles": [ui.role.name for ui in user.institutions]
+    }
     
     flash("La sesión inicio correctamente", "success")
     return redirect(url_for("home"))

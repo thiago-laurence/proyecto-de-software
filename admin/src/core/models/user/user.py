@@ -13,6 +13,8 @@ class User(db.Model):
     lastname = db.Column(db.String(50))
     active = db.Column(db.Boolean, default=True)
     confirmed = db.Column(db.Boolean, default=False)
+    institutions = db.relationship("UserInstitution", back_populates="user", lazy=True)
+    
     updated_at = db.Column(
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
     )

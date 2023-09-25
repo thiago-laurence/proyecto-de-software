@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash, redirect,url_for
 from src.core.models import institution
-from src.core.models import users
+from src.core.models import user
 
 institutions_blueprint = Blueprint("institutions", __name__, url_prefix="/institutions")
 
@@ -9,7 +9,7 @@ def index():
     """"
     Renderiza el template para las instituciones y las muestra.
     """
-    return render_template("institutions/index.html", institutions=institution.list_institutions(), users = users.get_users())
+    return render_template("institutions/index.html", institutions=institution.list_institutions(), users = user.get_users())
 
 @institutions_blueprint.post("/institution-add")
 def institution_add():
