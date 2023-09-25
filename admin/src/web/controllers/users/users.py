@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for
+from flask import Blueprint, render_template, request, flash, redirect, url_for, session
 from src.core.models import user as Users
 from src.web.helpers import auth
 from src.web import mail
@@ -77,3 +77,9 @@ def confirm_user():
     Users.confirm_user(email=email, password=params["password"], username=params["username"])
     
     return render_template("users/confirm_success.html")
+
+@users_blueprint.get("/me/profile")
+@auth.login_required
+def user_profile():
+    user = users.find_user(session["user"])
+    return render_template("users/profile.html", user=user)
