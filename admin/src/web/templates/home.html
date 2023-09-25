@@ -1,13 +1,14 @@
 {% extends "layout.html" %}
 
 <!-- OVERRIDE BLOCKS -->
-
 {% block title %} Inicio {% endblock %}
 
 <!-- EXTEND BLOCKS -->
 {% block contentMain %}
     {% if is_authenticated(session) %}
-        <h1> Bienvenido {{ session['user'] }} </h1>
+        <h1>
+            Bienvenido {{ session['user'].username }} 
+        <h1>
     {% else %}
         <h1> ACCESO DENEGADO </h1>
     {% endif %}
