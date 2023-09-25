@@ -81,5 +81,5 @@ def confirm_user():
 @users_blueprint.get("/me/profile")
 @auth.login_required
 def user_profile():
-    user = users.find_user(session["user"])
+    user = Users.find_user(session["user"]["email"])
     return render_template("users/profile.html", user=user)
