@@ -9,6 +9,13 @@ def list_institutions():
     institutions = Institution.query.all()
     return institutions
 
+def get_institution_by_id(id):
+    """
+    Me devuelve una institucion por id.
+    """   
+    institution = Institution.query.filter(Institution.id == id).first()
+    return institution
+
 def create_institution(**kwargs):
     """"
     Crear una institucion y almacenarla en la db.
@@ -38,6 +45,14 @@ def list_services():
     services = Service.query.all()
     return services
 
+def list_services_by_institution(institution_id):
+    """
+    Me devuelve todos los servicios de una institucion
+    """   
+    services = Service.query.filter(Service.institution_id == institution_id).all()
+    print(services)
+    return services
+
 def create_service(**kwargs):
     """"
     Crear un servicio y almacenarla en la db.
@@ -46,3 +61,37 @@ def create_service(**kwargs):
     db.session.add(service)
     db.session.commit()
     return service
+
+def get_service_by_id(id):
+    """
+    Me devuelve un servicio por id.
+    """   
+    service = Service.query.filter(Service.id == id).first()
+    return service
+
+def delete_service(service):
+
+    institution = Institution.query.filter(Institution.id == service.institution_id).first()
+    institution.services.remove(service)
+    db.session.delete(service)
+    db.session.commit()
+
+def edit_service(service, **kwargs):
+    institution = Institution.query.filter(Institution.id == service.institution_id).first()
+    institution.services.remove(service)
+    
+    service.name = kwargs.get("name")
+    service.info = kwargs.get("info")
+    service.type = kwargs.get("type")
+    service.key_words = kwargs.get("key_words")
+    
+    institution.services.append(service)
+    db.session.add(service)
+    db.session.add(institution)
+    db.session.commit()
+    
+    return service
+
+def check_if_service_exists_by_name(institution_id, name, id):
+    service = Service.query.filter(Service.name == name, Service.institution_id == institution_id, Service.id != id).first()
+    return service is not None

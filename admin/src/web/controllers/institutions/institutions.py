@@ -33,5 +33,3 @@ def institution_add():
     flash("La institución " + request.form.get("name") + " fue registrada correctamente.", "success")   
     return index()
        
-    
-    
