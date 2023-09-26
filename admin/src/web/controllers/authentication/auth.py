@@ -20,14 +20,22 @@ def authenticate():
         flash("El usuario no está activo o no está confirmado", "error")
         return redirect(url_for("auth.login"))
         
+    first_institution = Users.get_institutions_by_user(user)[0]
     session["user"] = {
         "email": user.email,
         "username": user.username,
-        "institutions": [ui.institution.name for ui in user.institutions],
+        "actual_institution": first_institution.id,
+        "institutions": [ui.institution for ui in user.institutions],
         "roles": [ui.role.name for ui in user.institutions]
-    }
-    
+    } 
     flash("La sesión inicio correctamente", "success")
+    return redirect(url_for("home"))
+
+@auth_blueprint.post("/update-actual-institution")
+def update_actual_institution():
+    id = request.json['institution_id']
+    session['user']['actual_institution'] = id
+    print(session['user'])
     return redirect(url_for("home"))
 
 @auth_blueprint.get("/logout")
