@@ -190,10 +190,17 @@ def assign_roles_to_users():
         institution = i1,
         role = operator
     )
+    ui_user021 = user_institution.create_user_institution_role(
+        user = user02,
+        institution = i0,
+        role = operator
+    )
+    
     user.assign_institution_and_role(root, [ui_root])
     user.assign_institution_and_role(user00, [ui_user00])
     user.assign_institution_and_role(user01, [ui_user01])
     user.assign_institution_and_role(user02, [ui_user02])
+    user.assign_institution_and_role(user02, [ui_user021])
 
 def run():
     create_users()
