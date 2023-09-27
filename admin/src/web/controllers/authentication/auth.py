@@ -24,7 +24,7 @@ def authenticate():
     session["user"] = {
         "email": user.email,
         "username": user.username,
-        "actual_institution": first_institution.id,
+        "actual_institution": first_institution.institution_id,
         "institutions": [ui.institution for ui in user.institutions],
         "roles": [ui.role.name for ui in user.institutions]
     } 

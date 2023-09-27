@@ -9,4 +9,5 @@ def index():
     """
         Redirige a la página de inicio de la administración
     """
+
     return render_template("home.html")
