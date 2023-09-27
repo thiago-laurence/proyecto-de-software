@@ -35,15 +35,21 @@ def create_institutions_and_services():
     print("----> Creando servicios...")
     s1 = institution.create_service(
         name="Revestimiento",
-        info="De grano grueso"
+        info="De grano grueso",
+        type="Consultoria",
+        key_words="Revestimiento, grano grueso, paredes"
     )
     s2 = institution.create_service(
         name="Alisado",
-        info="De muchas capas de masilla"
+        info="De muchas capas de masilla",
+        type="Desarrollo",
+        key_words="Alisado, masilla, paredes"
     )
     s3 = institution.create_service(
         name="Tinta a revear",
-        info="Proceso de tintura a revestimiento de grano fino"
+        info="Proceso de tintura a revestimiento de grano fino",
+        type="Analisis",
+        key_words="Tinta, revear, grano fino"
     )
     print("----> Asignado servicios...")
     institution.assign_service(i1,s1)
