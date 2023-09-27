@@ -51,7 +51,9 @@
     <li>
         <div class="container">
             <div class="content font-bold">
-                <a class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 grid grid-cols-2">
+
+                <a href="{{ url_for('services.index',institution_id=institution.id)}}"
+                    class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 grid grid-cols-2">
                     <div>
                         <h6 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
                             {{institution.name}}</h6>
@@ -97,51 +99,51 @@
             <div class="px-6 py-6 lg:px-8">
                 <h3 class="mb-4 text-xl font-medium text-gray-900 dark:text-white">Añadir una nueva institución</h3>
 
-                <form action="{{ url_for('institutions.institution_add')}}" method="post""> 
+                <form action="{{ url_for('institutions.institution_add')}}" method="post"> 
                     <div class=" mb-6">
                     <label for="name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre de la
                         institución</label>
                     <input type="text" id="name" name="name"
                         class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                         placeholder="" required>
-            </div>
-            <div class="mb-6">
-                <label for="info" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                    Información de la institución
-                </label>
-                <input type="text" id="info" name="info"
-                    class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
-                    required>
-            </div>
-            <div class="mb-6">
-                <label for="address"
-                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Dirección</label>
-                <input type="text" id="address" name="address"
-                    class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
-                    required>
-            </div>
-            <div class="mb-6">
-                <label for="owner"
-                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Dueño</label>
-                <select required id="owner" name="owner" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                 {% if users %}
-                    {% for user in users %}
-                    <option value="{{user.id}}">{{user.name}}</option>
-                    {% endfor %}
-                {% endif %}
-                </select>
+                    </div>
+                    <div class="mb-6">
+                        <label for="info" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                            Información de la institución
+                        </label>
+                        <input type="text" id="info" name="info"
+                            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                            required>
+                    </div>
+                    <div class="mb-6">
+                        <label for="address"
+                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Dirección</label>
+                        <input type="text" id="address" name="address"
+                            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                            required>
+                    </div>
+                    <div class="mb-6">
+                        <label for="owner"
+                        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Dueño</label>
+                        <select required id="owner" name="owner" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                        {% if users %}
+                            {% for user in users %}
+                            <option value="{{user.id}}">{{user.name}}</option>
+                            {% endfor %}
+                        {% endif %}
+                        </select>
+
+                    </div>
+
+                    <button type="submit"
+                        class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        Registrar la nueva institución
+                    </button>
+                </form>
 
             </div>
-
-            <button type="submit"
-                class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                Registrar la nueva institución
-            </button>
-            </form>
-
         </div>
     </div>
-</div>
 </div>
 
 {% endblock %}
