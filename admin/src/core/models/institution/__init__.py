@@ -16,6 +16,13 @@ def get_institution_by_id(id):
     institution = Institution.query.filter(Institution.id == id).first()
     return institution
 
+def get_institution_by_id(id):
+    """
+    Me devuelve una institucion por id.
+    """   
+    institution = Institution.query.filter(Institution.id == id).first()
+    return institution
+
 def create_institution(**kwargs):
     """"
     Crear una institucion y almacenarla en la db.
@@ -43,6 +50,14 @@ def list_services():
     Me devuelve todos los servicios
     """   
     services = Service.query.all()
+    return services
+
+def list_services_by_institution(institution_id):
+    """
+    Me devuelve todos los servicios de una institucion
+    """   
+    services = Service.query.filter(Service.institution_id == institution_id).all()
+    print(services)
     return services
 
 def list_services_by_institution(institution_id):
