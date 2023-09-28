@@ -1,5 +1,6 @@
 from functools import wraps
 from flask import session, abort
+from src.core.models import role
 
 
 def is_authenticated(session):
@@ -13,11 +14,11 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-def roles_required(roles):
+def permission_required(permission):
     def decorator(f):
         @wraps(f)
         def decorated_function(*args, **kwargs):
-            if not set(roles).intersection(session["user"]["roles"]):
+            if not role.contains_permission(session["user"]["role"], permission):
                 return abort(403)
             return f(*args, **kwargs)
         return decorated_function

@@ -31,3 +31,20 @@ def get_role_by_name(name):
         Busca un rol por nombre y lo retorna.
     """
     return Role.query.filter_by(name=name).first()
+
+def get_permission_by_role(role):
+    """
+        Retorna los permisos de un rol
+    """
+    return role.permissions
+
+def contains_permission (role_id, permission):
+    """
+        Retorna True si el rol contiene el permiso
+        args:
+            role_id: id del rol
+            permission: nombre del permiso a buscar
+    """
+    role = Role.query.filter_by(id=role_id).first()
+    permissions = [p.name for p in role.permissions]
+    return permission in permissions

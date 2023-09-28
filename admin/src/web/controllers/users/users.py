@@ -7,7 +7,6 @@ users_blueprint = Blueprint("users", __name__, url_prefix="/usuarios")
 
 @users_blueprint.get("/")
 @auth.login_required
-@auth.roles_required(["SuperAdministrador/a", "Dueño/a"])
 def index():
     """
         Redirige al listado de usuarios
