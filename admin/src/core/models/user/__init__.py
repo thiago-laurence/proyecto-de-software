@@ -18,6 +18,13 @@ def get_institutions_by_user(user):
     
     return user.institutions
 
+def get_role_institution_by_user(user, institution):
+    """
+        Devuelte el rol de un usuario en una institución
+    """   
+    role = db.session.query(UserInstitution).filter_by(user_id=user.id, institution_id=institution.id).first()
+    
+    return role.role
 
 def assign_institution_and_role(user, role_institution_list):
     """
@@ -82,3 +89,12 @@ def check_state_user(user):
         return True
     else:
         return False
+
+def get_first_institution_rol(user):
+    """
+        Devuelve los ID de la primera institución y rol de un usuario
+        return:
+            tuple: (institution_id, role_id)
+    """
+    result = db.session.query(UserInstitution).filter_by(user_id=user.id).first()
+    return result.institution_id, result.role_id

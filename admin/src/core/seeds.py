@@ -4,7 +4,17 @@ from src.core.models import institution
 from src.core.models import user_institution
 from src.core.models import role
 from src.core.models import permission
+from src.core.models import system
 
+
+def create_system():
+    system.system_create(
+        name = "CINDEPINT",
+        element_page = 10,
+        info = "Centro de Investigación y Desarrollo en Tecnología de Pinturas y Recubrimientos",
+        message = "El sistema está en mantenimiento, por favor vuelva más tarde.",
+        activate = True
+    )
 
 def create_institutions_and_services():
     print("----> Creando instituciones...")
@@ -111,50 +121,131 @@ def create_roles():
 def create_permissions():
     print("----> Creando permisos...")
     permission.create_permission(
-        name = "Index"
+        name = "user_index"
     )
     permission.create_permission(
-        name = "Show"
+        name = "user_create"
     )
     permission.create_permission(
-        name = "Update"
+        name = "user_destroy"
     )
     permission.create_permission(
-        name = "Create"
+        name = "user_update"
     )
     permission.create_permission(
-        name = "Destroy"
+        name = "user_show"
     )
     permission.create_permission(
-        name = "Activate"
+        name = "ui_index"
     )
     permission.create_permission(
-        name = "Deactivate"
+        name = "ui_create"
+    )
+    permission.create_permission(
+        name = "ui_destroy"
+    )
+    permission.create_permission(
+        name = "ui_update"
+    )
+    permission.create_permission(
+        name = "institution_index"
+    )
+    permission.create_permission(
+        name = "institution_create"
+    )
+    permission.create_permission(
+        name = "institution_destroy"
+    )
+    permission.create_permission(
+        name = "institution_update"
+    )
+    permission.create_permission(
+        name = "institution_show"
+    )
+    permission.create_permission(
+        name = "institution_activate"
+    )
+    permission.create_permission(
+        name = "institution_deactivate"
+    )
+    permission.create_permission(
+        name = "service_index"
+    )
+    permission.create_permission(
+        name = "service_create"
+    )
+    permission.create_permission(
+        name = "service_destroy"
+    )
+    permission.create_permission(
+        name = "service_update"
+    )
+    permission.create_permission(
+        name = "service_show"
+    )
+    permission.create_permission(
+        name = "request_service_index"
+    )
+    permission.create_permission(
+        name = "request_service_create"
+    )
+    permission.create_permission(
+        name = "request_service_destroy"
+    )
+    permission.create_permission(
+        name = "request_service_update"
+    )
+    permission.create_permission(
+        name = "request_service_show"
+    )
+    permission.create_permission(
+        name = "system_show"
+    )
+    permission.create_permission(
+        name = "system_update"
     )
     print("----> Finalizado! <----")
 
 def assign_permissions_to_roles():
     print("----> Asignando permisos a roles...")
     # Permisos
-    index = permission.get_permission_by_name("Index")
-    show = permission.get_permission_by_name("Show")
-    update = permission.get_permission_by_name("Update")
-    destroy = permission.get_permission_by_name("Destroy")
-    create = permission.get_permission_by_name("Create")
-    activate = permission.get_permission_by_name("Activate")
-    deactivate = permission.get_permission_by_name("Deactivate")
+    users_permission = permission.get_permission_by_prefix("user")
+    users_institution_permission = permission.get_permission_by_prefix("ui")
+    institution_permission = permission.get_permission_by_prefix("institution")
+    service_permission = permission.get_permission_by_prefix("service")
+    request_service_permission = permission.get_permission_by_prefix("request")
+    system_permission = permission.get_permission_by_prefix("system")
+    
     # SuperAdministrador
     superAdmin = role.get_role_by_name("SuperAdministrador/a")
-    role.assign_permission(superAdmin, [index, update, create, show, destroy, activate, deactivate])
+    permission_superAdmin = []
+    for lista in [users_permission, institution_permission, service_permission, system_permission]:
+        permission_superAdmin += lista
+    role.assign_permission(superAdmin, permission_superAdmin)
+    
     # Dueño
+    permission_owner = []
+    for lista in [users_institution_permission,
+                  service_permission,
+                  [p for p in request_service_permission if p.name != "request_service_create"]]:
+        permission_owner += lista
     owner = role.get_role_by_name("Dueño/a")
-    role.assign_permission(owner, [index, update, create, show, destroy])
+    role.assign_permission(owner, permission_owner)
+    
     # Administrador
     admin = role.get_role_by_name("Administrador/a")
-    role.assign_permission(admin, [index, update, create, show, destroy])
+    permission_admin = []
+    for lista in [service_permission, request_service_permission]:
+        permission_admin += lista
+    role.assign_permission(admin, permission_admin)
+    
     # Operador
     operator = role.get_role_by_name("Operador/a")
-    role.assign_permission(admin, [index, update, create, show])
+    permission_operator = []
+    for lista in [[p for p in service_permission if p.name != "service_destroy"],
+                  [p for p in request_service_permission if p.name != "request_service_destroy"]]:
+        permission_operator += lista
+    role.assign_permission(admin, permission_operator)
     
     print("----> Finalizado! <----")
 
@@ -201,8 +292,10 @@ def assign_roles_to_users():
     user.assign_institution_and_role(user01, [ui_user01])
     user.assign_institution_and_role(user02, [ui_user02])
     user.assign_institution_and_role(user02, [ui_user021])
+    print("----> Finalizado! <----")
 
 def run():
+    create_system()
     create_users()
     create_institutions_and_services()
     create_roles()

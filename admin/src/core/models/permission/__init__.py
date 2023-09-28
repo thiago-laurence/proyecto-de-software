@@ -30,3 +30,9 @@ def get_permission_by_name(name):
         Retorna un permiso por su nombre
     """
     return Permission.query.filter_by(name=name).first()
+
+def get_permission_by_prefix(prefix):
+    """
+        Retorna un permiso por su prefijo
+    """
+    return Permission.query.filter(Permission.name.startswith(prefix)).all()
