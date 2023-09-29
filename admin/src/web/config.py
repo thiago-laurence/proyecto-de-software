@@ -2,12 +2,19 @@ from os import environ
 
 class Config(object):
     """
-        configuracion base.
-        
+        Configuracion base
     """
     SECRET_KEY = "secret"
     TESTING = False
     SESSION_TYPE = "filesystem"
+    
+    # Credenciales para servicio de correo
+    MAIL_SERVER = "smtp.gmail.com"
+    MAIL_PORT = 465
+    MAIL_USE_SSL = True
+    MAIL_USE_TLS = False
+    MAIL_USERNAME = environ.get("MAIL_USER")
+    MAIL_PASSWORD = environ.get("MAIL_PASS")
     
 class ProductionConfig(Config):
     """ configuracion de prod """
