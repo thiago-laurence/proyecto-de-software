@@ -38,7 +38,7 @@ def create_user(**kwargs):
     """
         Se registra un nuevo usuario
     """
-    
+    kwargs['email'] = kwargs['email'].lower()
     user = User(**kwargs)
     db.session.add(user)
     db.session.commit()
@@ -52,10 +52,10 @@ def confirm_user(email, username, password):
     hash = bcrypt.generate_password_hash(password.encode('utf-8'))
     user = find_user(email)
     if user:
-        user.username = username
+        user.username = username.lower()
         user.password = hash.decode('utf-8')
         user.confirmed = True
-    
+
     db.session.commit()
 
 def find_user(identifier):
@@ -64,7 +64,7 @@ def find_user(identifier):
         
         identify: email o username del usuario.
     """
-    
+    identifier = identifier.lower()
     return User.query.filter((User.email == identifier) | (User.username == identifier)).first()
 
 def check_auth_user(email, password):

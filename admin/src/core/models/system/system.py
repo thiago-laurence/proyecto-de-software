@@ -30,4 +30,4 @@ class System(db.Model):
             "updated_at": self.updated_at.strftime('%Y-%m-%d %H:%M:%S'),
             "inserted_at": self.inserted_at.strftime('%Y-%m-%d %H:%M:%S')
         }
-        return sys
+        return jsonify(sys)

@@ -9,7 +9,7 @@ from src.core.models import system
 
 def create_system():
     system.system_create(
-        name = "CINDEPINT",
+        name = "CIDEPINT",
         element_page = 10,
         info = "Centro de Investigación y Desarrollo en Tecnología de Pinturas y Recubrimientos",
         message = "El sistema está en mantenimiento, por favor vuelva más tarde.",
@@ -72,7 +72,7 @@ def create_users():
     hash_default_pass = bcrypt.generate_password_hash("123".encode('utf-8'))
     user.create_user(
         email = "root@gmail.com",
-        username = "Root",
+        username = "root",
         name = "Super",
         lastname = "User",
         password = hash_default_pass.decode('utf-8'),
@@ -81,7 +81,7 @@ def create_users():
     )
     user.create_user(
         email = "user00@gmail.com",
-        username = "User00",
+        username = "user00",
         name = "User",
         lastname = "00",
         password = hash_default_pass.decode('utf-8'),
@@ -90,7 +90,7 @@ def create_users():
     )
     user.create_user(
         email = "user01@gmail.com",
-        username = "User01",
+        username = "user01",
         name = "User",
         lastname = "01",
         password = hash_default_pass.decode('utf-8'),
@@ -99,7 +99,7 @@ def create_users():
     )
     user.create_user(
         email = "user02@gmail.com",
-        username = "User02",
+        username = "user02",
         name = "User",
         lastname = "02",
         password = hash_default_pass.decode('utf-8'),

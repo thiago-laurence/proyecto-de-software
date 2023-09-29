@@ -5,7 +5,7 @@ def not_found_error(e):
     
     kwargs = {
         "error_name": "Error 404 - Not Found",
-        "error_description": "La sitio que buscas no existe o no se encuentra disponible",
+        "error_description": "La sitio que buscas no existe",
         "error_code": "404",
         "error_image": "/static/img/error404.png"
     }
@@ -33,7 +33,19 @@ def forbidden_error(e):
 
     return render_template("error.html", **kwargs), 403
 
+def unavailable_error(e):
+    
+    kwargs = {
+        "error_name": "Error 503 - Unavailable",
+        "error_description": "El sistema se encuentra en mantenimiento y no está disponible por el momento",
+        "error_code": "503",
+        "error_image": "/static/img/error503.jpg"
+    }
+
+    return render_template("error.html", **kwargs), 503
+
 def register_error_handlers(app):
     app.register_error_handler(404, not_found_error)
     app.register_error_handler(401, anautorized_error)
     app.register_error_handler(403, forbidden_error)
+    app.register_error_handler(503, unavailable_error)

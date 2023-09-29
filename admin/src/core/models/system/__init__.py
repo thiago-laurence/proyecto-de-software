@@ -18,3 +18,17 @@ def system_create(**kwargs):
     db.session.add(sys)
     db.session.commit()
     return sys
+
+def is_available(name_system):
+    """
+        Verifica si el sistema está disponible.
+        args:
+            name_system: nombre del sistema a verificar.
+        return:
+            True si está disponible.
+            False en caso contrario.
+    """
+    system = System.query.filter(System.name == name_system).first()
+    if system is None:
+        return False
+    return system.activate

@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash, redirect,url_for
 from src.core.models import institution
-from src.core.models import users
+from src.core.models import user
 
 services_blueprint = Blueprint("services", __name__, url_prefix="/services")
 
