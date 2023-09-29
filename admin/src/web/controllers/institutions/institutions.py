@@ -1,10 +1,12 @@
 from flask import Blueprint, render_template, request, flash, redirect,url_for
 from src.core.models import institution
 from src.core.models import user
+from src.web.helpers import auth
 
 institutions_blueprint = Blueprint("institutions", __name__, url_prefix="/institutions")
 
 @institutions_blueprint.get("/")
+@auth.permission_required("institution_index")
 def index():
     """"
     Renderiza el template para las instituciones y las muestra.
@@ -12,6 +14,7 @@ def index():
     return render_template("institutions/index.html", institutions=institution.list_institutions(), users = user.get_users())
 
 @institutions_blueprint.post("/institution-add")
+@auth.permission_required("institution_create")
 def institution_add():
     """
     Metodo para agregar una nueva institucion

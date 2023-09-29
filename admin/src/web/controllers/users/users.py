@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, session
+from flask import Blueprint, current_app, render_template, request, flash, redirect, url_for, session
 from src.core.models import user as Users
 from src.web.helpers import auth
 from src.web import mail
@@ -34,9 +34,10 @@ def register():
         return redirect(url_for("users.new_user"))
     
     user = Users.create_user(email=params["email"], name=params["name"], lastname=params["lastname"])
+    url = request.host_url + "usuarios/confirmar-registro"
     body = """
         <p> Bienvenido a CIDEPINT, para completar el registro ingresa al siguiente link: </p>
-        <form action="http://localhost:5000/usuarios/confirmar-registro" method="POST">
+        <form action=""" + url + """ method="POST">
             <input type="hidden" name="email" value=""" + user.email + """>
             <button type="submit">Confirmar</button>
         </form>
@@ -48,7 +49,7 @@ def register():
     return redirect(url_for("users.new_user"))
 
 @users_blueprint.post("/confirmar-registro")
-def confirm_user():
+def confirm_register():
     """
         Confirma el registro de un usuario
     """
@@ -58,7 +59,7 @@ def confirm_user():
     user = Users.find_user(email)
     
     if user and user.confirmed:
-        return render_template("users/confirm_success.html")
+        return render_template("login/login.html")
     
     if params.__len__() == 1:
         return render_template("users/confirm.html", email=email)
@@ -78,7 +79,7 @@ def confirm_user():
     return render_template("users/confirm_success.html")
 
 @users_blueprint.get("/me/profile")
-@auth.login_required
+@auth.session_required
 def user_profile():
     user = Users.find_user(session["user"]["email"])
     return render_template("users/profile.html", user=user)

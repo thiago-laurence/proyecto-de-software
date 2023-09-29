@@ -16,6 +16,13 @@ def get_institution_by_id(id):
     institution = Institution.query.filter(Institution.id == id).first()
     return institution
 
+def get_institution_by_id(id):
+    """
+    Me devuelve una institucion por id.
+    """   
+    institution = Institution.query.filter(Institution.id == id).first()
+    return institution
+
 def create_institution(**kwargs):
     """"
     Crear una institucion y almacenarla en la db.

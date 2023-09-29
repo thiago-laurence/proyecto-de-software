@@ -21,9 +21,15 @@
                 {{ error_description }}
             </p>
             <div class="flex justify-center">
+                {% if session['user'] %}
                 <a href="{{ url_for('home.index') }}"><button class="inline-flex text-white bg-blue-500 border-0 py-2 px-6 focus:outline-none hover:bg-blue-600 rounded text-lg">
                     Volver
                 </button></a>
+                {% else %}
+                <a href="{{ url_for('auth.login') }}"><button class="inline-flex text-white bg-blue-500 border-0 py-2 px-6 focus:outline-none hover:bg-blue-600 rounded text-lg">
+                    Iniciar sesión
+                </button></a>
+                {% endif %}
             </div>
           </div>
         </div>

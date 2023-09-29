@@ -31,4 +31,5 @@ def is_available(name_system):
     system = System.query.filter(System.name == name_system).first()
     if system is None:
         return False
-    return system.activate
+    return False
+    # return system.activate
