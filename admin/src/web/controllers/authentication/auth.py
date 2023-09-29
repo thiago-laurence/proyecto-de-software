@@ -20,14 +20,23 @@ def authenticate():
         flash("El usuario no está activo o no está confirmado", "error")
         return redirect(url_for("auth.login"))
         
-    instition_role = Users.get_first_institution_rol(user)
-    session["user"] = {
-        "email": user.email,
-        "username": user.username,
-        "institutions": [i.institution for i in Users.get_institutions_by_user(user)],
-        "actual_institution": instition_role[0],
-        "role": instition_role[1]
-    } 
+    institution_role = Users.get_first_institution_rol(user)
+    if institution_role is None:
+        session["user"] = {
+            "email": user.email,
+            "username": user.username,
+            "institutions": [],
+            "actual_institution": None,
+            "role": None
+        }
+    else:   
+        session["user"] = {
+            "email": user.email,
+            "username": user.username,
+            "institutions": [i.institution for i in Users.get_institutions_by_user(user)],
+            "actual_institution": institution_role[0],
+            "role": institution_role[1]
+        } 
     flash("La sesión inicio correctamente", "success")
     return redirect(url_for("home"))
 

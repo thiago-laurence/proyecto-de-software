@@ -59,7 +59,7 @@ def confirm_register():
     user = Users.find_user(email)
     
     if user and user.confirmed:
-        return render_template("users/confirm_success.html")
+        return render_template("login/login.html")
     
     if params.__len__() == 1:
         return render_template("users/confirm.html", email=email)
