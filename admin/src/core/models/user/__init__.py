@@ -97,4 +97,6 @@ def get_first_institution_rol(user):
             tuple: (institution_id, role_id)
     """
     result = db.session.query(UserInstitution).filter_by(user_id=user.id).first()
+    if result is None:
+        return None, None 
     return result.institution_id, result.role_id
