@@ -1,6 +1,5 @@
 from flask import Blueprint, render_template, request, flash, redirect,url_for,jsonify
 from src.core.models import institution
-from src.core.models import users
 from src.web.helpers import auth
 
 
