@@ -16,11 +16,11 @@ def get_institution_by_id(id):
     institution = Institution.query.filter(Institution.id == id).first()
     return institution
 
-def get_institution_by_id(id):
+def get_institution_by_name(name):
     """
     Me devuelve una institucion por id.
     """   
-    institution = Institution.query.filter(Institution.id == id).first()
+    institution = Institution.query.filter(Institution.name.lower() == name.lower()).first()
     return institution
 
 def create_institution(**kwargs):

@@ -1,6 +1,7 @@
 from src.core.database import db
 from datetime import datetime
 from enum import Enum
+from flask import jsonify
 
 class Tipo(Enum):
     Analisis = 1
@@ -24,3 +25,13 @@ class Service(db.Model):
     inserted_at = db.Column(
         db.DateTime, default=datetime.utcnow
     )
+    
+    def to_json(self):
+        service_dict = {
+            'name': self.name,
+            'description': self.info,
+            'laboratory': self.institution.name,
+            'keywords': self.key_words,
+            'enabled': self.is_enabled
+        }
+        return service_dict
