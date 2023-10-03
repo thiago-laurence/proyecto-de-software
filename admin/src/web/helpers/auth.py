@@ -13,49 +13,43 @@ def is_authenticated(session):
     return session.get("user") is not None
 
 
-def is_available(system_name):
+def system_available(system_name="CIDEPINT"):
     """
         Verifica si el sistema está disponible.
+        
         args:
-            system: nombre del sistema a verificar su disponibilidad.
+            system: nombre del sistema a verificar su disponibilidad. Por defecto CIDEPINT.
+            
         return:
-            True si está disponible.
-            False en caso contrario.
+            True -> el sistema está disponible.
+            
+            Error 503 --> caso contrario.
     """
+    
     return system.is_available(system_name)
-
-
-def system_available(system="CIDEPINT"):
-    """
-        Verifica si el sistema está disponible.
-        args:
-            system: nombre del sistema a verificar su disponibilidad. Por defecto CINCEPINT.
-        return:
-            True si está disponible.
-            Error 503 en caso contrario.
-    """
-    def decorator(f):
-        @wraps(f)
-        def decorated_function(*args, **kwargs):
-            if not is_available(system):
-                return abort(503)
-            return f(*args, **kwargs)
-        return decorated_function
-    return decorator
 
 
 def login_required(f):
     """
-        Decorador para verificar si el usuario está autenticado.
+        Decorador para verificar si el usuario está autenticado, y el sistema está disponible.
+        
         return:
-            Si está autenticado, ejecuta la función decorada.
-            Si no está autenticado, retorna un error 401.
+            Si está autenticado, y el sistema está disponible -> ejecuta la función decorada.
+            
+            En caso de que el sistema no esté disponible y sea SuperAdministrador/a -> ejecuta la funcion decorada.
+            
+            Si no está autenticado -> retorna un error 401.
+            
+            Si está autenticado, pero el sistema no está disponible -> retorna un error 503.
     """
     @wraps(f)
-    @system_available()
     def decorated_function(*args, **kwargs):
         if not is_authenticated(session):
             return abort(401)
+        
+        if not system_available() and session["user"]["role"] != 1:
+            return abort(503)
+            
         return f(*args, **kwargs)
     return decorated_function
 
@@ -76,13 +70,19 @@ def session_required(f):
 
 def permission_required(permission):
     """
-        Decorador para verificar si el usuario está autenticado y tiene el permiso requerido.
+        Decorador para verificar si el usuario está autenticado, tiene el permiso requerido, 
+        el sistema está disponible (en caso de no ser SuperAdministrador/a).
+        
         args:
             permission: nombre del permiso requerido
+            
         return:
-            Si está autenticado y tiene el permiso, ejecuta la función decorada.
-            Si no está autenticado retorna error 401
-            Si no tiene el permiso retorna error 403.
+            Si está autenticado, tiene el permiso, y el sistema está disponible -> ejecuta la función decorada.
+            En caso de que el sistema no esté disponible, y el usuario no sea SuperAdministrador/a, retorna error 503.
+            
+            Si no está autenticado -> retorna error 401
+            
+            Si no tiene el permiso -> retorna error 403.
     """
     def decorator(f):
         @wraps(f)
@@ -93,3 +93,21 @@ def permission_required(permission):
             return f(*args, **kwargs)
         return decorated_function
     return decorator
+
+def render_layout(role_id):
+    """
+        Renderiza el layout de la aplicación acorde al rol del usuario.
+        args:
+            role_id: id del rol del usuario.
+        return:
+            layout: nombre del layout.
+    """
+    layout = {
+        0: "layout-user.html",
+        1: "layout-root.html",
+        2: "layout-owner.html",
+        3: "layout-admin.html",
+        4: "layout-operator.html",
+    }
+    
+    return layout[role_id]

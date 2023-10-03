@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends "layouts/" + session['user']['layout'] %}
 {% block title %}Servicios{% endblock %}
 {% block stylesheet %}
     <link rel="stylesheet" href="{{ url_for('static',filename='css/notifications.css') }}">

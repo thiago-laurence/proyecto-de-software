@@ -1,44 +1,62 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, session
+from flask import Blueprint, render_template, request, flash, redirect, url_for, session, Response, json
 from src.core.models import user as Users
+from src.web.helpers import auth
 
 auth_blueprint = Blueprint("auth", __name__, url_prefix="/login")
 
 @auth_blueprint.get("/")
-def login():
-    return render_template("login/login.html")
+def login(authentication=None):
+    return render_template("login/login.html", authentication=authentication)
 
 @auth_blueprint.post("/authenticate")
 def authenticate():
+    
+    response = Response(
+        response = json.dumps({"result": "fail"}),
+        status = 400,
+        mimetype = 'application/json'
+    )
+    
     params = request.form
     user = Users.check_auth_user(params["email"], params["password"])
     
     if not user:
         flash("Email/Nombre de usuario o contraseña incorrectos", "error")
-        return redirect(url_for("auth.login"))
+        return redirect(url_for("auth.login", authentication=response.get_json()))
     
     if not Users.check_state_user(user):
         flash("El usuario no está activo o no está confirmado", "error")
-        return redirect(url_for("auth.login"))
+        return redirect(url_for("auth.login", authentication=response.get_json()))
         
     institution_role = Users.get_first_institution_rol(user)
     if institution_role is None:
         session["user"] = {
+            "id": user.id,
             "email": user.email,
             "username": user.username,
             "institutions": [],
             "actual_institution": None,
-            "role": None
+            "role": None,
+            "layout": auth.render_layout(0)
         }
     else:   
         session["user"] = {
+            "id": user.id,
             "email": user.email,
             "username": user.username,
             "institutions": [i.institution for i in Users.get_institutions_by_user(user)],
             "actual_institution": institution_role[0],
-            "role": institution_role[1]
-        } 
-    flash("La sesión inicio correctamente", "success")
-    return redirect(url_for("home"))
+            "role": institution_role[1],
+            "layout": auth.render_layout(institution_role[1])
+        }
+
+    response = Response(
+        response = json.dumps({"result": "success"}),
+        status = 200,
+        mimetype = 'application/json'
+    )
+    
+    return redirect(url_for("home", authentication=response.get_json()))
 
 @auth_blueprint.post("/update-actual-institution")
 def update_actual_institution():

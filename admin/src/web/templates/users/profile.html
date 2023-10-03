@@ -1,4 +1,4 @@
-{% extends "layout.html" %}
+{% extends "layouts/" + session['user']['layout'] %}
 
 {% block title %} Perfil {% endblock %}
 {% block contentMain %}
@@ -38,7 +38,7 @@
                         </li>
                         <li class="flex items-center py-3">
                             <span>Miembro desde</span>
-                            <span class="ml-auto">{{ user.inserted_at.strftime('%m-%Y') }}</span>
+                            <span class="ml-auto">{{ user.inserted_at }}</span>
                         </li>
                     </ul>
                 </div>
