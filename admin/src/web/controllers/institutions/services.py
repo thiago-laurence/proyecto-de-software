@@ -90,7 +90,7 @@ def service_edit(service_id):
     existe = institution.check_if_service_exists_by_name_update(service.institution_id, request.json['name'],service_id)
     print("existe: ",existe)
     if existe:
-        flash("El servicio " + service.name + " ya se encuentra registrado para esta institucion.", "error")
+        flash("El servicio " + request.json['name'] + " ya se encuentra registrado para esta institucion.", "error")
         #return redirect(url_for("services.index",institution_id=service.institution_id))
     
     else:

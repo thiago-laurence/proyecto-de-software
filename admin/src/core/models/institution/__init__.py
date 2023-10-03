@@ -32,6 +32,23 @@ def create_institution(**kwargs):
     db.session.commit()
 
     return institution
+
+def delete_institution(institution):
+    db.session.delete(institution)
+    db.session.commit()
+    
+def edit_institution(institution, **kwargs):
+    institution.name = kwargs.get("name")
+    institution.info = kwargs.get("info")
+    institution.address = kwargs.get("address")
+    institution.web = kwargs.get("web")
+    institution.social_networks = kwargs.get("social_networks")
+    institution.phone = kwargs.get("phone")
+    
+    db.session.add(institution)
+    db.session.commit()
+    
+    return institution
     
 def check_if_institution_exists_by_name(name):
     institution = Institution.query.filter(Institution.name == name).first()

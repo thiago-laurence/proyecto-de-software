@@ -9,7 +9,7 @@ def init_app(app):
     """
     mail.init_app(app)
 
-def send_mail(subject, recipients, body, sender="cidepintgrupo10@gmail.com"):
+def send_mail(subject, recipients, body, sender='CIDEPINT cidepintgrupo10@gmail.com'):
     """
         Envia un correo electronico
         
