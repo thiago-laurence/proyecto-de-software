@@ -1,9 +1,157 @@
-{% extends "layout.html" %}
+{% extends "layouts/" + session['user']['layout'] %}
 
 {% block title%}
-    Sistema
+    Configuración del sistema
 {% endblock %}
 
-{% block  contentMain %}
-    
+{% block stylesheet %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/notifications.css') }}">
+{% endblock %}
+
+{% block contentMain %}
+    <section class="text-gray-600 body-font">
+        <div class="container px-5 py-3 mx-auto">
+            <div class="flex flex-wrap w-full mb-10">
+                <div class="lg:w-full w-full mb-6 lg:mb-0">
+                    <h2 class="text-xs text-indigo-500 tracking-widest font-medium title-font mb-1">
+                        Administración
+                    </h2>
+                    <h1 class="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">
+                        Configuración del sistema
+                    </h1>
+                    <div class="h-1 w-full bg-indigo-500 rounded"></div>
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div id="toast" class="my-4">
+                                    <div class="{{ category }} text-sm text-white rounded-md shadow-lg dark:bg-gray-900" role="alert">
+                                        <div class="flex items-center p-2.5">
+                                            <p>{{ message }}</p>
+                                            <div class="mt-0 ml-auto">
+                                                <button type="button" data-dismiss-target="#toast" class="ml-auto -mx-1.5 -my-1.5  text-gray-300 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700" data-dismiss-target="#toast-success" aria-label="Close">
+                                                    <span class="sr-only">Close</span>
+                                                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                </div>
+            </div>
+            <div class="flex flex-wrap -m-4">
+                <form class="flex flex-wrap -m-4" id="form-update" data-id="{{ system.id }}" data-action="update" data-module="system">
+                    <div class="p-4 lg:w-1/2 md:w-1/2 sm:w-full">
+                        <div class="flex rounded-lg h-full bg-gray-100 p-8 flex-col">
+                            <div class="flex items-center mb-3">
+                                <div class="w-8 h-8 mr-3 inline-flex items-center justify-center rounded-full bg-indigo-500 text-white flex-shrink-0">
+                                    <svg class="w-5 h-5 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 10v4H1l3 3M3 8V4h16l-3-3M9 8l2-1v4"/>
+                                    </svg>
+                                </div>
+                                <h2 class="text-gray-900 text-lg title-font font-medium">Elementos por página</h2>
+                            </div>
+                            <div class="flex-grow">
+                                <p class="leading-relaxed text-base">
+                                    Cantidad de elementos a visualizar en cada página en los listados de la aplicación.
+                                </p>
+                                <div class="w-2/4 mt-3 text-indigo-500 inline-flex items-center">
+                                    <input type="number" min="1" max="10" name="element_page" id="element_page" value="{{ system.element_page }}"  placeholder="Nro. de elementos" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 lg:w-1/2 md:w-1/2 sm:w-full">
+                        <div class="flex rounded-lg h-full bg-gray-100 p-8 flex-col">
+                            <div class="flex items-center mb-3">
+                                <div class="w-8 h-8 mr-3 inline-flex items-center justify-center rounded-full bg-indigo-500 text-white flex-shrink-0">
+                                    <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-5 h-5" viewBox="0 0 24 24">
+                                        <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                                    </svg>
+                                </div>
+                                <h2 class="text-gray-900 text-lg title-font font-medium">
+                                    Disponibilidad del sistema
+                                </h2>
+                            </div>
+                            <div class="flex-grow">
+                                <p class="leading-relaxed text-base">
+                                    Activar/Desactivar el sistema por motivos de mantenimiento.
+                                </p>
+                                <div class="w-2/4 mt-3 text-indigo-500 inline-flex items-center">
+                                    <select name="activate" id="activate" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <option disabled value="">Seleccione un estado</option>
+                                        {% if system.activate %}
+                                            <option selected value="{{ system.activate }}">Activado</option>
+                                            <option value="False">Desactivado</option>
+                                        {% else %}
+                                            <option value="True">Activado</option>
+                                            <option selected value="{{ system.activate }}">Desactivado</option>
+                                        {% endif %}
+                                    </select>
+                                </div>  
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 lg:w-1/2 md:w-1/2 sm:w-full">
+                        <div class="flex rounded-lg h-full bg-gray-100 p-8 flex-col">
+                            <div class="flex items-center mb-3">
+                                <div class="w-8 h-8 mr-3 inline-flex items-center justify-center rounded-full bg-indigo-500 text-white flex-shrink-0">
+                                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5h9M5 9h5m8-8H2a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h4l3.5 4 3.5-4h5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1Z"/>
+                                      </svg>
+                                </div>
+                                <h2 class="text-gray-900 text-lg title-font font-medium">
+                                    Mensaje de mantenimiento
+                                </h2>
+                            </div>
+                            <div class="flex-grow">
+                                <p class="leading-relaxed text-base">
+                                    Mensaje que se mostrará cuando el sistema esté desactivado.
+                                </p>                            
+                                <div class="w-full mt-3 text-indigo-500 inline-flex items-center">
+                                    <textarea name="message" id="message" rows="4" placeholder="{{ system.message }}" maxlength="250" required class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{ system.message }}</textarea>
+                                </div>  
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 lg:w-1/2 md:w-1/2 sm:w-full">
+                        <div class="flex rounded-lg h-full bg-gray-100 p-8 flex-col">
+                            <div class="flex items-center mb-3">
+                                <div class="w-8 h-8 mr-3 inline-flex items-center justify-center rounded-full bg-indigo-500 text-white flex-shrink-0">
+                                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9h2v5m-2 0h4M9.408 5.5h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                    </svg>
+                                </div>
+                                <h2 class="text-gray-900 text-lg title-font font-medium">
+                                    Información de contacto
+                                </h2>
+                            </div>
+                            <div class="flex-grow">
+                                <p class="leading-relaxed text-base">
+                                    Apartado que se visualizará al público en el sistema.
+                                </p>
+                                <div class="w-full mt-3 text-indigo-500 inline-flex items-center">
+                                    <textarea name="info" id="info" placeholder="{{ system.info }}" maxlength="250" required rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">{{ system.info }}</textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 w-full">
+                        <button type="button" onclick="update('form-update')" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            Actualizar información
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+{% block javascript %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='js/system.js') }}"></script>
 {% endblock %}

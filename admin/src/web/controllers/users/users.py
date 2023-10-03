@@ -1,40 +1,36 @@
-from flask import Blueprint, current_app, render_template, request, flash, redirect, url_for, session
+from flask import Blueprint, render_template, request, flash, redirect, url_for, session, Response, json
 from src.core.models import user as Users
 from src.web.helpers import auth
 from src.web import mail
 
-users_blueprint = Blueprint("users", __name__, url_prefix="/usuarios")
+users_blueprint = Blueprint("users", __name__, url_prefix="/users")
 
-@users_blueprint.get("/")
-@auth.login_required
-def index():
+@users_blueprint.get("/sing-up")
+def sign_up():
     """
-        Redirige al listado de usuarios
-    """
-    return render_template("users/index.html", users=Users.get_users())
-
-@users_blueprint.get("/registrarse")
-def new_user():
-    """
-        Redirige al formulario de registro de usuario
+        Redirige al formulario de registro de usuario.
     """
     
-    return render_template("users/register.html")
+    return render_template("users/sign_up.html")
 
-@users_blueprint.post("/register")
+@users_blueprint.post("/sign-up/register")
 def register():
     """
-        Registra un nuevo usuario obtiendo los datos del formulario
+        Registra un nuevo usuario (de forma parcial) obtiendo los datos del formulario.
+        args:
+            email: email del usuario a registrar.
+            name: nombre del usuario a registrar.
+            lastname: apellido del usuario a registrar.
     """
 
     params = request.form
-    user = Users.find_user(params["email"])
+    user = Users.find_user(params['email'])
     if user:
         flash("El email ingresado ya está registrado, por favor ingresa otro", "error")
-        return redirect(url_for("users.new_user"))
+        return redirect(url_for("users.sign_up"))
     
-    user = Users.create_user(email=params["email"], name=params["name"], lastname=params["lastname"])
-    url = request.host_url + "usuarios/confirmar-registro"
+    user = Users.create_user(email=params['email'], name=params['name'], lastname=params['lastname'])
+    url = request.host_url + "/users/sign-up/confirm"
     body = """
         <p> Bienvenido a CIDEPINT, para completar el registro ingresa al siguiente link: </p>
         <form action=""" + url + """ method="POST">
@@ -42,44 +38,85 @@ def register():
             <button type="submit">Confirmar</button>
         </form>
     """
-    mail.send_mail("Confirmación de registro", params["email"], body)
+    mail.send_mail("Confirmación de registro", params['email'], body)
     
     flash("Registro parcial exitoso. Se ha enviado un correo de confirmación de registro a la dirección ingresada", "success")
     
-    return redirect(url_for("users.new_user"))
+    return redirect(url_for("users.sign_up"))
 
-@users_blueprint.post("/confirmar-registro")
+@users_blueprint.post("/sign-up/confirm")
 def confirm_register():
     """
-        Confirma el registro de un usuario
+        Confirma el registro de un usuario.
+        
+        args:
+            email: email del usuario a confirmar
+            username: nobre de usuario
+            password: contraseña del usuario
     """
     
     params = request.form
-    email = params["email"]
-    user = Users.find_user(email)
+    user = Users.find_user(params['email'])
     
     if user and user.confirmed:
-        return render_template("login/login.html")
+        return redirect(url_for("auth.login"))
     
     if params.__len__() == 1:
-        return render_template("users/confirm.html", email=email)
+        return render_template("users/confirm.html", email=params['email'])
     
-    if params["password"] != params["confirm-password"]:
+    if params['password'] != params['confirm-password']:
         flash("Las contraseñas ingresadas no coinciden", "error")
-        return render_template("users/confirm.html", email=email)
+        return render_template("users/sign_up_confirm.html", email=params['email'])
     
-    user = Users.find_user(params["username"])
+    user = Users.find_user(params['username'])
     
     if user:
         flash("El nombre de usuario ingresado ya existe", "error")
-        return render_template("users/confirm.html", email=email)
+        return render_template("users/sign_up_confirm.html", email=params['email'])
     
-    Users.confirm_user(email=email, password=params["password"], username=params["username"])
+    Users.confirm_user(email=params['email'], password=params['password'], username=params['username'])
     
-    return render_template("users/confirm_success.html")
+    return redirect(url_for("auth.login"))
 
-@users_blueprint.get("/me/profile")
-@auth.session_required
-def user_profile():
-    user = Users.find_user(session["user"]["email"])
-    return render_template("users/profile.html", user=user)
+
+@users_blueprint.get("/user_index")
+@auth.permission_required("user_index")
+def user_index():
+    """
+        Retorna todos los usuarios.
+            
+        return:
+            JSON response users 200
+            
+            JSON response error 400
+    """
+    users = Users.get_users()
+    data = [u.to_json() for u in users]
+    response = Response(
+        response = json.dumps(data),
+        status = 200,
+        mimetype = 'application/json'
+    )
+    
+    return render_template("users/index.html", users=response.get_json())
+
+@users_blueprint.get("/user-show/<user_id>")
+@auth.permission_required("user_show")
+def user_profile(user_id):
+    user = Users.user_show(user_id)
+    if user is None:
+        cod = 400
+        data = {
+            "error": "El usuario no existe"
+        }
+    else:
+        cod = 200
+        data = user.to_json()
+        
+    response = Response(
+        response = json.dumps(data),
+        status = cod,
+        mimetype = 'application/json'
+    )
+    
+    return render_template("users/profile.html", user=response.get_json())

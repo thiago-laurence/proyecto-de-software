@@ -105,7 +105,6 @@
                     {% endfor %}
                     </select>
                 </div>
-            
             <div class="h-full px-3 pb-4 overflow-y-auto bg-white dark:bg-gray-800">
                 <ul class="space-y-2 font-medium">
                     <li>
@@ -122,7 +121,6 @@
                             <span class="ml-3">Inicio</span>
                         </a>
                     </li>
-
                     <li>
                         <a href="{{ url_for('institutions.index') }}"
                             class="flex items-center p-2 text-gray-900 rounded-lg dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 group">
@@ -161,15 +159,15 @@
         </aside>
         {% endblock %}
 
-            {% block main %}
-                <div class="p-4 sm:ml-64">
-                    <div class="p-4 dark:border-gray-700 mt-14">
-                        {% block contentMain %}
+        {% block main %}
+            <div class="p-4 sm:ml-64">
+                <div class="p-4 dark:border-gray-700 mt-14">
+                    {% block contentMain %}
 
-                        {% endblock %}
-                    </div>
+                    {% endblock %}
                 </div>
-            {% endblock %}
+            </div>
+        {% endblock %}
     {% endblock %}
 
     {% block javascript %}
@@ -180,12 +178,8 @@
         {% if session['user'] %}
             document.getElementById("mis-instituciones").value = "{{ session['user']['actual_institution'] }}";
         {% endif %}
-        </script>
-        
+        </script> 
     {% endblock %}
-
     
 </body>
-
-
 </html>

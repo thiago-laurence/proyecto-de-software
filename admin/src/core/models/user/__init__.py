@@ -98,5 +98,54 @@ def get_first_institution_rol(user):
     """
     result = db.session.query(UserInstitution).filter_by(user_id=user.id).first()
     if result is None:
-        return None, None 
+        return None
     return result.institution_id, result.role_id
+
+
+def user_index():
+    """
+        Retorna todos los usuarios registrados.
+            
+        return:
+            List [User]
+    """
+    users = User.query.all()
+    
+    return users
+
+def user_show(id):
+    """
+        Busca y retorna un usuario.
+        
+        args:
+            id: identificador del usuario
+            
+        return:
+            Si existe --> User
+            
+            No existe --> None
+    """
+    user = User.query.filter(User.id == id).first()
+    
+    return user
+    
+    
+def user_create(**kwargs):
+    """
+        Crea un nuevo usuario.
+        
+        args:
+            kwargs: datos del usuario.
+            
+        return:
+            JSON response 200
+            
+            JSON response error 400
+    """
+    
+
+def user_update():
+    pass
+
+def user_destroy():
+    pass
