@@ -10,13 +10,13 @@ def get_users():
     users = User.query.all()
     return users
 
-def get_institutions_by_user(user):
+def get_institutions_by_userID(user_id):
     """
         Devuelte todas las instituciones de un usuario
     """   
-    user.institutions = db.session.query(UserInstitution).filter_by(user_id=user.id).all()
+    institutions = db.session.query(UserInstitution).filter_by(user_id=user_id).all()
     
-    return user.institutions
+    return institutions
 
 def get_role_institution_by_user(user, institution):
     """
@@ -64,7 +64,9 @@ def find_user(identifier):
         
         identify: email o username del usuario.
     """
+
     identifier = identifier.lower()
+    
     return User.query.filter((User.email == identifier) | (User.username == identifier)).first()
 
 def check_auth_user(email, password):
@@ -138,14 +140,64 @@ def user_create(**kwargs):
             kwargs: datos del usuario.
             
         return:
-            JSON response 200
+            User -> el usuario fue creado.
             
-            JSON response error 400
+            None -> parametros invalidos.
+    """
+    kwargs['email'] = kwargs['email'].lower()
+    kwargs['username'] = kwargs['username'].lower()
+    user = User(**kwargs)
+    db.session.add(user)
+    db.session.commit()
+    
+    return user
+
+def user_update(user_id, **kwargs):
+    """
+        Actualiza la información de un usuario.
+        
+        args:
+            user_id -> id del usuario a modificar.
+            
+            kwargs -> campos del objeto usuario actualizados.
+        
+        return:
+            User -> el usuario fue actualizado.
+            
+            None -> el usuario no existe.
     """
     
+    kwargs['active'] = True if kwargs['active'] == "True" else False
 
-def user_update():
-    pass
+    user = user_show(user_id)
+    if user is None:
+        return None
+    
+    for key, value in kwargs.items():
+        setattr(user, key, value)
 
-def user_destroy():
-    pass
+    db.session.commit()    
+    
+    return user
+
+def user_destroy(user_id):
+    """
+        Elimina un usuario del sistema.
+    
+    args:
+        user_id -> ID del usuario a eliminar.
+    
+    return:
+        True -> el usuario existe y fue eliminado con exito.
+        
+        False -> el usuario no existe.
+    """
+    
+    user = user_show(user_id)
+    if user is None:
+        return False
+        
+    db.session.delete(user)
+    db.session.commit()
+    
+    return True

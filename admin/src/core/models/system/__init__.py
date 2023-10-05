@@ -1,8 +1,7 @@
-from flask import Response, json
 from src.core.models.system.system import System
 from src.core.database import db
 
-def system_show(name_system):
+def system_show(system_id):
     """
         Busca y retorna el sistema.
         
@@ -17,7 +16,7 @@ def system_show(name_system):
             None -> el sistema no existe.
     """
     
-    system = System.query.filter(System.name == name_system).first()
+    system = System.query.filter(System.id == system_id).first()
     
     return system
 
@@ -35,18 +34,17 @@ def system_update(system_id, **kwargs):
             
             None -> el sistema no existe.
     """
-    system = System.query.filter(System.id == system_id).first()
-    
+    kwargs['activate'] = True if kwargs['activate'] == "True" else False
+
+    system = system_show(system_id)
     if system is None:
         return None
     
-    data = System(**kwargs)
-    system.element_page = data.element_page
-    system.message = data.message
-    system.info = data.info
-    system.activate = True if data.activate == "True" else False
+    for key, value in kwargs.items():
+        setattr(system, key, value)
+
+    db.session.commit()    
     
-    db.session.commit()
     return system
 
 def system_create(**kwargs):
@@ -65,7 +63,7 @@ def system_create(**kwargs):
     db.session.commit()
     return sys
 
-def is_available(name_system):
+def is_available(system_id):
     """
         Verifica si el sistema está disponible.
         
@@ -77,7 +75,7 @@ def is_available(name_system):
             
             False en caso contrario.
     """
-    system = System.query.filter(System.name == name_system).first()
+    system = System.query.filter(System.id == system_id).first()
     if system is None:
         return False
     return system.activate

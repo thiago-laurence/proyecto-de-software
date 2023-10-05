@@ -13,12 +13,12 @@ def is_authenticated(session):
     return session.get("user") is not None
 
 
-def system_available(system_name="CIDEPINT"):
+def system_available(system_id=1):
     """
         Verifica si el sistema está disponible.
         
         args:
-            system: nombre del sistema a verificar su disponibilidad. Por defecto CIDEPINT.
+            system: ID del sistema a verificar su disponibilidad. Por defecto 1 para CIDEPINT.
             
         return:
             True -> el sistema está disponible.
@@ -26,7 +26,7 @@ def system_available(system_name="CIDEPINT"):
             Error 503 --> caso contrario.
     """
     
-    return system.is_available(system_name)
+    return system.is_available(system_id)
 
 
 def login_required(f):

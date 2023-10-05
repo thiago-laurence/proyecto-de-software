@@ -44,7 +44,7 @@ def authenticate():
             "id": user.id,
             "email": user.email,
             "username": user.username,
-            "institutions": [i.institution for i in Users.get_institutions_by_user(user)],
+            "institutions": [i.institution for i in Users.get_institutions_by_userID(user.id)],
             "actual_institution": institution_role[0],
             "role": institution_role[1],
             "layout": auth.render_layout(institution_role[1])

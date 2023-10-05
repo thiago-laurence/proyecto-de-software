@@ -4,10 +4,6 @@
     Configuración del sistema
 {% endblock %}
 
-{% block stylesheet %}
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/notifications.css') }}">
-{% endblock %}
-
 {% block contentMain %}
     <section class="text-gray-600 body-font">
         <div class="container px-5 py-3 mx-auto">
@@ -24,7 +20,7 @@
                         {% if messages %}
                             {% for category, message in messages %}
                                 <div id="toast" class="my-4">
-                                    <div class="{{ category }} text-sm text-white rounded-md shadow-lg dark:bg-gray-900" role="alert">
+                                    <div class="flash update {{ category }} text-sm text-white rounded-md shadow-lg dark:bg-gray-900" role="alert">
                                         <div class="flex items-center p-2.5">
                                             <p>{{ message }}</p>
                                             <div class="mt-0 ml-auto">
@@ -44,7 +40,7 @@
                 </div>
             </div>
             <div class="flex flex-wrap -m-4">
-                <form class="flex flex-wrap -m-4" id="form-update" data-id="{{ system.id }}" data-action="update" data-module="system">
+                <form class="flex flex-wrap -m-4" id="form-update">
                     <div class="p-4 lg:w-1/2 md:w-1/2 sm:w-full">
                         <div class="flex rounded-lg h-full bg-gray-100 p-8 flex-col">
                             <div class="flex items-center mb-3">
@@ -140,18 +136,13 @@
                             </div>
                         </div>
                     </div>
-                    <div class="p-4 w-full">
-                        <button type="button" onclick="update('form-update')" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
-                            Actualizar información
-                        </button>
-                    </div>
                 </form>
+                <div class="p-4 w-full">
+                    <button type="button" onclick="Update('form-update', '{{ system.id }}', 'system')" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        Actualizar información
+                    </button>
+                </div>
             </div>
         </div>
     </section>
-{% endblock %}
-
-{% block javascript %}
-    {{ super() }}
-    <script src="{{ url_for('static', filename='js/system.js') }}"></script>
 {% endblock %}
