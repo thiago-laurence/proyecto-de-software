@@ -79,7 +79,8 @@ def service_edit(service_id):
     service = institution.get_service_by_id(service_id)
     
     check = institution.get_service_by_name_and_institution(request.json['data']['name'],service.institution_id)
-    existe = check is not None
+    
+    existe = check is not None and check.id != service.id
     
     if existe:
         flash("El servicio " + request.json['data']['name'] + " ya se encuentra registrado para esta institucion.", "error")
