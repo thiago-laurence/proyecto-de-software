@@ -32,7 +32,7 @@ function Update(idForm, idObject, module){
         var input = elements[i];
         data[input.name] = input.value; 
     }
-
+    
     fetch(url,{
         method:'PUT',
         body:JSON.stringify({

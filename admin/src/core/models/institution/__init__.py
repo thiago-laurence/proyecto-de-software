@@ -1,6 +1,7 @@
 from src.core.models.institution.institution import Institution
 from src.core.models.institution.service import Service
 from src.core.database import db
+from sqlalchemy import or_
 
 def list_institutions():
     """
@@ -124,6 +125,13 @@ def edit_service(service, **kwargs):
     
     return service
 
+def get_service_by_name_and_institution(name, institution_id):
+    """
+    Me devuelve un servicio por nombre e institucion.
+    """   
+    service = Service.query.filter(Service.name == name, Service.institution_id == institution_id).first()
+    return service
+
 def check_if_service_exists_by_name_update(institution_id, name,id):
     service = Service.query.filter(Service.name == name, Service.institution_id == institution_id, Service.id != id).first()
     return service is not None
@@ -137,3 +145,10 @@ def get_institution_by_name(name):
         Retorna una institucion por su nombre
     """
     return Institution.query.filter_by(name=name).first()
+
+def services_serch(substr):
+    """
+        Retorna los servicios que coincidan con la búsqueda por substring.
+    """
+    services = Service.query.filter( or_(Service.name.ilike(f"%{substr}%"),Service.info.ilike(f"%{substr}%"), Service.key_words.ilike(f"%{substr}%"))).all()
+    return services

@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, redirect,url_for,jsonify
+from flask import Blueprint, render_template, request, flash, redirect,url_for,json, Response
 from src.core.models import institution
 from src.web.helpers import auth
 
@@ -21,9 +21,9 @@ def service_add(institution_id):
     """
     Metodo para agregar un nuevo servicio
     """
+    service = institution.get_service_by_name_and_institution(request.form.get("name"),institution_id)
     
-    #print("institution: " + insti.name)
-    existe = institution.check_if_service_exists_by_name_create(institution_id, request.form.get("name"))
+    existe = service is not None
     
     if existe:
         flash("El servicio " + request.form.get("name") + " ya se encuentra registrado para esta institucion.", "error")
@@ -44,7 +44,7 @@ def service_add(institution_id):
         
         
 
-@services_blueprint.route("/service-delete/<service_id>", methods=["DELETE"])
+@services_blueprint.route("/services-delete/<service_id>", methods=["DELETE"])
 @auth.permission_required("service_destroy")
 def service_delete(service_id):
     """
@@ -60,26 +60,17 @@ def service_delete(service_id):
     data = {
         "url": '/services/'+str(institution_id)
     }
-    #return render_template("services/index.html", services=institution.list_services_by_institution(institution_id),institution=institution.get_institution_by_id(institution_id))
-    #return redirect(url_for("services.index",institution_id=institution_id))
-    return jsonify(data)
-
-
-
-@services_blueprint.get("/edit/<service_id>")
-@auth.permission_required("service_update")
-def access_service_edit(service_id):
-    """
-    Metodo para acceder a la edicion de un servicio
-    """
-    service = institution.get_service_by_id(service_id)
-    print("nombre del servicio: ",service.name)
     
-    return render_template("services/edit.html",service=service)
+    response = Response(
+        response = json.dumps(data),
+        status = 200,
+        mimetype = 'application/json'
+    )
+    
+    return response.json
 
 
-
-@services_blueprint.put("/service-edit/<service_id>")
+@services_blueprint.put("/services-update/<service_id>")
 @auth.permission_required("service_update")
 def service_edit(service_id):
     """
@@ -87,20 +78,20 @@ def service_edit(service_id):
     """
     service = institution.get_service_by_id(service_id)
     
-    existe = institution.check_if_service_exists_by_name_update(service.institution_id, request.json['name'],service_id)
-    print("existe: ",existe)
+    check = institution.get_service_by_name_and_institution(request.json['data']['name'],service.institution_id)
+    existe = check is not None
+    
     if existe:
-        flash("El servicio " + request.json['name'] + " ya se encuentra registrado para esta institucion.", "error")
-        #return redirect(url_for("services.index",institution_id=service.institution_id))
+        flash("El servicio " + request.json['data']['name'] + " ya se encuentra registrado para esta institucion.", "error")
     
     else:
         kwargs = {
-            "name": request.json['name'],
-            "info": request.json['info'],
-            "type": request.json['type'],
-            "key_words": request.json['key_words'],
+            "name": request.json['data']['name'],
+            "info": request.json['data']['info'],
+            "type": request.json['data']['type'],
+            "key_words": request.json['data']['key_words'],
         }
-        print("nombre agarrado del form: ",kwargs["name"])
+
         if kwargs["name"] == "":
             kwargs["name"] = service.name
         if kwargs["info"] == "":
@@ -114,6 +105,13 @@ def service_edit(service_id):
         flash("El servicio " + kwargs["name"] + " se edito con exito.", "success")
     
     data = {
-        "url" : '/services/'+str(service.institution_id),
+        "url" : '/services/'+str(service.institution_id)
     }
-    return jsonify(data)
+    
+    response = Response(
+        response = json.dumps(data),
+        status = 200,
+        mimetype = 'application/json'
+    )
+    
+    return response.json
