@@ -6,9 +6,7 @@
 {% block contentMain %}
     <div class="">
         <div class="content grid flex-col xl:grid-cols-3 xl:">
-            <div class="flex max-md:place-content-center mb-1 md:mb-0"> <!-- Agregar espacio vertical en resoluciones pequeñas -->
-                <h2 class=" text-2xl md:text-4xl font-bold dark:text-white">Servicios</h2>
-            </div>
+            
             {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
@@ -35,17 +33,24 @@
 
     <br>
 
-    <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
-        <div class="container mx-auto py-4">
+    <div>
+        <!--<div class="container mx-auto py-4">-->
             <!-- Contenido de la página -->
+            
+
             <div class="bg-white dark:bg-gray-800 shadow-md p-8 rounded-lg">
                 <div class="flex justify-between mb-4 rounded-t sm:mb-5">
-                    <div class="text-9xl text-gray-900 md:text-xl dark:text-white">
-                        <h1 class="font-semibold">
-                            {{institution.name}}
-                        </h1>
+                    <div class="max-md:place-content-center mb-1 md:mb-0"> <!-- Agregar espacio vertical en resoluciones pequeñas -->
+                        <h2 class=" text-2xl md:text-4xl font-bold dark:text-white">{{institution.name}}</h2>
                     </div>
+                   
                 </div>
+                <div class="text-xl text-gray-900 md:text-xl dark:text-white">
+                    <h5 class="font-semibold">
+                        Informacion de la institucion
+                    </h5>
+                </div>
+                <br>
                 <dl>
                     <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Descripcion</dt>
                     <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">{{institution.info}}</dd>
@@ -54,7 +59,7 @@
                     <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Redes sociales</dt>
                     <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">{{institution.social_networks}}</dd>
                     <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Direccion</dt>
-                    <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">{{institution.adress}}</dd>
+                    <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">{{institution.address}}</dd>
                     <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Telefono de contacto</dt>
                     <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">{{institution.phone}}</dd>
                 </dl>
@@ -70,13 +75,13 @@
                             </button>
                         </a>
                     </div>            
-                    <button type="button" class="inline-flex items-center text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900" onclick="delete_institution({{institution.id}})">
+                    <button type="button" class="inline-flex items-center text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900" onclick="Delete('{{institution.id}}','institutions')">
                         <svg aria-hidden="true" class="w-5 h-5 mr-1.5 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
                         Eliminar
                     </button>
                 </div>
             </div>
-        </div>
+        <!--</div>-->
     </div>
 
     <!-- Update modal -->
@@ -95,54 +100,57 @@
                     </button>
                 </div>
                 <!-- Modal body -->
-                <form id="formUpdate" data-id="{{institution.id}}">
+                <form id="formUpdate">
                     <div class="grid gap-6 mb-6 sm:grid-cols-2">
                         <div>
                             <label for="institution.name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre de la institucion</label>
-                            <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="{{institution.name}}">
+                            <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" value="{{institution.name}}" placeholder="{{institution.name}}">
                         </div>
                         <div>
                             <label for="institution.web" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pagina web</label>
-                            <input type="text" name="web" id="web" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="{{institution.web}}">
+                            <input type="text" name="web" id="web" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" value="{{institution.web}}" placeholder="{{institution.web}}">
                         </div>
                         <div>
                             <label for="institution.phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Telefono</label>
-                            <input type="phonenumber" name="phone" id="phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="{{institution.phone}}">
+                            <input type="phonenumber" name="phone" id="phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" value="{{institution.phone}}" placeholder="{{institution.phone}}">
                         </div>
-                        <div>
+                        <!--<div>
                             <label for="institution.owner" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Dueño</label>
                             <select id="owner" name="owner" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                <option selected value="{{institution.owner}}">{{institution.owner}}</option>
                                 {% if users %}
                                     {% for user in users %}
                                         <option value="{{user.id}}">{{user.username}}</option>
                                     {% endfor %}
                                 {% endif %}
                             </select>
-                        </div>
+                        </div>-->
                         <div>
                             <label for="institution.social_networks" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Redes sociales</label>
-                            <input type="text" name="social_networks" id="social_networks" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="{{institution.social_networks}}">
+                            <input type="text" name="social_networks" id="social_networks" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" value="{{institution.social_networks}}" placeholder="{{institution.social_networks}}">
                         </div>
                         <div>
-                            <label for="institution.adress" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Direccion</label>
-                            <input type="text" name="adress" id="adress" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="{{institution.adress}}">
+                            <label for="institution.address" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Direccion</label>
+                            <input type="text" name="address" id="address" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" value="{{institution.address}}" placeholder="{{institution.address}}">
                         </div>
                         <div>
                         
                     </div>
                     <div class="sm:col-span-2">
                         <label for="institution.info" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Informacion de la institucion</label>
-                        <textarea id="info" name="info" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="{{institution.info}}"></textarea>                    
+                        <textarea id="info" name="info" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="{{institution.info}}">{{institution.info}}</textarea>                    
                     </div>
-                    <div class="flex items-center space-x-4">
-                        <button type="submit" class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                            Update product
-                        </button>
-                    </div>
+                    
                 </form>
+                
+            </div>
+            <div class="flex items-center space-x-4">
+                <button onclick="Update('formUpdate','{{institution.id}}','institutions')" class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                    Editar institucion
+                </button>
             </div>
         </div>
+        
     </div>
 
-    <script src="{{ url_for('static',filename='js/institutions.js') }}"></script>
 {% endblock %}
