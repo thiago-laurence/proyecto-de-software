@@ -3,25 +3,27 @@ from src.core.models.institution import service as Service
 from src.core.models import user
 from flask import Blueprint, jsonify, request
 from src.web.helpers import auth
-import base64
+
 
 api_services = Blueprint("api_services", __name__, url_prefix="/services")
 
-@api_services.get("/search<intitution_id>")
-def search(intitution_id):
+@api_services.get("/search")
+def search():
     """
     Retorna en formato JSON la información de los servicios que coincidan con la búsqueda.
     Por ahora solo busca por id de insti, faltan mas parametros en la url
     """
-    if intitution_id == "":
+    if  not "q" in request.args:
         return jsonify({"error": "Parámetros inválidos"}), 400
+        
+    substr = request.args.get("q")
     
-    intitution = Institutions.get_institution_by_id(intitution_id)
+    services = Institutions.services_serch(substr)
 
-    if intitution is None:
-        return jsonify({"error": "No se encontraron resultados"}), 404
-    
-    services = Institutions.list_services_by_institution(intitution.id)
+    #intitution = Institutions.get_institution_by_id(institution_id)
+
+    if len(services) == 0:
+        return jsonify({"mensaje": "No se encontraron resultados"}), 200
     
     rta = {
         "data": [   

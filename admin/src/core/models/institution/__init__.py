@@ -1,6 +1,9 @@
 from src.core.models.institution.institution import Institution
 from src.core.models.institution.service import Service
+from src.core.models import system
 from src.core.database import db
+from sqlalchemy import or_
+from flask import redirect, url_for,render_template
 
 def list_institutions():
     """
@@ -8,6 +11,24 @@ def list_institutions():
     """   
     institutions = Institution.query.all()
     return institutions
+
+def list_institutions_paginated(page):
+    """
+    Me devuelve todas las instituciones.
+    """
+    
+    institutions = Institution.query.paginate(page=page, per_page=system.pages(), error_out=False)
+    return institutions
+
+def total_intitutions_pages():
+    """
+    Me devuelve la cantidad de paginas que ocupan las instituciones.
+    """
+    per_page = system.pages()  # Cantidad de instituciones por página
+    total_institutions = Institution.query.count()  # Total de instituciones
+    total_pages = (total_institutions + per_page - 1)// per_page  # Cálculo de páginas
+    return total_pages
+    
 
 def get_institution_by_id(id):
     """
@@ -124,6 +145,13 @@ def edit_service(service, **kwargs):
     
     return service
 
+def get_service_by_name_and_institution(name, institution_id):
+    """
+    Me devuelve un servicio por nombre e institucion.
+    """   
+    service = Service.query.filter(Service.name == name, Service.institution_id == institution_id).first()
+    return service
+
 def check_if_service_exists_by_name_update(institution_id, name,id):
     service = Service.query.filter(Service.name == name, Service.institution_id == institution_id, Service.id != id).first()
     return service is not None
@@ -137,3 +165,10 @@ def get_institution_by_name(name):
         Retorna una institucion por su nombre
     """
     return Institution.query.filter_by(name=name).first()
+
+def services_serch(substr):
+    """
+        Retorna los servicios que coincidan con la búsqueda por substring.
+    """
+    services = Service.query.filter( or_(Service.name.ilike(f"%{substr}%"),Service.info.ilike(f"%{substr}%"), Service.key_words.ilike(f"%{substr}%"))).all()
+    return services

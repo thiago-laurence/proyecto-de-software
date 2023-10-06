@@ -79,3 +79,13 @@ def is_available(system_id):
     if system is None:
         return False
     return system.activate
+
+def pages():
+    """
+        Retorna la cantidad de elementos por página.
+        
+        return:
+            int -> cantidad de elementos por página.
+    """
+    system = System.query.first()
+    return system.element_page
