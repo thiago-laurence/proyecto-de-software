@@ -11,7 +11,9 @@ def index():
     """"
     Renderiza el template para las instituciones y las muestra.
     """
-    return render_template("institutions/index.html", institutions=institution.list_institutions(), users = user.get_users())
+    page = request.args.get("page", 1, type=int)
+    institutions = institution.list_institutions_paginated(page)
+    return render_template("institutions/index.html", institutions=institutions, users = user.get_users(), page=page, total_pages=institution.total_intitutions_pages())
 
 
 @institutions_blueprint.get("/<institution_id>")
@@ -20,6 +22,8 @@ def institution_show(institution_id):
     """"
     Renderiza el template para una institucion especifica y lo muestra y las muestra.
     """
+    print("entro al show")
+
     insti = institution.get_institution_by_id(institution_id)
     if insti is None:
         flash("La institución no existe.", "error")

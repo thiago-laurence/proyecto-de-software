@@ -1,7 +1,9 @@
 from src.core.models.institution.institution import Institution
 from src.core.models.institution.service import Service
+from src.core.models import system
 from src.core.database import db
 from sqlalchemy import or_
+from flask import redirect, url_for,render_template
 
 def list_institutions():
     """
@@ -9,6 +11,24 @@ def list_institutions():
     """   
     institutions = Institution.query.all()
     return institutions
+
+def list_institutions_paginated(page):
+    """
+    Me devuelve todas las instituciones.
+    """
+    
+    institutions = Institution.query.paginate(page=page, per_page=system.pages(), error_out=False)
+    return institutions
+
+def total_intitutions_pages():
+    """
+    Me devuelve la cantidad de paginas que ocupan las instituciones.
+    """
+    per_page = system.pages()  # Cantidad de instituciones por página
+    total_institutions = Institution.query.count()  # Total de instituciones
+    total_pages = (total_institutions + per_page - 1)// per_page  # Cálculo de páginas
+    return total_pages
+    
 
 def get_institution_by_id(id):
     """
