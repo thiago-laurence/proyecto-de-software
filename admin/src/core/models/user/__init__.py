@@ -69,6 +69,19 @@ def find_user(identifier):
     
     return User.query.filter((User.email == identifier) | (User.username == identifier)).first()
 
+def exists_user(identifier):
+    """
+        Valida si existe un usuario con el email o username ingresado.
+        
+        identify: email o username del usuario.
+    """
+    identifier = identifier.lower()
+    user = User.query.filter((User.email == identifier) | (User.username == identifier)).first()
+    if user:
+        return True
+    else:
+        return False
+
 def check_auth_user(email, password):
     """
         Valida las credenciales y estado (activo/confirmado) del usuario, y lo retorna si es válido.
@@ -147,6 +160,8 @@ def user_create(**kwargs):
     kwargs['email'] = kwargs['email'].lower()
     kwargs['username'] = kwargs['username'].lower()
     user = User(**kwargs)
+    user.password = bcrypt.generate_password_hash("123456".encode('utf-8')).decode('utf-8')
+    user.confirmed = True
     db.session.add(user)
     db.session.commit()
     

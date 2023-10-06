@@ -12,7 +12,7 @@ class UserInstitution(db.Model):
     role_id = db.Column(db.Integer, db.ForeignKey("roles.id", ondelete="CASCADE"))
     
     user = db.relationship("User", back_populates="institutions", lazy=True)
-    institution = db.relationship("Institution", back_populates="users")
+    institution = db.relationship("Institution", back_populates="users", lazy=True)
     role = db.relationship("Role", back_populates="users_institutions", lazy=True)
     
     updated_at = db.Column(

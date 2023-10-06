@@ -53,20 +53,6 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-def session_required(f):
-    """
-        Decorador para verificar si el usuario está autenticado.
-        return:
-            Si está autenticado, ejecuta la función decorada.
-            Si no está autenticado, retorna un error 401.
-    """
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        if not is_authenticated(session):
-            return abort(401)
-        return f(*args, **kwargs)
-    return decorated_function
-
 
 def permission_required(permission):
     """
