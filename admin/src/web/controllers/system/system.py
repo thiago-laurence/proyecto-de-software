@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, flash, redirect, url_for
 from src.core.models import system as System
-from src.core.forms import system_form as Forms
+from src.web.forms import system_form as Forms
 from src.web.helpers import auth
 
 system_blueprint = Blueprint("system", __name__, url_prefix="/system")

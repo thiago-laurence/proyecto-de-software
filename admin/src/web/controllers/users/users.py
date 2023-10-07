@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, session, jsonify
 from src.core.models import user as Users
-from core.forms import user_form as Forms
+from src.web.forms import user_form as Forms
 from src.web.helpers import auth
 from src.web import mail
 

@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, session, Response, json
 from src.core.models import user as Users
-from src.core.forms import login_form as Forms
+from src.web.forms import login_form as Forms
 from src.web.helpers import auth
 
 auth_blueprint = Blueprint("auth", __name__, url_prefix="/login")
