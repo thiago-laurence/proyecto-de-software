@@ -40,6 +40,9 @@ def create_user(**kwargs):
     """
     kwargs['email'] = kwargs['email'].lower()
     user = User(**kwargs)
+    if user.password is None:
+        user.password = bcrypt.generate_password_hash("123456".encode('utf-8')).decode('utf-8')
+        user.confirmed = True
     db.session.add(user)
     db.session.commit()
     return user
@@ -73,7 +76,12 @@ def exists_user(identifier):
     """
         Valida si existe un usuario con el email o username ingresado.
         
-        identify: email o username del usuario.
+        args:
+            identifier -> email o username del usuario.
+        
+        return:
+            True -> El usuario existe.\n
+            False -> El usuario no existe.
     """
     identifier = identifier.lower()
     user = User.query.filter((User.email == identifier) | (User.username == identifier)).first()
@@ -81,6 +89,24 @@ def exists_user(identifier):
         return True
     else:
         return False
+
+def validate_identifier(user_id, identifier):
+    """
+        Valida que el email/username no este registrado ante para otro usuario ante una modificacion.
+        
+        args:
+            user_id -> ID del usuario a modificar.\n
+            identifier -> email o username a validar.\n
+        
+        return:
+            True -> El email/username no está registrado para otro usuario.\n
+            False -> El email/username ya está registrado para otro usuario.
+    """
+    user = find_user(identifier)
+    if (user is not None) and (user.id != user_id):
+        return False
+    
+    return True
 
 def check_auth_user(email, password):
     """
@@ -119,10 +145,7 @@ def get_first_institution_rol(user):
 
 def user_index():
     """
-        Retorna todos los usuarios registrados.
-            
-        return:
-            List [User]
+        Retorna una lista con todos los usuarios registrados.
     """
     users = User.query.all()
     
@@ -181,8 +204,6 @@ def user_update(user_id, **kwargs):
             
             None -> el usuario no existe.
     """
-    
-    kwargs['active'] = True if kwargs['active'] == "True" else False
 
     user = user_show(user_id)
     if user is None:

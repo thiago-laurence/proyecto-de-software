@@ -46,7 +46,7 @@ def login_required(f):
     def decorated_function(*args, **kwargs):
         if not is_authenticated(session):
             return abort(401)
-        
+
         if not system_available() and session["user"]["role"] != 1:
             return abort(503)
             

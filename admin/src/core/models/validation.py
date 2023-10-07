@@ -17,8 +17,6 @@ def validation_string(key, value):
         raise ValueError(f"El {key} no puede estar vacío")
     if len(value) > 50:
         raise ValueError(f"El {key} no puede superar los 50 caracteres")
-    
-    return value
 
 def validation_identifier(user, id, key):
     """
@@ -33,8 +31,5 @@ def validation_identifier(user, id, key):
             value -> Valor validado.\n
             ValueError -> Si la clave ya está registrada para otro usuario.
     """
-    if (id is None) and user:
-        raise ValueError(f'El {key} ya está registrado, por favor ingresa otro')
-        
-    if (id is not None) and user and (id != user.id):
+    if (user is not None) and (user.id != id):
         raise ValueError(f'El {key} ya está registrado, por favor ingresa otro')

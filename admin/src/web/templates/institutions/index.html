@@ -1,9 +1,9 @@
 {% extends "layouts/" + session['user']['layout'] %}
-{% block title%}Instituciones{% endblock %}
+{% block title %}Instituciones{% endblock %}
 {% block stylesheet %}
     <link rel="stylesheet" href="{{ url_for('static',filename='css/notifications.css') }}">
 {% endblock %}
-{% block contentMain %}
+{% block content_main %}
 <div>
     <div class="content grid flex-col xl:grid-cols-3 xl:">
         <div class="flex max-md:place-content-center mb-1 md:mb-0"> <!-- Agregar espacio vertical en resoluciones pequeñas -->

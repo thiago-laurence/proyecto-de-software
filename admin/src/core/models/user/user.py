@@ -23,20 +23,6 @@ class User(db.Model):
         db.DateTime, default=datetime.utcnow
     )
 
-    def to_json(self):
-        user = {
-            "id": self.id,
-            "email": self.email,
-            "username": self.username,
-            "name": self.name,
-            "lastname": self.lastname,
-            "active": self.active,
-            "confirmed": self.confirmed,
-            "updated_at": self.updated_at.strftime('%Y-%m-%d %H:%M:%S'),
-            "inserted_at": self.inserted_at.strftime('%Y-%m-%d %H:%M:%S')
-        }
-        return user
-
     @validates("id")
     def validate_id(self, key, value):
         if User.query.filter_by(id=value).first():

@@ -34,8 +34,6 @@ def system_update(system_id, **kwargs):
             
             None -> el sistema no existe.
     """
-    kwargs['activate'] = True if kwargs['activate'] == "True" else False
-
     system = system_show(system_id)
     if system is None:
         return None

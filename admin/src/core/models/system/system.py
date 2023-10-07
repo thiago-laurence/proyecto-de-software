@@ -17,16 +17,3 @@ class System(db.Model):
     inserted_at = db.Column(
         db.DateTime, default=datetime.utcnow
     )
-
-    def to_json(self):
-        sys = {
-            "id": self.id,
-            "name": self.name,
-            "element_page": self.element_page,
-            "info": self.info,
-            "activate": self.activate,
-            "message": self.message,
-            "updated_at": self.updated_at.strftime('%Y-%m-%d %H:%M:%S'),
-            "inserted_at": self.inserted_at.strftime('%Y-%m-%d %H:%M:%S')
-        }
-        return sys
