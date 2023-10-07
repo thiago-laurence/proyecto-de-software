@@ -1,5 +1,6 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, Response, json
+from flask import Blueprint, render_template, request, flash, redirect, url_for, session, jsonify
 from src.core.models import user as Users
+from core.forms import user_form as Forms
 from src.web.helpers import auth
 from src.web import mail
 
@@ -10,8 +11,9 @@ def sign_up():
     """
         Redirige al formulario de registro de usuario.
     """
-    
-    return render_template("users/sign_up.html")
+    form = Forms.UserRegisterForm()
+    return render_template("users/sign_up.html", form=form)
+
 
 @users_blueprint.post("/sign-up/register")
 def register():
@@ -23,13 +25,13 @@ def register():
             lastname: apellido del usuario a registrar.
     """
 
-    params = request.form
-    user = Users.find_user(params['email'])
+    form = Forms.UserRegisterForm()
+    user = Users.find_user(form.email.data)
     if user:
         flash("El email ingresado ya está registrado, por favor ingresa otro", "error")
-        return redirect(url_for("users.sign_up"))
+        return render_template("users/sign_up.html", form=form)
     
-    user = Users.create_user(email=params['email'], name=params['name'], lastname=params['lastname'])
+    user = Users.create_user(**form.data)
     url = request.host_url + "/users/sign-up/confirm"
     body = """
         <p> Bienvenido a CIDEPINT, para completar el registro ingresa al siguiente link: </p>
@@ -38,11 +40,13 @@ def register():
             <button type="submit">Confirmar</button>
         </form>
     """
-    mail.send_mail("Confirmación de registro", params['email'], body)
+    
+    mail.send_mail("Confirmación de registro", form.email.data, body)
     
     flash("Registro parcial exitoso. Se ha enviado un correo de confirmación de registro a la dirección ingresada", "success")
     
-    return redirect(url_for("users.sign_up"))
+    return render_template("users/sign_up.html", form=form)
+
 
 @users_blueprint.post("/sign-up/confirm")
 def confirm_register():
@@ -55,227 +59,144 @@ def confirm_register():
             password: contraseña del usuario
     """
     
-    params = request.form
-    user = Users.find_user(params['email'])
+    form = Forms.UserConfirmRegisterForm()
+    user = Users.find_user(form.email.data)
     
     if user and user.confirmed:
         return redirect(url_for("auth.login"))
     
-    if params.__len__() == 1:
-        return render_template("users/confirm.html", email=params['email'])
+    if form.validate_on_submit():
+       
+        if Users.exists_user(form.username.data):
+            flash("El nombre de usuario ingresado ya existe, por favor ingresa otro", "error")
+            return render_template("users/sign_up_confirm.html", form=form)
+        
+        Users.confirm_user(email=form.email.data, username=form.username.data, password=form.password.data)
+        
+        return redirect(url_for("auth.login"))
     
-    if params['password'] != params['confirm-password']:
-        flash("Las contraseñas ingresadas no coinciden", "error")
-        return render_template("users/sign_up_confirm.html", email=params['email'])
+    if form.password.data != form.confirm.data:
+        flash("Las contraseñas no son iguales", "error")
     
-    user = Users.find_user(params['username'])
-    
-    if user:
-        flash("El nombre de usuario ingresado ya existe", "error")
-        return render_template("users/sign_up_confirm.html", email=params['email'])
-    
-    Users.confirm_user(email=params['email'], password=params['password'], username=params['username'])
-    
-    return redirect(url_for("auth.login"))
+    return render_template("users/sign_up_confirm.html", form=form)
 
 
-@users_blueprint.get("/user_index")
+@users_blueprint.get("/user-profile/")
+@auth.login_required
+def user_profile():
+    """
+        Redirige al perfil del usuario.
+    """
+    user = Users.user_show(session["user"]["id"])
+    
+    return render_template("users/profile.html", user=user)
+
+
+@users_blueprint.get("/")
 @auth.permission_required("user_index")
 def user_index():
     """
-        Retorna todos los usuarios.
-            
-        return:
-            JSON response users 200
-            
-            JSON response error 400
+        Redirige a la página que contiene el listado de usuarios.
     """
-    users = Users.get_users()
-    data = [u.to_json() for u in users]
-    response = Response(
-        response = json.dumps(data),
-        status = 200,
-        mimetype = 'application/json'
-    )
+    users = Users.user_index()
+    form = Forms.UserCreateForm()
     
-    return render_template("users/index.html", users=response.get_json())
+    return render_template("users/index.html", users=users, form=form)
 
-@users_blueprint.get("/user-show/<user_id>")
+
+@users_blueprint.get("/user-info/<user_id>")
 @auth.permission_required("user_show")
 def user_show(user_id):
     """
-        Retorna un usuario.
+        Redirige a la página de información de un usuario.
+    """
+    user = Users.user_show(int(user_id))
+    form = Forms.UserUpdateForm()
+    
+    return render_template("users/info.html", user=user, form=form)
+
+
+
+@users_blueprint.post("/user-index/user-create")
+@auth.permission_required("user_create")
+def user_create():
+    """
+        Crea un nuevo usuario.
         
         args:
-
-            user_id -> ID del usuario a retornar.
+            Datos del usuario a traves de formulario POST.
         
         return:
-            El usuario fue encontrado -> JSON 200 ok, usuario
-            El usuario no existe -> JSON 400 fail
+            Redireccion a la pagina de listado de usuarios.
     """
+    form = Forms.UserCreateForm()
+    users = Users.user_index()
     
-    
-    user = Users.user_show(user_id)
-    if user is None:
-        cod = 400
-        data = {
-            "error": "El usuario no existe"
-        }
-    else:
-        cod = 200
-        data = user.to_json()
+    if form.validate_on_submit():
+        if Users.exists_user(form.email.data):
+            flash("El email ingresado ya existe, por favor ingresa otro", "error")
+            return render_template("users/index.html", users=users, form=form)
         
-    response = Response(
-        response = json.dumps(data),
-        status = cod,
-        mimetype = 'application/json'
-    )
+        if Users.exists_user(form.username.data):
+            flash("El nombre de usuario ya existe, por favor ingresa otro", "error")
+            return render_template("users/index.html", users=users, form=form)
+        
+        u = Users.create_user(**form.data)
+        users.append(u)
+        for input in form:
+            input.data = ""
+        flash("El usuario fue registrado correctamente", "success")
     
-    return response.get_json()
+    return render_template("users/index.html", users=users, form=form)
 
 
-@users_blueprint.route("/users-delete/<user_id>", methods=["DELETE"])
-@auth.permission_required("user_destroy")
-def user_destroy(user_id):
-    """
-        Metodo para eliminar un usuario del sistema.
-        
-        args:
-            user_id -> ID del usuario a eliminar.
-        
-        return:
-            El usuario fue eliminado con exito -> JSON 200 ok, url de redireccion
-            El usuario no existe -> JSON 400 fail
-    """
-    
-    ok = Users.user_destroy(user_id)
-    if not ok:
-        cod = 400
-        data = {
-            "error": "El usuario no existe"
-        }
-    else:
-        cod = 200
-        data = {
-            "ok": "El usuario fue eliminado con exito",
-            "url": "/users/user_index"
-        }
-        
-    response = Response(
-        response = json.dumps(data),
-        status = cod,
-        mimetype = 'application/json'
-    )
-    
-    return response.get_json()
-
-
-@users_blueprint.put("/users-update/<user_id>")
+@users_blueprint.post("/users-update/<user_id>")
 @auth.permission_required("user_update")
 def user_update(user_id):
     """
         Actualiza la información de un usuario.
         
         args:
-            usuario_id: id del usuario a modificar.
+            usuario_id -> id del usuario a modificar.
+            Datos del usuario a traves de formulario POST.
         
         return:
-            JSON response user 200
-            
-            JSON response error 400
+            Redireccion a la pagina de información del usuario.
     """
-    response = Response(mimetype = 'application/json')
+    form = Forms.UserUpdateForm()
+    user_id = int(user_id)
+    user = Users.user_show(user_id)
     
-    user = Users.find_user(request.json['data']['email'])
+    if form.validate_on_submit():
+        if not Users.validate_identifier(user_id, form.email.data):
+            flash("El email ingresado ya existe, por favor ingresa otro", "error")
+            return render_template("users/info.html", user=user, form=form)
         
-    if user and (user.id != int(user_id)):
-        response.set_data(json.dumps({
-            "error": "El email ingresado ya existe, por favor ingresa otro",
-            "url": "/users/user_index/user-info/"+ str(user_id)
-        }))
-        flash("El email ingresado ya existe, por favor ingresa otro", "error")
-        return response.get_json()
+        if not Users.validate_identifier(user_id, form.username.data):
+            flash("El nombre de usuario ya existe, por favor ingresa otro", "error")
+            return render_template("users/info.html", user=user, form=form)
+        
+        form.active.data = True if form.active.data == "True" else False
+        user = Users.user_update(user_id, **form.data)
+        flash("El usuario fue actualizado correctamente", "success")
     
-    user = Users.find_user(request.json['data']['username'])
-    if user and (user.id != int(user_id)):
-        response.set_data(json.dumps({
-            "error": "El nombre de usuario ingresado ya existe, por favor ingresa otro",
-            "url": "/users/user_index/user-info/"+ str(user_id)
-        }))
-        flash("El nombre de usuario ingresado ya existe, por favor ingresa otro", "error")
-        return response.get_json()
-    
-    user = Users.user_update(user_id, **request.json['data'])
-    
-    if user is None:
-        response.set_data(json.dumps({"error": "El usuario no existe"}))
-        return response.json
-    
-    response.set_data(json.dumps({"url": "/users/user_index/user-info/"+ str(user.id)}))
-    response.status_code = 200
-    
-    flash("La información del usuario ha sido actualizada con exito!", "success")
-    
-    return response.json
+    return render_template("users/info.html", user=user, form=form)
 
 
-@users_blueprint.get("/user-profile/<user_id>")
-@auth.session_required
-def user_profile(user_id):
+@users_blueprint.route("/users-delete/<user_id>", methods=["DELETE"])
+@auth.permission_required("user_destroy")
+def user_destroy(user_id):
     """
-        Redirige al perfil del usuario.
-    """
-    
-    user = user_show(user_id)
-    
-    return render_template("users/profile.html", user=user)
-
-
-@users_blueprint.get("/user_index/user-info/<user_id>")
-@auth.session_required
-def user_info(user_id):
-    """
-        Redirige a la página de información de un usuario.
-    """
-    
-    user = user_show(user_id)
-    
-    return render_template("users/info.html", user=user)
-
-@users_blueprint.post("/user_index/user-create")
-@auth.permission_required("user_create")
-def user_create():
-    """
-        Registra a un nuevo usuario en el sistema.
+        Elimina un usuario del sistema.
         
         args:
-            Datos del usuario enviados a traves de un formulario POST.
+            user_id -> ID del usuario a eliminar.
         
         return:
-            JSON response user 200
-            
-            JSON response error 400
+            Redireccion a la pagina de listado de usuarios.
     """
-    data = request.form.to_dict()
+    user_id = int(user_id)
+    Users.user_destroy(user_id)
+    flash("El usuario fue eliminado correctamente", "success")
     
-    user = Users.find_user(data["email"])
-        
-    if user:
-        flash("El email ingresado ya existe, por favor ingresa otro", "error")
-        return redirect(url_for("users.user_index"))
-    
-    user = Users.find_user(data["username"])
-    if user:
-        flash("El nombre de usuario ingresado ya existe, por favor ingresa otro", "error")
-        return redirect(url_for("users.user_index"))
-    
-    user = Users.user_create(**data)
-    if user is None:
-        flash("Parámetros inválidos", "error")
-        return redirect(url_for("users.user_index"))
-    
-    flash("La información del usuario ha sido actualizada con exito!", "success")
-    
-    return redirect(url_for("users.user_index"))
-    
+    return jsonify({"url": "/users/"}), 200

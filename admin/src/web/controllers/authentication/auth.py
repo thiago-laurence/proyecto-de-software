@@ -1,12 +1,13 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, session, Response, json
 from src.core.models import user as Users
+from src.core.forms import login_form as Forms
 from src.web.helpers import auth
 
 auth_blueprint = Blueprint("auth", __name__, url_prefix="/login")
 
 @auth_blueprint.get("/")
 def login(authentication=None):
-    return render_template("login/login.html", authentication=authentication)
+    return render_template("login/login.html", authentication=authentication, form=Forms.LoginForm())
 
 @auth_blueprint.post("/authenticate")
 def authenticate():
@@ -18,7 +19,7 @@ def authenticate():
     )
     
     params = request.form
-    user = Users.check_auth_user(params["email"], params["password"])
+    user = Users.check_auth_user(params["email_username"], params["password"])
     
     if not user:
         flash("Email/Nombre de usuario o contraseña incorrectos", "error")

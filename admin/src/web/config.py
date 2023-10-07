@@ -16,6 +16,9 @@ class Config(object):
     MAIL_USERNAME = "cidepintgrupo10@gmail.com"
     MAIL_PASSWORD = "nhct ysgd jpau uixe"
     
+    # Configuracion de seguridad para formularios WTF
+    WTF_CSRF_ENABLED = False
+    
 class ProductionConfig(Config):
     """ configuracion de prod """
     

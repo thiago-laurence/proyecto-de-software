@@ -1,3 +1,5 @@
+from sqlalchemy.orm import validates
+from core.models.validation import validation_string, validation_identifier
 from src.core.database import db
 from datetime import datetime
 
@@ -21,16 +23,34 @@ class User(db.Model):
         db.DateTime, default=datetime.utcnow
     )
 
-    def to_json(self):
-        user = {
-            "id": self.id,
-            "email": self.email,
-            "username": self.username,
-            "name": self.name,
-            "lastname": self.lastname,
-            "active": self.active,
-            "confirmed": self.confirmed,
-            "updated_at": self.updated_at.strftime('%Y-%m-%d %H:%M:%S'),
-            "inserted_at": self.inserted_at.strftime('%Y-%m-%d %H:%M:%S')
-        }
-        return user
+    @validates("id")
+    def validate_id(self, key, value):
+        if User.query.filter_by(id=value).first():
+            raise ValueError("El ID ya existe")
+        return value
+    
+    @validates("email")
+    def validate_email(self, key, value):
+        validation_string(key, value)
+        if "@" not in value:
+            raise ValueError("El email ingresado no es válido (no contiene @)")
+        
+        user = User.query.filter_by(email=value).first()
+        validation_identifier(user, self.id, key)
+        
+        return value
+    
+    @validates("username")
+    def validate_username(self, key, value):
+        validation_string(key, value)
+        
+        user = User.query.filter_by(username=value).first()
+        validation_identifier(user, self.id, key)
+        
+        return value
+    
+    @validates("lastname", "name")
+    def validate_name(self, key, value):
+        validation_string(key, value)
+        
+        return value
