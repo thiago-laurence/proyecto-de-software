@@ -98,10 +98,11 @@ def user_index():
     """
         Redirige a la página que contiene el listado de usuarios.
     """
-    users = Users.user_index()
     form = Forms.UserCreateForm()
+    page = request.args.get("page", 1, type=int)
+    users = Users.list_page_users(page)
     
-    return render_template("users/index.html", users=users, form=form)
+    return render_template("users/index.html", users=users, form=form, page=page, total_pages=Users.total_pages_users())
 
 
 @users_blueprint.get("/user-info/<user_id>")
@@ -114,7 +115,6 @@ def user_show(user_id):
     form = Forms.UserUpdateForm()
     
     return render_template("users/info.html", user=user, form=form)
-
 
 
 @users_blueprint.post("/user-index/user-create")
@@ -130,24 +130,20 @@ def user_create():
             Redireccion a la pagina de listado de usuarios.
     """
     form = Forms.UserCreateForm()
-    users = Users.user_index()
     
     if form.validate_on_submit():
         if Users.exists_user(form.email.data):
             flash("El email ingresado ya existe, por favor ingresa otro", "error")
-            return render_template("users/index.html", users=users, form=form)
+            return redirect(url_for("users.user_index"))
         
         if Users.exists_user(form.username.data):
             flash("El nombre de usuario ya existe, por favor ingresa otro", "error")
-            return render_template("users/index.html", users=users, form=form)
+            return redirect(url_for("users.user_index"))
         
         u = Users.create_user(**form.data)
-        users.append(u)
-        for input in form:
-            input.data = ""
         flash("El usuario fue registrado correctamente", "success")
     
-    return render_template("users/index.html", users=users, form=form)
+    return redirect(url_for("users.user_index"))
 
 
 @users_blueprint.post("/users-update/<user_id>")
