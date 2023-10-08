@@ -30,11 +30,3 @@ class UserUpdateForm(UserCreateForm):
         Formulario para la actualizacion de la informacion de un usuario
     """
     active = SelectField("Estado", choices=[(True, "Activo"), (False, "Inactivo")])
-
-
-class UserSearchForm(FlaskForm):
-    """
-        Formulario para la busqueda de usuarios.
-    """
-    query = StringField("Buscar", validators=[Length(max=50)], default="")
-    active = SelectField("Estado", choices=[("", "Todos"), ("True", "Activos"), ("False", "Inactivos")], default="")
