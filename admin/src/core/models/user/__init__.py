@@ -1,6 +1,8 @@
+from sqlalchemy import or_
 from src.core.models.user.user import User
 from src.core.models.user_institution.user_institution import UserInstitution
 from src.core.models import system
+from src.core.models import role
 from src.core.database import db
 from src.core.bcrypt import bcrypt
 
@@ -239,24 +241,21 @@ def user_destroy(user_id):
     
     return True
 
-def list_page_users(page):
+def list_page_users(page, query, active):
     """
         Retorna una pagina de usuarios.
         
         args:
-            page -> numero de pagina a retornar.
+            page -> numero de pagina a retornar. \n
+            query -> filtro de busqueda por email. \n
+            active -> filtro de busqueda por estado. \n
     """
-    # users = User.query.paginate(page=page, per_page=system.pages(), error_out=False)
-    users = User.query.paginate(page=page, per_page=2, error_out=False)
-    return users
+    role_root = role.get_role_by_name("SuperAdministrador/a")
+    user_root = UserInstitution.query.filter(UserInstitution.role_id == role_root.id).first()
 
-def total_pages_users():
-    """
-        Retorna la cantidad de paginas de usuarios.
-    """
-    # per_page = system.pages()
-    per_page = 2
-    cant_users = User.query.count()
-    total_pages = (cant_users + per_page - 1) // per_page
+    if active is "":
+        users = User.query.filter(User.id != user_root.id, or_(User.email.ilike(f"%{query}%"))).paginate(page=page, per_page=system.pages(), error_out=False)
+    else:
+        users = User.query.filter(User.id != user_root.id, or_(User.email.ilike(f"%{query}%")), User.active == active).paginate(page=page, per_page=system.pages(), error_out=False)
     
-    return total_pages
+    return users, users.pages

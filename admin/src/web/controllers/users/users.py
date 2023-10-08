@@ -96,13 +96,19 @@ def user_profile():
 @auth.permission_required("user_index")
 def user_index():
     """
-        Redirige a la página que contiene el listado de usuarios.
+        Redirige a la página que contiene el listado de usuarios, filtrando por nombre y estado a los mismos.
     """
-    form = Forms.UserCreateForm()
+    form_create = Forms.UserCreateForm()
     page = request.args.get("page", 1, type=int)
-    users = Users.list_page_users(page)
+    query = request.args.get("query", "", type=str)
+    active = request.args.get("active", "", type=str)
+
+    if active is not "":
+        active = True if active == "True" else False
+
+    users = Users.list_page_users(page, query, active)
     
-    return render_template("users/index.html", users=users, form=form, page=page, total_pages=Users.total_pages_users())
+    return render_template("users/index.html", form_create=form_create, users=users[0], total_pages=users[1], page=page, query=query, active=active)
 
 
 @users_blueprint.get("/user-info/<user_id>")

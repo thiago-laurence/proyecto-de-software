@@ -12,6 +12,9 @@
                     </h2>
                     <h1 class="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">
                         Usuarios registrados
+                        <button data-modal-toggle="modal-create" class="block text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" type="button">
+                            Nuevo usuario
+                        </button>
                     </h1>
                     <div class="h-1 w-full bg-indigo-500 rounded"></div>
                     {{ Flash.flash_form() }}
@@ -20,25 +23,48 @@
         </div>
     </section>
     
-    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <div class="flex items-center justify-between py-4 bg-white dark:bg-gray-800">
+    <form action="{{ url_for('users.user_index') }}" method="GET">
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <div>
-                <button data-modal-toggle="modal-create" class="block text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" type="button">
-                    Nuevo usuario
-                </button>
+                <label for="active" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Buscar por estado:</label>
+                <select id="active" name="active" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    {% if active == "" %}
+                        <option value="" selected>Todos</option>
+                        <option value="True">Activo</option>
+                        <option value="False">Inactivo</option>
+                    {% elif active == True %}
+                        <option value="">Todos</option>
+                        <option selected value="{{ active }}">Activo</option>
+                        <option value="False">Inactivo</option>
+                    {% else %}
+                        <option value="">Todos</option>
+                        <option value="True">Activo</option>
+                        <option selected value="{{ active }}">Inactivo</option>
+                    {% endif %}
+                </select>
             </div>
-            <label for="table-search" class="sr-only">Buscar</label>
-            <div class="relative">
-                <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                    </svg>
+            <div>
+                <!-- <label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label> -->
+                <label for="search" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Buscar por email:</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                        <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                        </svg>
+                    </div>
+                    <input type="search" id="default-search" name="query" value="{{ query }}" placeholder="example@gmail.com" class="block w-full p-4 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                    <button type="submit" class="text-white absolute right-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        Buscar
+                    </button>
                 </div>
-                <input type="text" placeholder="Buscar usuarios..." id="table-search-users" class="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
             </div>
         </div>
+    </form>
+
+
+    <div class="relative overflow-x-auto shadow-xl sm:rounded-lg my-5">
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+            <thead class="text-xs text-gray-900 uppercase bg-gray-50 dark:bg-gray-900 dark:text-gray-400">
                 <tr>
                     <th scope="col" class="px-6 py-3">
                         Apellido y nombre
@@ -88,10 +114,11 @@
                 {% endfor %}
             </tbody>
         </table>
-
-        <!-- Pagination -->
-        {{ Paginator.Pagination(page, total_pages) }}
-        <!-- End pagination -->        
+        <div class="flex justify-center">
+            <!-- Pagination -->
+            {{ Paginator.Pagination(page, total_pages, 'users.user_index', query, active) }}
+            <!-- End pagination -->     
+        </div>   
     </div>
     
     <!-- Modal -->
@@ -116,7 +143,7 @@
                     <div class="p-6 space-y-6">
                         <div class="space-y-6">
                             <div class="grid grid-cols-6 gap-6">
-                                {% for input in form %}
+                                {% for input in form_create %}
                                     <div class="col-span-6 sm:col-span-3">
                                         {{ input.label(
                                             class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
