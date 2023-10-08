@@ -20,7 +20,7 @@ def anautorized_error(e):
         "error_code": "401"
     }
 
-    return redirect(url_for("auth.login"))
+    return redirect(url_for("auth.login"), 401)
 
 def forbidden_error(e):
     
