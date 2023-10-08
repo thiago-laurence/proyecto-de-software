@@ -12,8 +12,12 @@ def index():
     Renderiza el template para las instituciones y las muestra.
     """
     page = request.args.get("page", 1, type=int)
+    total_pages=institution.total_intitutions_pages()
     institutions = institution.list_institutions_paginated(page)
-    return render_template("institutions/index.html", institutions=institutions, users = user.get_users(), page=page, total_pages=institution.total_intitutions_pages())
+    if(page <= total_pages and page > 0):
+        return render_template("institutions/index.html", institutions=institutions, users = user.get_users(), page=page)
+    else:
+        return redirect(url_for("institutions.index", page=total_pages))
 
 
 @institutions_blueprint.get("/<institution_id>")

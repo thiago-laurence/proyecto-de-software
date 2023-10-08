@@ -98,13 +98,25 @@ def list_services_by_institution(institution_id):
     print(services)
     return services
 
-def list_services_by_institution(institution_id):
+def list_services_by_intitution_paginated(page,institution_id):
     """
-    Me devuelve todos los servicios de una institucion
-    """   
-    services = Service.query.filter(Service.institution_id == institution_id).all()
-    print(services)
+    Me devuelve todas las instituciones.
+    """
+    
+    services = Service.query.filter(Service.institution_id == institution_id).paginate(page=page, per_page=system.pages(), error_out=False)
+
     return services
+
+def total_services_pages(institution_id):
+    """
+    Me devuelve la cantidad de paginas que ocupan las instituciones.
+    """
+    per_page = system.pages()  # Cantidad de servicios por página
+    services = Service.query.filter(Service.institution_id == institution_id).all()  # Total de servicios
+    total_services = len(services)
+    total_pages = ((total_services + per_page) - 1)// per_page  # Cálculo de páginas
+    
+    return total_pages
 
 def create_service(**kwargs):
     """"
