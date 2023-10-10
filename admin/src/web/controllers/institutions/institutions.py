@@ -3,7 +3,11 @@ from src.core.models import institution
 from src.core.models import user
 from src.web.helpers import auth
 
+from src.web.controllers.institutions.institution_users import iu_blueprint
+
 institutions_blueprint = Blueprint("institutions", __name__, url_prefix="/institutions")
+
+institutions_blueprint.register_blueprint(iu_blueprint)
 
 @institutions_blueprint.get("/")
 @auth.permission_required("institution_index")

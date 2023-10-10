@@ -1,6 +1,6 @@
 {% extends "layouts/" + session['user']['layout'] %}
 
-{% block title %} Perfil {% endblock %}
+{% block title %} PERFIL - {{user.username}} {% endblock %}
 
 {% block content_main %}
 <div class="bg-gray-100 rounded">
@@ -39,7 +39,7 @@
                         </li>
                         <li class="flex items-center py-3">
                             <span>Miembro desde</span>
-                            <span class="ml-auto">{{ user.inserted_at }}</span>
+                            <span class="ml-auto">{{ user.inserted_at}}</span>
                         </li>
                     </ul>
                 </div>
