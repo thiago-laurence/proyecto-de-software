@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, flash, redirect,url_for, jsonify
+from flask import Blueprint, render_template, request, flash, redirect,url_for, json, Response
 from src.core.models import institution
 from src.core.models import user
 from src.web.helpers import auth
@@ -15,7 +15,13 @@ def index():
     """"
     Renderiza el template para las instituciones y las muestra.
     """
-    return render_template("institutions/index.html", institutions=institution.list_institutions(), users = user.get_users())
+    page = request.args.get("page", 1, type=int)
+    total_pages=institution.total_intitutions_pages()
+    institutions = institution.list_institutions_paginated(page)
+    if(page <= total_pages and page > 0):
+        return render_template("institutions/index.html", institutions=institutions, users = user.get_users(), page=page)
+    else:
+        return redirect(url_for("institutions.index", page=total_pages))
 
 
 @institutions_blueprint.get("/<institution_id>")
@@ -24,6 +30,8 @@ def institution_show(institution_id):
     """"
     Renderiza el template para una institucion especifica y lo muestra y las muestra.
     """
+    print("entro al show")
+
     insti = institution.get_institution_by_id(institution_id)
     if insti is None:
         flash("La institución no existe.", "error")
@@ -59,7 +67,7 @@ def institution_add():
     return index()
        
        
-@institutions_blueprint.route("/institution-delete/<institution_id>", methods=["DELETE"])
+@institutions_blueprint.route("/institutions-delete/<institution_id>", methods=["DELETE"])
 @auth.permission_required("institution_destroy")
 def intitution_delete(institution_id):
     """
@@ -75,35 +83,42 @@ def intitution_delete(institution_id):
         "url": '/institutions'
     }
     
-    return jsonify(data)
+    response = Response(
+        response = json.dumps(data),
+        status = 200,
+        mimetype = 'application/json'
+    )
+    
+    return response.json
 
-@institutions_blueprint.route("/institution-edit/<institution_id>", methods=["PUT"])
+@institutions_blueprint.route("/institutions-update/<institution_id>", methods=["PUT"])
 @auth.permission_required("institution_update")
 def institution_update(institution_id):
     """
     Metodo para editar una institucion
     """
     insti = institution.get_institution_by_id(institution_id)
-    existe = institution.get_institution_by_name(request.json['name'])
-    
+    existe = institution.get_institution_by_name(request.json['data']['name'])
+    print(existe)
+    print(request.json['data'])
     if (existe is not None and existe.id != insti.id):
-         flash("La institución " + request.json['name'] + " ya se encuentra registrada.", "error")
+         flash("La institución " + request.json['data']['name'] + " ya se encuentra registrada.", "error")
      
     else:
         kwargs = {
-            "name":request.json['name'],
-            "info":request.json['info'],
-            "adress":request.json['adress'],
-            "web":request.json['web'],
-            "social_networks":request.json['social_networks'],
-            "phone":request.json['phone']
+            "name":request.json['data']['name'],
+            "info":request.json['data']['info'],
+            "address":request.json['data']['address'],
+            "web":request.json['data']['web'],
+            "social_networks":request.json['data']['social_networks'],
+            "phone":request.json['data']['phone']
         }
         if kwargs["name"] == "":
             kwargs["name"] = insti.name
         if kwargs["info"] == "":
             kwargs["info"] = insti.info
-        if kwargs["adress"] == "":
-            kwargs["adress"] = insti.address
+        if kwargs["address"] == "":
+            kwargs["address"] = insti.address
         if kwargs["web"] == "":
             kwargs["web"] = insti.web
         if kwargs["social_networks"] == "":
@@ -113,10 +128,16 @@ def institution_update(institution_id):
             
         institution.edit_institution(insti, **kwargs)
         
-        flash("La institución " + request.json['name']+ " fue editada correctamente.", "success")   
+        flash("La institución " + kwargs["name"] + " fue editada correctamente.", "success")   
         
     data = {
         "url": '/institutions/'+str(institution_id)
     }
     
-    return jsonify(data)
+    response = Response(
+        response = json.dumps(data),
+        status = 200,
+        mimetype = 'application/json'
+    )
+    
+    return response.json

@@ -1,7 +1,8 @@
 {% extends "layouts/" + session['user']['layout'] %}
 
 {% block title %} PERFIL - {{user.username}} {% endblock %}
-{% block contentMain %}
+
+{% block content_main %}
 <div class="bg-gray-100 rounded">
  <div class="w-full text-slate-100 bg-indigo-500">
         <div x-data="{ open: false }"

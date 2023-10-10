@@ -21,5 +21,4 @@ def send_mail(subject, recipients, body, sender='CIDEPINT cidepintgrupo10@gmail.
     
     msg = Message(subject=subject, sender=sender, recipients=[recipients])
     msg.html = render_template_string(body)
-    mail.send(msg);
-    
+    mail.send(msg)

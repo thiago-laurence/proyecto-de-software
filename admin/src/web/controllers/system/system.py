@@ -1,82 +1,33 @@
-from flask import Blueprint, render_template, request, Response, json, flash
+from flask import Blueprint, render_template, flash, redirect, url_for
 from src.core.models import system as System
+from src.web.forms import system_form as Forms
 from src.web.helpers import auth
 
 system_blueprint = Blueprint("system", __name__, url_prefix="/system")
 
-@system_blueprint.get("/<system_id>")
+@system_blueprint.get("/")
 @auth.permission_required("system_show")
-def index(system_id):
+def index():
     """
         Redirige a la configuración del sistema
-        
-        args:
-            system_name: nombre del sistema a mostrar su configuración.
     """
-    sys = System.system_show(system_id)
-    
-    if sys is None:
-        cod = 400
-        data = {
-            "error": "El sistema no existe"
-        }
-    else:
-        cod = 200
-        data = sys.to_json()
-        
-    response = Response(
-        response = json.dumps(data),
-        status = cod,
-        mimetype = 'application/json'
-    )
-    
-    return render_template("system/index.html", system=response.json)
+    system = System.system_show(1)
+    form = Forms.SystemForm()
+    form.message.data = system.message
+    form.info.data = system.info
+    return render_template("system/index.html", system=system, form=form)
 
 
-@system_blueprint.put("/system-update/<system_id>")
+@system_blueprint.post("/system-update/")
 @auth.permission_required("system_update")
-def system_update(system_id):
+def system_update():
     """
         Actualiza la información del sistema.
-        
-        args:
-            system_id: id del sistema a modificar.
-        
-        return:
-            JSON response system 200
-            
-            JSON response error 400
     """
-    response = Response(mimetype = 'application/json')
+    form = Forms.SystemForm()
+    if form.validate_on_submit():
+        form.activate.data = True if form.activate.data == "True" else False
+        System.system_update(1, **form.data)
+        flash("La información del sistema ha sido actualizada con exito!", "success")
     
-    if int(request.json['data']['element_page']) == 0:
-        response.set_data(json.dumps({
-            "error": "parametros invalidos",
-            "url": "/system/"+ str(system_id)
-        }))
-        response.status_code = 400
-        flash("La cantidad de elementos de página no puede ser cero", "error")
-        return response.get_json()
-    
-    system = System.system_update(system_id, **request.json['data'])
-
-    if system is None:
-        data = {
-            "error": "parametros incorrectos"
-        }
-        cod = 400
-    else:
-        data = {
-            "url" : '/system/'+ str(system.id),
-        }
-        cod = 200
-    
-    response = Response(
-        response = json.dumps(data),
-        status = cod,
-        mimetype = 'application/json'
-    )
-    
-    flash("La información del sistema ha sido actualizada con exito!", "success")
-    
-    return response.json
+    return redirect(url_for("system.index"))

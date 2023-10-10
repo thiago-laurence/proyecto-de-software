@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect,url_for, jsonify
+from flask import Blueprint, render_template, request, redirect,url_for, jsonify, flash
 from src.core.models import institution
 from src.core.models import user_institution
 from src.core.models import user
@@ -6,7 +6,7 @@ from src.core.models import role
 from src.web.helpers import auth
 iu_blueprint = Blueprint("institution_users", __name__, url_prefix="/")
 
-@iu_blueprint.get("/users/<institution_id>")
+@iu_blueprint.get("/<institution_id>/users")
 @auth.login_required
 @auth.permission_required("institution_index")
 def index(institution_id):
@@ -26,19 +26,21 @@ def add_user(institution_id):
     i = institution.get_institution_by_id(institution_id)
     r = role.get_role_by_name(request.form.get("role"))
     
+    if (u is None) or (i is None) or (r is None):
+        flash("Por favor, seleccione un usuario", "error")
+    else:
+        user_institution.create_user_institution_role(
+            user = u,
+            institution = i,
+            role = r
+        )
 
-    user_institution.create_user_institution_role(
-        user = u,
-        institution = i,
-        role = r
-    )
+        response = {
+            "status": 200,
+            "url": '/institutions/'+str(institution_id)
+        }
 
-    response = {
-        "status": 200,
-        "url": '/institutions/'+str(institution_id)
-    }
-
-    return render_template("institutions/institution_users.html", users=institution.list_users_from_institution(institution_id),institution=institution.get_institution_by_id(institution_id))
+    return redirect(url_for('.index', institution_id = institution_id))
         
 
 
