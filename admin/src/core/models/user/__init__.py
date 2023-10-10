@@ -64,7 +64,6 @@ def find_user(identifier):
         
         identify: email o username del usuario.
     """
-
     identifier = identifier.lower()
     
     return User.query.filter((User.email == identifier) | (User.username == identifier)).first()
