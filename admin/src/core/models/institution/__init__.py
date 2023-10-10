@@ -114,6 +114,8 @@ def total_services_pages(institution_id):
     per_page = system.pages()  # Cantidad de servicios por página
     services = Service.query.filter(Service.institution_id == institution_id).all()  # Total de servicios
     total_services = len(services)
+    if(total_services == 0):
+        return 1
     total_pages = ((total_services + per_page) - 1)// per_page  # Cálculo de páginas
     
     return total_pages
