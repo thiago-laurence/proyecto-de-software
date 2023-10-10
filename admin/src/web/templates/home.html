@@ -7,17 +7,29 @@
 {% block content_main %}
     {% if session['user']['role'] == None %}
         <div class="flex items-center p-4 mb-4 text-lg text-blue-800 rounded-lg bg-blue-50 dark:bg-gray-800 dark:text-blue-400" role="alert">
-            <svg class="flex-shrink-0 inline w-4 h-4 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
-            </svg>
-        <span class="sr-only">Info</span>
-        <div>
-            <span class="font-medium text-lg">
-                Mensaje:
-            </span> 
-            Usted no está asignado a ninguna institución, por favor comuniquese con
-            sus superiores para que le asignen una y poder utilizar el sistema. Muchas gracias!
+                <svg class="flex-shrink-0 inline w-4 h-4 mr-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                <path d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5ZM9.5 4a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM12 15H8a1 1 0 0 1 0-2h1v-3H8a1 1 0 0 1 0-2h2a1 1 0 0 1 1 1v4h1a1 1 0 0 1 0 2Z"/>
+                </svg>
+            <span class="sr-only">Info</span>
+            <div>
+                <span class="font-medium text-lg">
+                    Mensaje:
+                </span> 
+                Usted no está asignado a ninguna institución, por favor comuniquese con
+                sus superiores para que le asignen una y poder utilizar el sistema. Muchas gracias!
+            </div>
         </div>
-        </div>
+    {% else %}
+        <section class="bg-white dark:bg-gray-900">
+            <div class="py-2 px-4 mx-auto max-w-screen-xl text-center lg:py-4">
+                <h2 class="text-base text-indigo-500 tracking-widest font-medium title-font mb-1">Administracion</h2>
+                <h1 class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-4xl lg:text-5xl dark:text-white">
+                    Bienvenido
+                </h1>
+                <p class="mb-8 text-lg font-normal text-gray-500 lg:text-lg sm:px-16 lg:px-48 dark:text-gray-400">
+                    Aqui podras gestionar las instituciones, usuarios, servicios y solicitudes del sistema.
+                </p>
+            </div>
+        </section>
     {% endif %}
 {% endblock %}
