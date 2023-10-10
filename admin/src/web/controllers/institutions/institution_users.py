@@ -6,7 +6,7 @@ from src.core.models import role
 from src.web.helpers import auth
 iu_blueprint = Blueprint("institution_users", __name__, url_prefix="/")
 
-@iu_blueprint.get("/<institution_id>/users")
+@iu_blueprint.get("/users/<institution_id>")
 @auth.login_required
 @auth.permission_required("institution_index")
 def index(institution_id):
