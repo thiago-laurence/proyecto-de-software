@@ -7,7 +7,6 @@ from src.web.helpers import auth
 iu_blueprint = Blueprint("institution_users", __name__, url_prefix="/")
 
 @iu_blueprint.get("/<institution_id>/users")
-@auth.login_required
 @auth.permission_required("institution_index")
 def index(institution_id):
     """"
@@ -16,6 +15,7 @@ def index(institution_id):
     return render_template("institutions/institution_users.html", users=institution.list_users_from_institution(institution_id),institution=institution.get_institution_by_id(institution_id))
 
 @iu_blueprint.post("/<institution_id>/add-user")
+@auth.permission_required("ui_create")
 def add_user(institution_id):
     """
     Agrega un usuario a la institucion
@@ -45,7 +45,7 @@ def add_user(institution_id):
 
 
 @iu_blueprint.get("/<institution_id>/users-not-in")
-@auth.login_required
+@auth.permission_required('ui_index')
 def list_users_not_in_institution(institution_id):
     """
     Retorna en JSON los usuarios que no estan en la institucion.
@@ -65,3 +65,24 @@ def list_users_not_in_institution(institution_id):
         serialized_users.append(serialized_user)
 
     return jsonify(serialized_users)
+
+@auth.login_required
+@auth.permission_required("ui_destroy")
+@iu_blueprint.route("/<institution_id>/remove-user/<user_id>", methods=["DELETE"])
+def remove_user_from_institution(institution_id, user_id):
+    """
+    Elimina la relacion entre un usuario y una institucion.
+    Basicamente, quita al usuario de la institucion.
+    """
+
+    res = user_institution.remove_user_from_institution(institution_id, user_id)
+    if res:
+        flash("El usuario se elimino corretamente", "success")
+        url = "/institutions/" + str(institution_id) + "/users" 
+        
+        data = {
+            "url": url
+        }
+        return jsonify(data)
+    else:
+        flash("El usuario no se encuentra en esta institucion", "error")

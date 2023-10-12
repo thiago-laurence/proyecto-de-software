@@ -64,6 +64,7 @@
               <th class="px-4 py-3">Email</th>
               <th class="px-4 py-3">Estado</th>
               <th class="px-4 py-3">Miembro desde</th>
+              <th class="px-4 py-3"></th>
             </tr>
           </thead>
           <tbody class="bg-white">
@@ -100,6 +101,13 @@
                 
               </td>
               <td class="px-4 py-3 text-sm border">{{ user.inserted_at.strftime('%m-%Y') }}</td>
+              <td class="px-4 py-3 text-sm border text-center">
+                <button onclick="removeUser({{ institution.id }},{{ user.id }})" class="text-red focus:ring-4 focus:outline-none">
+                  <svg class="w-6 h-6 text-red-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m13 7-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                  </svg>
+                </button>
+              </td>
             </tr>
             {% endfor %}
           </tbody>

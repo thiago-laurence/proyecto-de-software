@@ -5,6 +5,7 @@ const addUserForm = document.getElementById("addUserForm")
 
 let selectedListItem = null;
 
+
 async function loadUserList(id) {
     let url = '/institutions/' + id + '/users-not-in'
     try {
@@ -69,6 +70,29 @@ async function loadUserList(id) {
       console.error('Error al cargar la lista de usuarios:', error);
     }
   }
+
+
+async function removeUser(institutionId,userId) {
+  console.log(institutionId, userId)
+  let url = '/institutions/' + institutionId + '/remove-user/' + userId
+  try {
+    // Realizar una solicitud DELETE al servidor
+    const response = await fetch(url, { method: 'DELETE' });
+
+    // Verificar si la respuesta del servidor es exitosa (código de respuesta 200)
+    if (!response.ok) {
+      throw new Error('La solicitud no fue exitosa');
+    }
+
+    data = await response.json()
+    window.location.href = data['url']
+    
+  } catch (error) {
+    // Manejar errores si la solicitud falla
+    console.error('Error al quitar al usuario:', error);
+  }
+}
+  
 
 
  // addUserForm.addEventListener('submit', async function(event) {
