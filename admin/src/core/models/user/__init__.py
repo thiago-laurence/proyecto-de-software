@@ -48,6 +48,19 @@ def create_user(**kwargs):
         user.confirmed = True
     db.session.add(user)
     db.session.commit()
+    
+    return user
+
+def parcial_register_user(**kwargs):
+    """
+        Realiza el registro parcial de un nuevo usuario
+    """
+    kwargs['email'] = kwargs['email'].lower()
+    user = User(**kwargs)
+    user.confirmed = False
+    db.session.add(user)
+    db.session.commit()
+    
     return user
 
 def confirm_user(email, username, password):

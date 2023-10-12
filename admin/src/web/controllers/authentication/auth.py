@@ -6,28 +6,21 @@ from src.web.helpers import auth
 auth_blueprint = Blueprint("auth", __name__, url_prefix="/login")
 
 @auth_blueprint.get("/")
-def login(authentication=None):
-    return render_template("login/login.html", authentication=authentication, form=Forms.LoginForm())
+def login():
+    return render_template("login/login.html", form=Forms.LoginForm())
 
 @auth_blueprint.post("/authenticate")
-def authenticate():
-    
-    response = Response(
-        response = json.dumps({"result": "fail"}),
-        status = 400,
-        mimetype = 'application/json'
-    )
-    
+def authenticate():    
     params = request.form
     user = Users.check_auth_user(params["email_username"], params["password"])
     
     if not user:
         flash("Email/Nombre de usuario o contraseña incorrectos", "error")
-        return redirect(url_for("auth.login", authentication=response.get_json()))
+        return redirect(url_for("auth.login"))
     
     if not Users.check_state_user(user):
         flash("El usuario no está activo o no está confirmado", "error")
-        return redirect(url_for("auth.login", authentication=response.get_json()))
+        return redirect(url_for("auth.login"))
         
     institution_role = Users.get_first_institution_rol(user)
     if institution_role is None:
@@ -50,21 +43,15 @@ def authenticate():
             "role": institution_role[1],
             "layout": auth.render_layout(institution_role[1])
         }
-
-    response = Response(
-        response = json.dumps({"result": "success"}),
-        status = 200,
-        mimetype = 'application/json'
-    )
     
-    return redirect(url_for("home", authentication=response.get_json()))
+    return redirect(url_for("home.index"))
 
 @auth_blueprint.post("/update-actual-institution")
 def update_actual_institution():
     id = request.json['institution_id']
     session['user']['actual_institution'] = id
     print(session['user'])
-    return redirect(url_for("home"))
+    return redirect(url_for("home.index"))
 
 @auth_blueprint.get("/logout")
 def logout():
