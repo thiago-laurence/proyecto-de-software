@@ -11,6 +11,7 @@ from src.web.config import config
 from src.web import routes
 from src.web.helpers import auth
 from src.web import mail
+from src.web import token
 from src.core import seeds
 
 logging.basicConfig()

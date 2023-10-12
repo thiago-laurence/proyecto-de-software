@@ -4,9 +4,12 @@ class Config(object):
     """
         Configuracion base
     """
-    SECRET_KEY = "secret"
+    
+    # Configuracion de seguridad de la aplicacion
+    SECRET_KEY = "Grupo10-app"
     TESTING = False
     SESSION_TYPE = "filesystem"
+    SECURITY_PASSWORD_SALT = "Grupo10-pass"
     
     # Credenciales para servicio de correo
     MAIL_SERVER = "smtp.gmail.com"
@@ -15,6 +18,7 @@ class Config(object):
     MAIL_USE_TLS = False
     MAIL_USERNAME = "cidepintgrupo10@gmail.com"
     MAIL_PASSWORD = "nhct ysgd jpau uixe"
+    MAIL_DEFAULT_SENDER = "CIDEPINT cidepintgrupo10@gmail.com"
     
     # Configuracion de seguridad para formularios WTF
     WTF_CSRF_ENABLED = False

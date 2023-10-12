@@ -1,4 +1,3 @@
-from flask import render_template_string
 from flask_mail import Mail, Message
 
 mail = Mail()
@@ -9,16 +8,21 @@ def init_app(app):
     """
     mail.init_app(app)
 
-def send_mail(subject, recipients, body, sender='CIDEPINT cidepintgrupo10@gmail.com'):
+
+def send_email(to, subject, template):
     """
         Envia un correo electronico
         
-            : subject: asunto del correo
-            : recipients: destinatario del correo
-            : body: mensaje del correo
-            : sender: remitente del correo (opcional)
+        args: \n
+            subject -> asunto del correo \n
+            to -> destinatario del correo \n
+            template -> mensaje del correo \n
     """
     
-    msg = Message(subject=subject, sender=sender, recipients=[recipients])
-    msg.html = render_template_string(body)
+    msg = Message(
+        subject,
+        recipients=[to],
+        html=template,
+        sender=mail.default_sender
+    )
     mail.send(msg)
