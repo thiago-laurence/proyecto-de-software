@@ -251,7 +251,7 @@ def assign_permissions_to_roles():
     for lista in [[p for p in service_permission if p.name != "service_destroy"],
                   [p for p in request_service_permission if p.name != "request_service_destroy"]]:
         permission_operator += lista
-    role.assign_permission(admin, permission_operator)
+    role.assign_permission(operator, permission_operator)
     
     print("----> Finalizado! <----")
 

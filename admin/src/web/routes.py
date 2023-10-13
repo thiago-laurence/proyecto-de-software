@@ -4,6 +4,7 @@ from src.web.api.users import api_users
 from src.web.controllers.authentication.auth import auth_blueprint
 from src.web.controllers.institutions.institutions import institutions_blueprint
 from src.web.controllers.institutions.services import services_blueprint
+from src.web.controllers.institutions.institution_users import iu_blueprint
 from src.web.controllers.issues.issues import issues_blueprint
 from src.web.controllers.home.home import home_blueprint
 from src.web.controllers.api import api_blueprint
@@ -18,6 +19,7 @@ def register_blueprints(app):
     app.register_blueprint(api_users)
     app.register_blueprint(auth_blueprint)
     app.register_blueprint(institutions_blueprint)
+    app.register_blueprint(iu_blueprint)
     app.register_blueprint(services_blueprint)
     app.register_blueprint(issues_blueprint)
     app.register_blueprint(api_blueprint)

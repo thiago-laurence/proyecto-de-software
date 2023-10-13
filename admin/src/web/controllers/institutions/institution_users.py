@@ -7,8 +7,7 @@ from src.web.helpers import auth
 iu_blueprint = Blueprint("institution_users", __name__, url_prefix="/")
 
 @iu_blueprint.get("/<institution_id>/users")
-@auth.login_required
-@auth.permission_required("institution_index")
+@auth.permission_required("ui_index")
 def index(institution_id):
     """"
     Renderiza el template para los usuarios de cada institucion.
