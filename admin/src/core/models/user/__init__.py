@@ -265,7 +265,7 @@ def list_page_users(page, query, active):
     role_root = role.get_role_by_name("SuperAdministrador/a")
     user_root = UserInstitution.query.filter(UserInstitution.role_id == role_root.id).first()
 
-    if active is "":
+    if active == "":
         users = User.query.filter(User.id != user_root.id, or_(User.email.ilike(f"%{query}%"))).paginate(page=page, per_page=system.pages(), error_out=False)
     else:
         users = User.query.filter(User.id != user_root.id, or_(User.email.ilike(f"%{query}%")), User.active == active).paginate(page=page, per_page=system.pages(), error_out=False)
