@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, flash, redirect,url_for, json, Response
 from src.core.models import institution
+from src.web.forms.institution_form import InstitutionForm
 from src.core.models import user
 from src.web.helpers import auth
 
@@ -15,11 +16,13 @@ def index():
     """"
     Renderiza el template para las instituciones y las muestra.
     """
+    form = InstitutionForm(request.form)
+    
     page = request.args.get("page", 1, type=int)
     total_pages=institution.total_intitutions_pages()
     institutions = institution.list_institutions_paginated(page)
     if(page <= total_pages and page > 0):
-        return render_template("institutions/index.html", institutions=institutions, users = user.get_users(), page=page)
+        return render_template("institutions/index.html", institutions=institutions, users = user.get_users(), page=page, form=form)
     else:
         return redirect(url_for("institutions.index", page=total_pages))
 
@@ -46,25 +49,26 @@ def institution_add():
     """
     Metodo para agregar una nueva institucion
     """
+    form = InstitutionForm(request.form)
+    
+    if(form.validate_on_submit()):
+        existe = institution.check_if_institution_exists_by_name(form.name.data)
+        if (existe):
+            flash("La institución " + form.name.data + " ya se encuentra registrada.", "error")
+            return redirect(url_for("institutions.index"))
 
-    existe = institution.check_if_institution_exists_by_name(request.form.get("name"))
-    if (existe):
-         flash("La institución " + request.form.get("name") + " ya se encuentra registrada.", "error")
-
-         return redirect(url_for("institutions.index"))
-
-
-    print("institution user_id: " + request.form.get("owner"))
-    institution.create_institution(
-        name= request.form.get("name"),
-        info= request.form.get("info"),
-        address = request.form.get("address"),
-        web = request.form.get("web"),
-        social_networks = request.form.get("social_networks"),
-        phone = request.form.get("phone")
-    )
-    flash("La institución " + request.form.get("name") + " fue registrada correctamente.", "success")   
-    return index()
+        institution.create_institution(
+            name= form.name.data,
+            info= form.info.data,
+            address = form.address.data,
+            web = form.web.data,
+            social_networks = form.social_networks.data,
+            phone = form.phone.data
+        )
+        flash("La institución " + form.name.data + " fue registrada correctamente.", "success")   
+        return index()
+    
+    return render_template("institutions/index.html", form=form)
        
        
 @institutions_blueprint.route("/institutions-delete/<institution_id>", methods=["DELETE"])

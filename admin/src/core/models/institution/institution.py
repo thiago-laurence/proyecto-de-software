@@ -6,7 +6,7 @@ class Institution(db.Model):
     __tablename__ = "institutions"
     id = db.Column(db.Integer, primary_key=True, unique=True)
     name = db.Column(db.String(50), unique=True)
-    info = db.Column(db.String(100))
+    info = db.Column(db.String(200))
     address = db.Column(db.String(100))
     is_enabled = db.Column(db.Boolean(), default=False)
     web = db.Column(db.String(100))
