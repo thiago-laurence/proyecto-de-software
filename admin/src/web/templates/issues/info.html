@@ -1,0 +1,261 @@
+{% extends "layouts/" + session['user']['layout'] %}
+
+{% block title %} Solicitud info. {% endblock  %}
+
+{% block content_main %}
+
+    <section class="text-gray-600 body-font">
+        <div class="container px-5 pt-3 mx-auto">
+            <div class="flex flex-wrap w-full mb-5">
+                <div class="lg:w-full w-full mb-6 lg:mb-0">
+                    <h2 class="text-xs text-indigo-500 tracking-widest font-medium title-font mb-1">
+                        Administración
+                    </h2>
+                    <h1 class="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">
+                        Informacion de la solicitud
+                    </h1>
+                    <div class="h-1 w-full bg-indigo-500 rounded"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="text-gray-600 body-font overflow-hidden">
+        <div class="container px-5 mx-auto">
+            <div class="flex flex-wrap -m-12">
+                <div class="p-12 w-full flex flex-col items-start">
+                    <div class="text-center w-full">
+                        <h2 class="tracking-widest text-xl title-font font-medium text-indigo-500 mb-1 mt-2">
+                            ANALISIS
+                        </h2>
+                        <h2 class="text-4xl title-font font-medium text-gray-900 mb-4">
+                            Revestimiento
+                        </h2>
+                    </div>
+                    <p class="leading-relaxed mb-2">
+                        De grano grueso, de color gris, para revestimiento de paredes y techos, en interiores y exteriores, de fácil aplicación, buena adherencia, resistente a la intemperie, de gran blancura y cubrición, de acabado mate.
+                    </p>
+                    <div class="grid lg:grid-cols-3 grid-cols-1 gap-2 w-full text-center my-4">
+                        <div class="my-2">
+                            <a class="inline-flex items-center">
+                                <img alt="blog" src="/static/img/user.png" class="w-12 h-12 rounded-full flex-shrink-0 object-cover object-center">
+                                <span class="flex-grow flex flex-col pl-4">
+                                    <span class="title-font font-medium text-gray-900">Laurence Thiago - "Eddie"</span>
+                                    <span class="text-gray-400 text-base tracking-widest mt-0.5">email@gmail.com</span>
+                                </span>
+                            </a>
+                            
+                        </div>
+                        <div class="my-2">
+                            <span class="bg-blue-100 text-blue-800 text-base font-medium p-2 rounded dark:bg-blue-900 dark:text-blue-300">
+                                En proceso
+                            </span>
+                        </div>
+                        <div class="my-2">
+                            <span class="mt-1 text-gray-800 text-lg p-2">05 Agosto 2015</span>
+                            <span class="mt-1 text-gray-800 text-lg p-2"> | </span>
+                            <span class="mt-1 text-gray-800 text-lg p-2">09 Diciembre 2018</span>
+                        </div>
+                    </div>
+                    <form action="#" method="POST" class="w-full">
+                        <div class="grid lg:grid-cols-3 grid-cols-1 gap-10 w-full mb-8">
+                            <div class="my-2">
+                                <label for="state" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cambiar el estado:</label>
+                                <select id="state" name="state" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <option value="" selected>Todos</option>
+                                        <option value="">Aceptada</option>
+                                        <option value="">Rechazada</option>
+                                        <option value="">En proceso</option>
+                                        <option value="">Finalizada</option>
+                                        <option value="">Cancelada</option>
+                                </select>
+                            </div>
+                            <div class="my-2">
+                                <label for="state" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Observaciones:</label>
+                                <input type="text" id="description" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                            </div>
+                            <div class="my-2">
+                                <button type="submit" class="flex my-4 mx-auto text-white bg-primary-500 border-0 py-2 px-4 focus:outline-none hover:bg-primary-600 rounded text-base">
+                                    Aceptar
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>  
+
+    <div class="w-full px-5 mx-auto">
+        <div id="accordion-open" data-accordion="collapse" data-active-classes="bg-blue-100 dark:bg-gray-800 text-blue-600 dark:text-white">
+            <h2 id="accordion-open-heading-1">
+                <button type="button" class="flex items-center justify-between w-full p-5 font-medium text-left text-gray-500 border border-b-1 border-gray-200 rounded-t-xl focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-800 dark:border-gray-700 dark:text-gray-400 hover:bg-indigo-100 dark:hover:bg-gray-800" data-accordion-target="#accordion-open-body-1" aria-expanded="false" aria-controls="accordion-open-body-1">
+                    <span class="flex items-center">
+                        <svg class="w-5 h-5 mr-2 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 21 18">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.5 3h9.563M9.5 9h9.563M9.5 15h9.563M1.5 13a2 2 0 1 1 3.321 1.5L1.5 17h5m-5-15 2-1v6m-2 0h4"/>
+                        </svg>
+                        Historial de estados
+                    </span>
+                    <svg data-accordion-icon class="w-3 h-3 rotate-180 shrink-0" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 10 6">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5 5 1 1 5"/>
+                    </svg>
+                </button>
+            </h2>
+            <div id="accordion-open-body-1" class="hidden" aria-labelledby="accordion-open-heading-1">
+                <section class="text-gray-600 body-font border border-indigo-200 rounded-lg">
+                    <div class="container px-5 py-4 mx-auto flex flex-wrap">
+                        <div class="flex flex-wrap w-full">
+                            <div class="w-full">
+                                <div class="flex relative pb-12">
+                                    <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
+                                        <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
+                                    </div>
+                                    <div class="flex-shrink-0 w-10 h-10 rounded-full bg-indigo-500 inline-flex items-center justify-center text-white relative z-10">
+                                        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                            <path stroke="currentColor" stroke-linejoin="round" stroke-width="2" d="M10 6v4l3.276 3.276M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="grid max-[425px]:grid-cols-1 grid-cols-2 pl-4">
+                                        <div>
+                                            <span class="bg-blue-100 text-blue-800 text-base font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">
+                                                En proceso
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <h2 class="font-medium title-font text-base text-gray-900 px-2.5 py-0.5 tracking-wider">
+                                                05/08/2019
+                                            </h2>
+                                        </div>
+                                        <p class="leading-relaxed mt-2">VHS cornhole pop-up, try-hard 8-bit iceland helvetica. Kinfolk bespoke try-hard cliche palo santo offal.</p>
+                                    </div>
+                                </div>
+                                <div class="flex relative pb-12">
+                                    <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
+                                        <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
+                                    </div>
+                                    <div class="flex-shrink-0 w-10 h-10 rounded-full bg-indigo-500 inline-flex items-center justify-center text-white relative z-10">
+                                        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-5 h-5" viewBox="0 0 24 24">
+                                            <path d="M22 11.08V12a10 10 0 11-5.93-9.14"></path>
+                                            <path d="M22 4L12 14.01l-3-3"></path>
+                                        </svg>
+                                    </div>
+                                    <div class="flex-grow pl-4">
+                                        <span class="bg-green-100 text-green-800 text-base font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-green-900 dark:text-green-300">
+                                            Aceptada
+                                        </span>
+                                        <p class="leading-relaxed mt-2">Vice migas literally kitsch +1 pok pok. Truffaut hot chicken slow-carb health goth, vape typewriter.</p>
+                                    </div>
+                                </div>
+                                <div class="flex relative pb-12">
+                                    <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
+                                        <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
+                                    </div>
+                                    <div class="flex-shrink-0 w-10 h-10 rounded-full bg-indigo-500 inline-flex items-center justify-center text-white relative z-10">
+                                        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 20">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 5h16M7 8v8m4-8v8M7 1h4a1 1 0 0 1 1 1v3H6V2a1 1 0 0 1 1-1ZM3 5h12v13a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V5Z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="flex-grow pl-4">
+                                        <span class="bg-red-100 text-red-800 text-base font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">
+                                            Rechazada
+                                        </span>
+                                        <p class="leading-relaxed mt-2">Coloring book nar whal glossier master cleanse umami. Salvia +1 master cleanse blog taiyaki.</p>
+                                    </div>
+                                </div>
+                            <div class="flex relative pb-12">
+                                <div class="h-full w-10 absolute inset-0 flex items-center justify-center">
+                                    <div class="h-full w-1 bg-gray-200 pointer-events-none"></div>
+                                </div>
+                                <div class="flex-shrink-0 w-10 h-10 rounded-full bg-indigo-500 inline-flex items-center justify-center text-white relative z-10">
+                                    <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 10h3.439a.991.991 0 0 1 .908.6 3.978 3.978 0 0 0 7.306 0 .99.99 0 0 1 .908-.6H17M1 10v6a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-6M1 10l2-9h12l2 9M6 4h6M5 7h8"/>
+                                    </svg>
+                                </div>
+                                <div class="flex-grow pl-4">
+                                    <span class="bg-gray-100 text-gray-800 text-base font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-gray-300">
+                                        Finalizada
+                                    </span>
+                                    <p class="leading-relaxed mt-2">VHS cornhole pop-up, try-hard 8-bit iceland helvetica. Kinfolk bespoke try-hard cliche palo santo offal.</p>
+                                </div>
+                            </div>
+                                <div class="flex relative">
+                                    <div class="flex-shrink-0 w-10 h-10 rounded-full bg-indigo-500 inline-flex items-center justify-center text-white relative z-10">
+                                        <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m13 7-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="flex-grow pl-4">
+                                        <span class="bg-yellow-100 text-yellow-800 text-base font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-yellow-900 dark:text-yellow-300">
+                                            Cancelada
+                                        </span>
+                                        <p class="leading-relaxed mt-2">Pitchfork ugh tattooed scenester echo park gastropub whatever cold-pressed retro.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <section class="text-gray-600 body-font">
+        <div class="w-full px-5 py-6 mx-auto">
+            <div class="lg:w-1/2 w-full mb-6 lg:mb-0">
+                <div class="h-0.5 w-full bg-indigo-500 rounded-sm"></div>
+                <div class="flex my-2">
+                    <h1 class="text-xl font-medium title-font text-gray-900">
+                        Mensajes
+                    </h1>
+                    <span class="text-indigo-600 inline-flex items-center leading-none text-base ml-2">
+                        <svg class="w-6 h-7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" viewBox="0 0 24 24">
+                            <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"></path>
+                        </svg>
+                    </span>
+                </div>
+                <!-- <div class="h-0.5 w-full bg-indigo-500 rounded-sm"></div> -->
+            </div>
+            <div class="flex items-center mx-auto border-b p-2.5 mb-2.5 rounded-md border-gray-200 hover:bg-indigo-100 sm:flex-row flex-col">
+                <div class="h-11 w-11 sm:mr-10 inline-flex items-center justify-center rounded-full bg-indigo-100 text-indigo-500 flex-shrink-0">
+                    <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z"/>
+                    </svg>
+                </div>
+                <div class="flex-grow sm:text-left text-center mt-6 sm:mt-0">
+                    <h2 class="text-gray-900 text-base title-font font-medium mb-2">
+                        Tú
+                    </h2>
+                    <p class="leading-relaxed text-sm">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad tempora a beatae repudiandae? Accusantium veritatis libero deleniti dolores sunt saepe dicta minus repellat, eos, nemo sed, fuga ipsa cum laboriosam.
+                    </p>
+                </div>
+            </div>
+            <div class="flex items-center mx-auto border-b p-2.5 mb-2.5 rounded-md border-gray-200 hover:bg-indigo-100 sm:flex-row flex-col">
+                <div class="flex-grow sm:text-left text-center mt-6 sm:mt-0">
+                    <h2 class="text-gray-900 text-base title-font font-medium mb-2">
+                        Laurence Thiago
+                    </h2>
+                    <p class="leading-relaxed text-sm">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Minima exercitationem consequuntur officiis earum, molestias, ipsum voluptates incidunt assumenda laboriosam minus reiciendis quos iusto numquam ipsam placeat reprehenderit fugit? Molestiae, modi.
+                    </p>
+                </div>
+                <div class="h-11 w-11 sm:order-none order-first sm:ml-10 inline-flex items-center justify-center rounded-full bg-indigo-100 text-indigo-500 flex-shrink-0">
+                    <svg class="w-6 h-6" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0 0a8.949 8.949 0 0 0 4.951-1.488A3.987 3.987 0 0 0 11 14H9a3.987 3.987 0 0 0-3.951 3.512A8.948 8.948 0 0 0 10 19Zm3-11a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                    </svg>
+                </div>
+            </div>
+            <form action="#" method="POST" class="w-full">
+                <div class="mt-5 w-full">
+                    <div class="relative">
+                        <label for="message" class="leading-7 text-base text-gray-800">Nuevo mensaje</label>
+                        <textarea id="message" name="message" required maxlength="255" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 h-16 text-base outline-none text-gray-700 py-1 px-3 resize-none leading-6 transition-colors duration-200 ease-in-out"></textarea>
+                    </div>
+                </div>
+                <button type="submit" class="flex my-4 mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">
+                    Enviar
+                </button>
+            </form>
+        </div>
+    </section>
+{% endblock %}
