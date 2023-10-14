@@ -5,6 +5,7 @@ from src.core.models import user_institution
 from src.core.models import role
 from src.core.models import permission
 from src.core.models import system
+from src.core.models import service_order
 
 
 def create_system():
@@ -65,6 +66,45 @@ def create_institutions_and_services():
     institution.assign_service(i1,s1)
     institution.assign_service(i1,s3)
     institution.assign_service(i2,s2)
+    print("----> Finalizado! <----")
+    
+    
+def create_services_orders():
+    print("----> Creando pedidos de servicios...")
+    user00 = user.find_user("User00")
+    user01 = user.find_user("User01")
+    user02 = user.find_user("User02")
+    s1 = institution.get_service_by_name("Revestimiento")
+    s2 = institution.get_service_by_name("Alisado")
+    s3 = institution.get_service_by_name("Tinta a revear")
+    so1 = service_order.create_order(
+        title = "Revestimiento de grano grueso",
+        user = user00,
+        service = s1,
+        description = "Necesito un revestimiento de grano grueso para las paredes de mi casa",
+        status = "Pendiente"
+    )
+    so2 = service_order.create_order(
+        title = "Tinta a revear de grano fino",
+        user = user01,
+        service = s3,
+        description = "Necesito una tinta para revear de grano fino para las paredes de mi casa",
+        status = "Pendiente"
+    )
+    so3 = service_order.create_order(
+        title = "Alisado de muchas capas de masilla",
+        user = user02,
+        service = s2,
+        description = "Necesito un alisado de muchas capas de masilla para las paredes de mi casa",
+        status = "Pendiente"
+    )
+    so4 = service_order.create_order(
+        title = "Revestimiento de grano grueso dos",
+        user = user02,
+        service = s1,
+        description = "Necesito un revestimiento de grano grueso para las paredes de mi casa",
+        status = "Pendiente"
+    )
     print("----> Finalizado! <----")
 
 def create_users():
@@ -304,6 +344,7 @@ def run():
     create_system()
     create_users()
     create_institutions_and_services()
+    create_services_orders()
     create_roles()
     create_permissions()
     assign_permissions_to_roles()

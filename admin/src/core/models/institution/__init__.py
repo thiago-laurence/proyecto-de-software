@@ -170,6 +170,13 @@ def get_service_by_name_and_institution(name, institution_id):
     service = Service.query.filter(Service.name == name, Service.institution_id == institution_id).first()
     return service
 
+def get_service_by_name(name):
+    """
+    Me devuelve un servicio por nombre.
+    """   
+    service = Service.query.filter(Service.name == name).first()
+    return service
+
 def check_if_service_exists_by_name_update(institution_id, name,id):
     service = Service.query.filter(Service.name == name, Service.institution_id == institution_id, Service.id != id).first()
     return service is not None
