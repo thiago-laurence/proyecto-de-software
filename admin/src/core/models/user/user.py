@@ -15,6 +15,8 @@ class User(db.Model):
     active = db.Column(db.Boolean, default=True)
     confirmed = db.Column(db.Boolean, default=False)
     institutions = db.relationship("UserInstitution", back_populates="user", lazy=True)
+    comments = db.relationship('Comment', back_populates='user', lazy=True)
+    service_orders = db.relationship('Service_order', back_populates='user', lazy=True)
     
     updated_at = db.Column(
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
