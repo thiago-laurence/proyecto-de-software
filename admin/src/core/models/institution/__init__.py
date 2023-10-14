@@ -28,6 +28,8 @@ def total_intitutions_pages():
     """
     per_page = system.pages()  # Cantidad de instituciones por página
     total_institutions = Institution.query.count()  # Total de instituciones
+    if(total_institutions == 0):
+        return 1
     total_pages = (total_institutions + per_page - 1)// per_page  # Cálculo de páginas
     return total_pages
     
