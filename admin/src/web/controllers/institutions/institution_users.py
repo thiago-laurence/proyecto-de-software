@@ -12,10 +12,21 @@ def index(institution_id):
     """"
     Renderiza el template para los usuarios de cada institucion.
     """
-    return render_template("institutions/institution_users.html", users=institution.list_users_from_institution(institution_id),institution=institution.get_institution_by_id(institution_id))
+    page = request.args.get("page", 1, type=int)
+    query = request.args.get("query", "", type=str)
+    active = request.args.get("active", "", type=str)
+
+    if active != "":
+        active = True if active == "True" else False
+
+    users = institution.list_users_from_institution(institution_id,page, query, active)
+    
+    i = institution.get_institution_by_id(institution_id)
+    return render_template("institutions/institution_users.html", institution=i,users=users[0], total_pages=users[1], page=page, query=query, active=active)
 
 @iu_blueprint.post("/<institution_id>/add-user")
-def add_user(institution_id):
+@auth.permission_required("ui_create")
+def add_user(institution_id): 
     """
     Agrega un usuario a la institucion
     """
@@ -40,18 +51,54 @@ def add_user(institution_id):
         }
 
     return redirect(url_for('.index', institution_id = institution_id))
-        
+
+
+@iu_blueprint.post("/<institution_id>/edit-user")
+@auth.permission_required("ui_update")
+def edit_user_role(institution_id): 
+    """
+    Edito el rol de un usuario de la institucion
+    """
+
+    
+    u = user.find_user(request.form.get("user-name"))
+    i = institution.get_institution_by_id(institution_id)
+    r = role.get_role_by_name(request.form.get("edit-role"))
+    
+    if (u is None) or (i is None) or (r is None):
+        flash("Por favor, seleccione un usuario", "error")
+    else:
+        user_institution.edit_user_role(i.id, u.id, r.id)
+
+    return redirect(url_for('.index', institution_id = institution_id))
+
+@iu_blueprint.route("/<institution_id>/remove-user/<user_id>", methods=['DELETE'])
+@auth.permission_required('ui_destroy')
+def remove_user_from_institution(institution_id, user_id):
+    res = user_institution.remove_user_from_institution(institution_id, user_id)
+    data = {
+            'url': '/institutions/' + str(institution_id) + '/users'
+        }
+    if res:
+        flash("El usuario fue eliminado correctamente", "success")
+    else:
+        flash("El usuario no pudo ser eliminado", "error")
+    return jsonify(data)
+    
 
 
 @iu_blueprint.get("/<institution_id>/users-not-in")
-@auth.login_required
+@auth.permission_required('ui_index')
 def list_users_not_in_institution(institution_id):
     """
     Retorna en JSON los usuarios que no estan en la institucion.
     """
     page = request.args.get("page", 1, type=int)
-    query = request.args.get("query", "", type=str)
-    active = ""
+    query = request.args.get("q", "", type=str)
+    active = request.args.get("active", "", type=str)
+
+    if (active != ""):
+        active = True if active == 'true' else False
     
     users = institution.list_users_not_in_institution(institution_id, query, page, active)
     serialized_users = []
@@ -71,7 +118,8 @@ def list_users_not_in_institution(institution_id):
         "users": serialized_users,
         "page": page,
         "query": query,
-        "total_pages": users[1]
+        "total_pages": users[1],
+        "active": active
     }
     
     # return render_template("users/index.html", form_create=form_create, users=users[0], total_pages=users[1], page=page, query=query, active=active)

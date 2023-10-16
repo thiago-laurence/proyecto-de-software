@@ -10,3 +10,21 @@ def create_user_institution_role(**kwargs):
     db.session.add(user_institution)
     db.session.commit()
     return user_institution
+
+def remove_user_from_institution(institution_id, user_id):
+    ui = UserInstitution.query.filter_by(institution_id = institution_id, user_id = user_id).first()
+    if ui:
+        db.session.delete(ui)
+        db.session.commit()
+        return True
+    else:
+        return False
+    
+def edit_user_role(institution_id, user_id, role_id):
+     ui = UserInstitution.query.filter_by(institution_id = institution_id, user_id = user_id).first()
+     if ui:
+         ui.role_id = role_id
+         db.session.commit()
+         return True
+     else:
+         return False

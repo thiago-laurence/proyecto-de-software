@@ -2,7 +2,9 @@ from src.core.models.institution.institution import Institution
 from src.core.models.institution.service import Service
 from src.core.models import system
 from src.core.models import role
+from src.core.models import user
 from src.core.models.user.user import User
+from src.core.models.role.role import Role
 from src.core.models.user_institution import UserInstitution
 from src.core.database import db
 from sqlalchemy import or_
@@ -190,29 +192,50 @@ def get_institution_by_name(name):
     """
     return Institution.query.filter_by(name=name).first()
 
-def list_users_from_institution(institution_id):
+def list_users_from_institution(institution_id, page, query, active):
     """
     Me devuelve todos los usuarios de una institucion
-    """   
-    institution = Institution.query.get(institution_id)
+    """
+    role_root = role.get_role_by_name("SuperAdministrador/a")
+    user_root = UserInstitution.query.filter(UserInstitution.role_id == role_root.id).first()
+
+    usuarios_en_institucion = UserInstitution.query.filter(UserInstitution.institution_id == institution_id).paginate(page=page, per_page=system.pages(), error_out=False)
     
-    if institution:
-        users = []
-        # Accede a los usuarios de la institución a través de la relación 'users' en el modelo Institution
-        for user_institution in institution.users:
-            user = user_institution.user
-            role = user_institution.role
-            
+    users = []
+    for ui in usuarios_en_institucion:
+            u = User.query.filter(User.id == ui.user_id).first()
+            r = Role.query.filter(Role.id == ui.role_id).first()
             users.append({
-                "id": user.id,
-                "username": user.username,
-                "email": user.email,
-                "role": role.name,
-                "active": user.active,
-                "inserted_at": user_institution.inserted_at
+                "id": ui.user_id,
+                "username": u.username,
+                "email": u.email,
+                "role": r.name,
+                "active": u.active,
+                "inserted_at": ui.inserted_at
             })
-        return users
-    return None
+
+    return users,usuarios_en_institucion.pages
+
+    #return usuarios_en_institucion, usuarios_en_institucion.pages
+    
+
+    # if institution:
+    #     users = []
+    #     # Accede a los usuarios de la institución a través de la relación 'users' en el modelo Institution
+    #     for user_institution in institution.users:
+    #         user = user_institution.user
+    #         role = user_institution.role
+            
+    #         users.append({
+    #             "id": user.id,
+    #             "username": user.username,
+    #             "email": user.email,
+    #             "role": role.name,
+    #             "active": user.active,
+    #             "inserted_at": user_institution.inserted_at
+    #         })
+    #     return users
+    # return None
 
 def list_users_not_in_institution(institution_id, query, page, active):
     """
