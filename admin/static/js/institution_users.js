@@ -17,7 +17,8 @@ async function loadUserList(id) {
       }
 
       // Convertir la respuesta a JSON
-      const userList = await response.json();
+      const data = await response.json();
+      const userList = data.users;
 
       // Actualizar la lista en el DOM
       const userListContainer = document.getElementById("users-not-in-list"); // Agrega una clase a tu contenedor de lista

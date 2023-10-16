@@ -49,9 +49,13 @@ def list_users_not_in_institution(institution_id):
     """
     Retorna en JSON los usuarios que no estan en la institucion.
     """
-    users = institution.list_users_not_in_institution(institution_id)
+    page = request.args.get("page", 1, type=int)
+    query = request.args.get("query", "", type=str)
+    active = ""
+    
+    users = institution.list_users_not_in_institution(institution_id, query, page, active)
     serialized_users = []
-    for user in users:
+    for user in users[0]:
         serialized_user = {
             "id": user.id,
             "email": user.email,
@@ -62,5 +66,13 @@ def list_users_not_in_institution(institution_id):
             "confirmed": user.confirmed,
         }
         serialized_users.append(serialized_user)
-
-    return jsonify(serialized_users)
+    
+    data = {
+        "users": serialized_users,
+        "page": page,
+        "query": query,
+        "total_pages": users[1]
+    }
+    
+    # return render_template("users/index.html", form_create=form_create, users=users[0], total_pages=users[1], page=page, query=query, active=active)
+    return jsonify(data)

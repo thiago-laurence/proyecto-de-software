@@ -146,6 +146,15 @@ def create_users():
         active = True,
         confirmed = True
     )
+    user.create_user(
+        email = "user03@gmail.com",
+        username = "user03",
+        name = "User",
+        lastname = "03",
+        password = hash_default_pass.decode('utf-8'),
+        active = True,
+        confirmed = True
+    )
     print("----> Finalizado! <----")
 
 def create_roles():
@@ -303,10 +312,12 @@ def assign_roles_to_users():
     operator = role.get_role_by_name("Operador/a")
     i0 = institution.get_institution_by_name("CIDEPINT")
     i1 = institution.get_institution_by_name("Alba pinturas")
+    i2 = institution.get_institution_by_name("Ancaflex")
     root = user.find_user("Root")
     user00 = user.find_user("User00")
     user01 = user.find_user("User01")
     user02 = user.find_user("User02")
+    user03 = user.find_user("User03")
     ui_root = user_institution.create_user_institution_role(
         user = root,
         institution = i0,
@@ -332,12 +343,18 @@ def assign_roles_to_users():
         institution = i0,
         role = operator
     )
+    ui_user03 = user_institution.create_user_institution_role(
+        user = user03,
+        institution = i2,
+        role = owner
+    )
     
     user.assign_institution_and_role(root, [ui_root])
     user.assign_institution_and_role(user00, [ui_user00])
     user.assign_institution_and_role(user01, [ui_user01])
     user.assign_institution_and_role(user02, [ui_user02])
     user.assign_institution_and_role(user02, [ui_user021])
+    user.assign_institution_and_role(user03, [ui_user03])
     print("----> Finalizado! <----")
 
 def run():

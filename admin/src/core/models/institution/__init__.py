@@ -1,6 +1,7 @@
 from src.core.models.institution.institution import Institution
 from src.core.models.institution.service import Service
 from src.core.models import system
+from src.core.models import role
 from src.core.models.user.user import User
 from src.core.models.user_institution import UserInstitution
 from src.core.database import db
@@ -213,18 +214,24 @@ def list_users_from_institution(institution_id):
         return users
     return None
 
-def list_users_not_in_institution(institution_id):
+def list_users_not_in_institution(institution_id, query, page, active):
     """
     Retorna los usuarios que no están en la institución.
     """
+    role_root = role.get_role_by_name("SuperAdministrador/a")
+    user_root = UserInstitution.query.filter(UserInstitution.role_id == role_root.id).first()
 
     # Realiza una consulta para obtener los IDs de los usuarios en la institución
     subquery = db.session.query(UserInstitution.user_id).filter(UserInstitution.institution_id == institution_id).subquery()
 
     # Realiza una consulta para obtener los usuarios que NO están en la institución
-    usuarios_no_en_institucion = User.query.filter(User.id.notin_(subquery)).all()
+    # usuarios_no_en_institucion = User.query.filter(User.id != user_root.id, User.id.notin_(subquery)).paginate(page=page, per_page=system.pages(), error_out=False)
+    if active == "":
+        usuarios_no_en_institucion = User.query.filter(User.id != user_root.id, User.id.notin_(subquery), or_(User.email.ilike(f"%{query}%"))).paginate(page=page, per_page=system.pages(), error_out=False)
+    else:
+        usuarios_no_en_institucion = User.query.filter(User.id != user_root.id, User.active == active, User.id.notin_(subquery), or_(User.email.ilike(f"%{query}%"))).paginate(page=page, per_page=system.pages(), error_out=False)
 
-    return usuarios_no_en_institucion
+    return usuarios_no_en_institucion, usuarios_no_en_institucion.pages
 
 def services_serch(substr, page, per_page):
     """
