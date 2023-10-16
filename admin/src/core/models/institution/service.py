@@ -26,13 +26,3 @@ class Service(db.Model):
     inserted_at = db.Column(
         db.DateTime, default=datetime.utcnow
     )
-    
-    def to_json(self):
-        service_dict = {
-            'name': self.name,
-            'description': self.info,
-            'laboratory': self.institution.name,
-            'keywords': self.key_words,
-            'enabled': self.is_enabled
-        }
-        return service_dict

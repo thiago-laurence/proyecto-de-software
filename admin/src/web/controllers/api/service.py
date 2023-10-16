@@ -3,6 +3,7 @@ from src.core.models.institution import service as Service
 from src.core.models import user
 from flask import Blueprint, jsonify, request
 from src.web.helpers import auth
+from src.web.schemas.services import services_schema,service_schema
 
 
 api_services = Blueprint("api_services", __name__, url_prefix="/services")
@@ -17,23 +18,29 @@ def search():
         return jsonify({"error": "Parámetros inválidos"}), 400
         
     substr = request.args.get("q")
+    page = request.args.get("page", 1, type=int)
+    per_page = request.args.get("per_page", 10, type=int)
     
-    services = Institutions.services_serch(substr)
+    total_pages = Institutions.total_services_pages_for_search(substr,page,per_page)
+    
+    if(page <= total_pages and page > 0):
+    
+        services = Institutions.services_serch(substr,page,per_page)
 
-    #intitution = Institutions.get_institution_by_id(institution_id)
-
-    if len(services) == 0:
-        return jsonify({"mensaje": "No se encontraron resultados"}), 200
-    
-    rta = {
-        "data": [   
-        ]
-    }
-    
-    for service in services:
-        rta["data"].append(service.to_json())
+        if services.total == 0:
+            return jsonify({"mensaje": "No se encontraron resultados"}), 200
         
-    return jsonify(rta), 200
+        data = services_schema.dump(services)
+        rta = {
+            "data": data,
+            "page": page,
+            "per_page": per_page,
+            "total": total_pages
+        }
+            
+        return jsonify(rta), 200
+    else:
+        return jsonify({"error":"No hay elementos en esa pagina"})
 
 @api_services.get("/<service_id>")
 @auth.login_required
@@ -41,15 +48,12 @@ def search_by_id(service_id):
     """
     Retorna en formato JSON la información del servicio que coincida con la búsqueda.
     """
-    if service_id == "":
-        return jsonify({"error": "Parámetros inválidos"}), 400
-    
     service = Institutions.get_service_by_id(service_id)
 
     if service is None:
         return jsonify({"error": "No se encontraron resultados"}), 404
     
-    return jsonify(service.to_json()), 200
+    return service_schema.dump(service), 200
 
 
 @api_services.get("/services-types")
@@ -59,8 +63,6 @@ def get_services_types():
     """
     if "Authorization" in request.headers:
         username = request.headers["Authorization"].split(":")[0]
-                
-        print("nombre de usuario: ",username)
     
         usuario = user.find_user(username)
         

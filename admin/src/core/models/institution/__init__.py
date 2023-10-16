@@ -14,19 +14,18 @@ def list_institutions():
     institutions = Institution.query.all()
     return institutions
 
-def list_institutions_paginated(page):
+def list_institutions_paginated(page, per_page):
     """
     Me devuelve todas las instituciones.
     """
     
-    institutions = Institution.query.paginate(page=page, per_page=system.pages(), error_out=False)
+    institutions = Institution.query.paginate(page=page, per_page=per_page, error_out=False)
     return institutions
 
-def total_intitutions_pages():
+def total_intitutions_pages(per_page):
     """
     Me devuelve la cantidad de paginas que ocupan las instituciones.
-    """
-    per_page = system.pages()  # Cantidad de instituciones por página
+    """  # Cantidad de instituciones por página
     total_institutions = Institution.query.count()  # Total de instituciones
     if(total_institutions == 0):
         return 1
@@ -111,11 +110,10 @@ def list_services_by_intitution_paginated(page,institution_id):
 
     return services
 
-def total_services_pages(institution_id):
+def total_services_pages(institution_id, per_page):
     """
     Me devuelve la cantidad de paginas que ocupan las instituciones.
     """
-    per_page = system.pages()  # Cantidad de servicios por página
     services = Service.query.filter(Service.institution_id == institution_id).all()  # Total de servicios
     total_services = len(services)
     if(total_services == 0):
@@ -228,9 +226,22 @@ def list_users_not_in_institution(institution_id):
 
     return usuarios_no_en_institucion
 
-def services_serch(substr):
+def services_serch(substr, page, per_page):
     """
         Retorna los servicios que coincidan con la búsqueda por substring.
     """
-    services = Service.query.filter( or_(Service.name.ilike(f"%{substr}%"),Service.info.ilike(f"%{substr}%"), Service.key_words.ilike(f"%{substr}%"))).all()
+    services = Service.query.filter( or_(Service.name.ilike(f"%{substr}%"),Service.info.ilike(f"%{substr}%"), Service.key_words.ilike(f"%{substr}%"))).paginate(page=page, per_page=per_page, error_out=False)
     return services
+
+
+def total_services_pages_for_search(substr, page, per_page):
+    """
+    Me devuelve la cantidad de paginas que ocupan los servicios coincidentes con el substr.
+    """
+    services = services_serch(substr, page, per_page)  # Total de servicios
+    total_services = services.total
+    if(total_services == 0):
+        return 1
+    total_pages = ((total_services + per_page) - 1)// per_page  # Cálculo de páginas
+    
+    return total_pages

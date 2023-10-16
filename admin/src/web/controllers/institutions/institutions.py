@@ -1,8 +1,9 @@
 from flask import Blueprint, render_template, request, flash, redirect,url_for, json, Response
 from src.core.models import institution
 from src.web.forms.institution_form import InstitutionForm
-from src.core.models import user
+from src.core.models import user, system
 from src.web.helpers import auth
+
 
 from src.web.controllers.institutions.institution_users import iu_blueprint
 
@@ -19,8 +20,9 @@ def index():
     form = InstitutionForm(request.form)
     
     page = request.args.get("page", 1, type=int)
-    total_pages=institution.total_intitutions_pages()
-    institutions = institution.list_institutions_paginated(page)
+    total_pages=institution.total_intitutions_pages(system.pages())
+    institutions = institution.list_institutions_paginated(page,system.pages())
+    
     if(page <= total_pages and page > 0):
         return render_template("institutions/index.html", institutions=institutions, users = user.get_users(), page=page, form=form)
     else:

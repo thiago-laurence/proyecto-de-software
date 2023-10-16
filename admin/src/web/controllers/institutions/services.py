@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, flash, redirect,url_for,json, Response
 from src.web.forms.service_form import ServiceCreateForm
-from src.core.models import institution
+from src.core.models import institution, system
 from src.web.helpers import auth
 
 
@@ -16,7 +16,7 @@ def index(institution_id):
     form = ServiceCreateForm(request.form)
     
     page = request.args.get('page', 1, type=int)
-    total_pages = institution.total_services_pages(institution_id)
+    total_pages = institution.total_services_pages(institution_id, system.pages())
     services = institution.list_services_by_intitution_paginated(page,institution_id)
     insti = institution.get_institution_by_id(institution_id)
     
