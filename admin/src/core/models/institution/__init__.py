@@ -1,6 +1,7 @@
 from src.core.models.institution.institution import Institution
 from src.core.models.institution.service import Service
 from src.core.models import system
+from src.core.models import role
 from src.core.models.user.user import User
 from src.core.models.user_institution import UserInstitution
 from src.core.database import db
@@ -14,20 +15,21 @@ def list_institutions():
     institutions = Institution.query.all()
     return institutions
 
-def list_institutions_paginated(page):
+def list_institutions_paginated(page, per_page):
     """
     Me devuelve todas las instituciones.
     """
     
-    institutions = Institution.query.paginate(page=page, per_page=system.pages(), error_out=False)
+    institutions = Institution.query.paginate(page=page, per_page=per_page, error_out=False)
     return institutions
 
-def total_intitutions_pages():
+def total_intitutions_pages(per_page):
     """
     Me devuelve la cantidad de paginas que ocupan las instituciones.
-    """
-    per_page = system.pages()  # Cantidad de instituciones por página
+    """  # Cantidad de instituciones por página
     total_institutions = Institution.query.count()  # Total de instituciones
+    if(total_institutions == 0):
+        return 1
     total_pages = (total_institutions + per_page - 1)// per_page  # Cálculo de páginas
     return total_pages
     
@@ -109,11 +111,10 @@ def list_services_by_intitution_paginated(page,institution_id):
 
     return services
 
-def total_services_pages(institution_id):
+def total_services_pages(institution_id, per_page):
     """
     Me devuelve la cantidad de paginas que ocupan las instituciones.
     """
-    per_page = system.pages()  # Cantidad de servicios por página
     services = Service.query.filter(Service.institution_id == institution_id).all()  # Total de servicios
     total_services = len(services)
     if(total_services == 0):
@@ -168,6 +169,13 @@ def get_service_by_name_and_institution(name, institution_id):
     service = Service.query.filter(Service.name == name, Service.institution_id == institution_id).first()
     return service
 
+def get_service_by_name(name):
+    """
+    Me devuelve un servicio por nombre.
+    """   
+    service = Service.query.filter(Service.name == name).first()
+    return service
+
 def check_if_service_exists_by_name_update(institution_id, name,id):
     service = Service.query.filter(Service.name == name, Service.institution_id == institution_id, Service.id != id).first()
     return service is not None
@@ -206,22 +214,41 @@ def list_users_from_institution(institution_id):
         return users
     return None
 
-def list_users_not_in_institution(institution_id):
+def list_users_not_in_institution(institution_id, query, page, active):
     """
     Retorna los usuarios que no están en la institución.
     """
+    role_root = role.get_role_by_name("SuperAdministrador/a")
+    user_root = UserInstitution.query.filter(UserInstitution.role_id == role_root.id).first()
 
     # Realiza una consulta para obtener los IDs de los usuarios en la institución
     subquery = db.session.query(UserInstitution.user_id).filter(UserInstitution.institution_id == institution_id).subquery()
 
     # Realiza una consulta para obtener los usuarios que NO están en la institución
-    usuarios_no_en_institucion = User.query.filter(User.id.notin_(subquery)).all()
+    # usuarios_no_en_institucion = User.query.filter(User.id != user_root.id, User.id.notin_(subquery)).paginate(page=page, per_page=system.pages(), error_out=False)
+    if active == "":
+        usuarios_no_en_institucion = User.query.filter(User.id != user_root.id, User.id.notin_(subquery), or_(User.email.ilike(f"%{query}%"))).paginate(page=page, per_page=system.pages(), error_out=False)
+    else:
+        usuarios_no_en_institucion = User.query.filter(User.id != user_root.id, User.active == active, User.id.notin_(subquery), or_(User.email.ilike(f"%{query}%"))).paginate(page=page, per_page=system.pages(), error_out=False)
 
-    return usuarios_no_en_institucion
+    return usuarios_no_en_institucion, usuarios_no_en_institucion.pages
 
-def services_serch(substr):
+def services_serch(substr, page, per_page):
     """
         Retorna los servicios que coincidan con la búsqueda por substring.
     """
-    services = Service.query.filter( or_(Service.name.ilike(f"%{substr}%"),Service.info.ilike(f"%{substr}%"), Service.key_words.ilike(f"%{substr}%"))).all()
+    services = Service.query.filter( or_(Service.name.ilike(f"%{substr}%"),Service.info.ilike(f"%{substr}%"), Service.key_words.ilike(f"%{substr}%"))).paginate(page=page, per_page=per_page, error_out=False)
     return services
+
+
+def total_services_pages_for_search(substr, page, per_page):
+    """
+    Me devuelve la cantidad de paginas que ocupan los servicios coincidentes con el substr.
+    """
+    services = services_serch(substr, page, per_page)  # Total de servicios
+    total_services = services.total
+    if(total_services == 0):
+        return 1
+    total_pages = ((total_services + per_page) - 1)// per_page  # Cálculo de páginas
+    
+    return total_pages

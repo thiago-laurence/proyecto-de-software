@@ -1,3 +1,4 @@
+console.log("layout.js");
 function selectInstitution(id){
     let data = {
         institution_id: id,

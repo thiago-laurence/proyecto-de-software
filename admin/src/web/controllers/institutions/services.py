@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, flash, redirect,url_for,json, Response
-from src.core.models import institution
+from src.web.forms.service_form import ServiceCreateForm
+from src.core.models import institution, system
 from src.web.helpers import auth
 
 
@@ -12,14 +13,15 @@ def index(institution_id):
     """"
     Renderiza el template para los servicios y los muestra.
     """
+    form = ServiceCreateForm(request.form)
+    
     page = request.args.get('page', 1, type=int)
-    total_pages = institution.total_services_pages(institution_id)
+    total_pages = institution.total_services_pages(institution_id, system.pages())
     services = institution.list_services_by_intitution_paginated(page,institution_id)
-    print(total_pages)
     insti = institution.get_institution_by_id(institution_id)
     
     if (page <= total_pages and page > 0):
-        return render_template("services/index.html", services=services,institution=insti, page=page)
+        return render_template("services/index.html", services=services,institution=insti, page=page, form=form)
     else:
         return redirect(url_for("services.index",institution_id=insti.id, page=total_pages))
 
@@ -31,27 +33,31 @@ def service_add(institution_id):
     """
     Metodo para agregar un nuevo servicio
     """
-    service = institution.get_service_by_name_and_institution(request.form.get("name"),institution_id)
+    form = ServiceCreateForm(request.form)
     
-    existe = service is not None
-    
-    if existe:
-        flash("El servicio " + request.form.get("name") + " ya se encuentra registrado para esta institucion.", "error")
-    
-    else:     
-        insti = institution.get_institution_by_id(institution_id)
-        institution.assign_service(
-            insti,
-            institution.create_service(
-                name= request.form.get("name"),
-                info= request.form.get("info"),
-                type= request.form.get("type"),
-                key_words = request.form.get("key_words"),
-            )
-        )
-        flash("El servicio " + request.form.get("name") + " fue registrado correctamente.", "success")   
-    return redirect(url_for("services.index",institution_id=institution_id))
+    if(form.validate_on_submit()):
+        service = institution.get_service_by_name_and_institution(form.name.data,institution_id)
         
+        existe = service is not None
+        
+        if existe:
+            flash("El servicio " + form.name.data + " ya se encuentra registrado para esta institucion.", "error")
+        
+        else:     
+            insti = institution.get_institution_by_id(institution_id)
+            institution.assign_service(
+                insti,
+                institution.create_service(
+                    name= form.name.data,
+                    info= form.info.data,
+                    type= form.type.data,
+                    key_words = form.key_words.data,
+                )
+            )
+            flash("El servicio " + form.name.data + " fue registrado correctamente.", "success")   
+        return redirect(url_for("services.index",institution_id=institution_id))
+    
+    return render_template("services/index.html", form=form)
         
 
 @services_blueprint.route("/services-delete/<service_id>", methods=["DELETE"])

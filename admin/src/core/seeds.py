@@ -5,6 +5,7 @@ from src.core.models import user_institution
 from src.core.models import role
 from src.core.models import permission
 from src.core.models import system
+from src.core.models import service_order
 
 
 def create_system():
@@ -66,6 +67,45 @@ def create_institutions_and_services():
     institution.assign_service(i1,s3)
     institution.assign_service(i2,s2)
     print("----> Finalizado! <----")
+    
+    
+def create_services_orders():
+    print("----> Creando pedidos de servicios...")
+    user00 = user.find_user("User00")
+    user01 = user.find_user("User01")
+    user02 = user.find_user("User02")
+    s1 = institution.get_service_by_name("Revestimiento")
+    s2 = institution.get_service_by_name("Alisado")
+    s3 = institution.get_service_by_name("Tinta a revear")
+    so1 = service_order.create_order(
+        title = "Revestimiento de grano grueso",
+        user = user00,
+        service = s1,
+        description = "Necesito un revestimiento de grano grueso para las paredes de mi casa",
+        status = "Pendiente"
+    )
+    so2 = service_order.create_order(
+        title = "Tinta a revear de grano fino",
+        user = user01,
+        service = s3,
+        description = "Necesito una tinta para revear de grano fino para las paredes de mi casa",
+        status = "Pendiente"
+    )
+    so3 = service_order.create_order(
+        title = "Alisado de muchas capas de masilla",
+        user = user02,
+        service = s2,
+        description = "Necesito un alisado de muchas capas de masilla para las paredes de mi casa",
+        status = "Pendiente"
+    )
+    so4 = service_order.create_order(
+        title = "Revestimiento de grano grueso dos",
+        user = user02,
+        service = s1,
+        description = "Necesito un revestimiento de grano grueso para las paredes de mi casa",
+        status = "Pendiente"
+    )
+    print("----> Finalizado! <----")
 
 def create_users():
     print("----> Creando usuarios...")
@@ -102,6 +142,15 @@ def create_users():
         username = "user02",
         name = "User",
         lastname = "02",
+        password = hash_default_pass.decode('utf-8'),
+        active = True,
+        confirmed = True
+    )
+    user.create_user(
+        email = "user03@gmail.com",
+        username = "user03",
+        name = "User",
+        lastname = "03",
         password = hash_default_pass.decode('utf-8'),
         active = True,
         confirmed = True
@@ -251,7 +300,7 @@ def assign_permissions_to_roles():
     for lista in [[p for p in service_permission if p.name != "service_destroy"],
                   [p for p in request_service_permission if p.name != "request_service_destroy"]]:
         permission_operator += lista
-    role.assign_permission(admin, permission_operator)
+    role.assign_permission(operator, permission_operator)
     
     print("----> Finalizado! <----")
 
@@ -263,10 +312,12 @@ def assign_roles_to_users():
     operator = role.get_role_by_name("Operador/a")
     i0 = institution.get_institution_by_name("CIDEPINT")
     i1 = institution.get_institution_by_name("Alba pinturas")
+    i2 = institution.get_institution_by_name("Ancaflex")
     root = user.find_user("Root")
     user00 = user.find_user("User00")
     user01 = user.find_user("User01")
     user02 = user.find_user("User02")
+    user03 = user.find_user("User03")
     ui_root = user_institution.create_user_institution_role(
         user = root,
         institution = i0,
@@ -292,18 +343,25 @@ def assign_roles_to_users():
         institution = i0,
         role = operator
     )
+    ui_user03 = user_institution.create_user_institution_role(
+        user = user03,
+        institution = i2,
+        role = owner
+    )
     
     user.assign_institution_and_role(root, [ui_root])
     user.assign_institution_and_role(user00, [ui_user00])
     user.assign_institution_and_role(user01, [ui_user01])
     user.assign_institution_and_role(user02, [ui_user02])
     user.assign_institution_and_role(user02, [ui_user021])
+    user.assign_institution_and_role(user03, [ui_user03])
     print("----> Finalizado! <----")
 
 def run():
     create_system()
     create_users()
     create_institutions_and_services()
+    create_services_orders()
     create_roles()
     create_permissions()
     assign_permissions_to_roles()

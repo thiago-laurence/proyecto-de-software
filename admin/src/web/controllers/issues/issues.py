@@ -14,3 +14,24 @@ def issue_index():
     # issues = Issues.issues_index()
     
     return render_template("issues/index.html", page=1, query="", active="", total_pages=1)
+
+
+@issues_blueprint.get("/<issue_id>")
+@auth.permission_required("request_service_show")
+def issue_show(issue_id):
+    """
+        Muestra la información de un issue.
+    """
+    # issue = Issues.issue_show(issue_id)
+
+    return render_template("issues/info.html", issue=None)
+
+@issues_blueprint.get("/<issue_id>/messages")
+@auth.permission_required("request_service_show")
+def issue_show_messages(issue_id):
+    """
+        Muestra los mensajes enviados en el issue.
+    """
+    # issue = Issues.issue_show(issue_id)
+
+    return render_template("issues/messages.html", issue=None)
