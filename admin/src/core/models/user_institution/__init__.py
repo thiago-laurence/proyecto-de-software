@@ -19,3 +19,12 @@ def remove_user_from_institution(institution_id, user_id):
         return True
     else:
         return False
+    
+def edit_user_role(institution_id, user_id, role_id):
+     ui = UserInstitution.query.filter_by(institution_id = institution_id, user_id = user_id).first()
+     if ui:
+         ui.role_id = role_id
+         db.session.commit()
+         return True
+     else:
+         return False
