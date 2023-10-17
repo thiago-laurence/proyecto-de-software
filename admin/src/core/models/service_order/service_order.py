@@ -66,6 +66,13 @@ class Service_order(db.Model):
     service_id = db.Column(db.Integer, db.ForeignKey("services.id", ondelete="CASCADE"))
     status_changes = db.relationship('Service_order_status_changed', back_populates='service_order', lazy=True)
     
+    @property
+    def status_actual(self):
+        service_order = Service_order_status_changed.query.filter(Service_order_status_changed.service_order_id == self.id)\
+            .order_by(Service_order_status_changed.id.desc()).first()
+        
+        return service_order.service_order_status_id
+    
     updated_at = db.Column(
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
     )

@@ -1,11 +1,12 @@
+from datetime import datetime
 from src.core.database import db
-from sqlalchemy import or_
-from src.core.models.service_order.service_order import Service_order, Service_order_status, Service_order_status_changed
-from src.core.models.service_order.service_order import Comment
+from sqlalchemy import or_, select, desc
+from src.core.models.service_order.service_order import Service_order, Service_order_status, Service_order_status_changed, Comment
+from src.core.models.institution.service import Service
 from src.core.models.user.user import User
 from src.core.models import system
 
-def list_page_service_request(page, type_service, status, date_from, date_to, user_email):
+def list_page_service_request(institution_id, page, type_service, status, date_from, date_to, user_email):
     """
     Me devuelve todas las paginas de solicitudes de servicio coincidentes con la busqueda.
     
@@ -17,8 +18,34 @@ def list_page_service_request(page, type_service, status, date_from, date_to, us
         date_from -> fecha desde la cual se quiere buscar. \n
         date_to -> fecha hasta la cual se quiere buscar. \n
     """
-    subquery = db.session.query(User.id).filter(User.email.ilike(f"%{user_email}%")).subquery()
-    orders = Service_order.query.filter(Service_order.user_id.in_(subquery)).paginate(page=page, per_page=system.pages(), error_out=False)
+    subquery = db.session.query(Service.id).filter(Service.institution_id == institution_id).subquery().select()
+    orders = Service_order.query.filter(Service_order.service_id.in_(subquery)).order_by(Service_order.inserted_at)
+    
+    if user_email != "":
+        orders = orders.filter(Service_order.user.has(User.email.ilike(f"%{user_email}%")))
+    if date_from != "" and date_to != "":
+        date_from = (datetime.strptime(date_from, '%d/%m/%Y')).strftime('%Y-%m-%d')
+        date_to = (datetime.strptime(date_to, '%d/%m/%Y')).strftime('%Y-%m-%d')
+        orders_from = orders.filter(Service_order.creation_date >= date_from, Service_order.creation_date <= date_to)
+        orders_to = orders.filter(Service_order.close_date <= date_to, Service_order.close_date >= date_from)
+        orders = orders_from.union(orders_to)
+    if status != "":
+        status = int(status)
+        subquery = (
+            db.session.query(Service_order_status_changed.service_order_status_id)
+            .filter(Service_order_status_changed.service_order_id == Service_order.id)
+            .order_by(desc(Service_order_status_changed.id))
+            .limit(1)
+            .subquery()
+        )
+        orders = orders.filter(subquery.as_scalar() == status)
+    if type_service != "":
+        type_service = int(type_service)
+        orders = orders.filter(Service_order.service.has(Service.type_service_id == type_service))
+    
+    
+    
+    orders = orders.paginate(page=page, per_page=system.pages(), error_out=False)
     
     return orders, orders.pages
 
@@ -54,7 +81,7 @@ def list_orders_paginated_by_user(page, per_page, user_id):
     orders = Service_order.query.filter(Service_order.user_id == user_id).paginate(page=page, per_page=per_page, error_out=False)
     return orders
 
-def list_status():
+def index_status():
     """
     Me devuelve todos los estados de orden de servicio.
     """
@@ -125,6 +152,7 @@ def get_actual_state(order_id):
     """
     Me devuelve el estado actual de una orden de servicio.
     """
-    status = Service_order_status_changed.query.filter(Service_order_status_changed.service_order_id == order_id).order_by(Service_order_status_changed.id.desc()).first()
+    status = Service_order_status_changed.query.filter(Service_order_status_changed.service_order_id == order_id)\
+        .order_by(Service_order_status_changed.id.desc()).first()
     
     return status

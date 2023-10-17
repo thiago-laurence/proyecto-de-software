@@ -1,5 +1,6 @@
 from src.core.models.institution.institution import Institution
 from src.core.models.institution.service import Service
+from src.core.models.institution.service import TypeService
 from src.core.models import system
 from src.core.models import role
 from src.core.models import user
@@ -275,3 +276,26 @@ def total_services_pages_for_search(substr, page, per_page):
     total_pages = ((total_services + per_page) - 1)// per_page  # Cálculo de páginas
     
     return total_pages
+
+def create_type_service(**kwargs):
+    """"
+    Crear un tipo de servicio.
+    """
+    type_service = TypeService(**kwargs)
+    db.session.add(type_service)
+    db.session.commit()
+    return type_service
+
+def index_type_service():
+    """
+    Me devuelve todos los tipos de servicios
+    """   
+    types_service = TypeService.query.all()
+    return types_service
+
+def get_type_service_by_name(name):
+    """
+    Me devuelve un tipo de servicio por id.
+    """   
+    type_service = TypeService.query.filter(TypeService.name == name).first()
+    return type_service

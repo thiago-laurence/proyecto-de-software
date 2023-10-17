@@ -1,0 +1,15 @@
+{% macro OptionSelect(select, list_values) %}
+    {% if select == "" %}
+        <option value="" selected>Todos</option>
+    {% else %}
+        <option value="">Todos</option>
+    {% endif %}
+
+    {% for item in list_values %}
+        {% if item.id|string == select %}
+            <option selected value="{{ item.id }}">{{ item.name }}</option>
+        {% else %}
+            <option value="{{ item.id }}">{{ item.name }}</option>
+        {% endif %}
+    {% endfor %}
+{%- endmacro %}

@@ -13,7 +13,7 @@ def is_authenticated(session):
     return session.get("user") is not None
 
 
-def system_available(system_id=1):
+def system_available():
     """
         Verifica si el sistema está disponible.
         
@@ -26,7 +26,7 @@ def system_available(system_id=1):
             Error 503 --> caso contrario.
     """
     
-    return system.is_available(system_id)
+    return system.is_available()
 
 
 def login_required(f):

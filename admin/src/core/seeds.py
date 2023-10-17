@@ -17,6 +17,19 @@ def create_system():
         activate = True
     )
 
+def create_type_services():
+    print("----> Creando tipos de servicios...")
+    institution.create_type_service(
+        name = "Analisis"
+    )
+    institution.create_type_service(
+        name = "Consultoria"
+    )
+    institution.create_type_service(
+        name = "Desarrollo"
+    )
+    print("----> Finalizado! <----")
+
 def create_institutions_and_services():
     print("----> Creando instituciones...")
     i = institution.create_institution(
@@ -43,23 +56,27 @@ def create_institutions_and_services():
         phone="221-29812732",
         social_networks="@ancaflex"
     )
+    
     print("----> Creando servicios...")
+    t1 = institution.get_type_service_by_name("Analisis")
+    t2 = institution.get_type_service_by_name("Consultoria")
+    t3 = institution.get_type_service_by_name("Desarrollo")
     s1 = institution.create_service(
         name="Revestimiento",
         info="De grano grueso",
-        type="Consultoria",
+        type_service=t2,
         key_words="Revestimiento, grano grueso, paredes"
     )
     s2 = institution.create_service(
         name="Alisado",
         info="De muchas capas de masilla",
-        type="Desarrollo",
+        type_service=t3,
         key_words="Alisado, masilla, paredes"
     )
     s3 = institution.create_service(
         name="Tinta a revear",
         info="Proceso de tintura a revestimiento de grano fino",
-        type="Analisis",
+        type_service=t1,
         key_words="Tinta, revear, grano fino"
     )
     print("----> Asignado servicios...")
@@ -95,36 +112,39 @@ def create_services_orders():
     s1 = institution.get_service_by_name("Revestimiento")
     s2 = institution.get_service_by_name("Alisado")
     s3 = institution.get_service_by_name("Tinta a revear")
-    en_proceso = service_order.get_order_status_by_name("En proceso")
-    aceptada = service_order.get_order_status_by_name("Aceptada")
-    finalizada = service_order.get_order_status_by_name("Finalizada")
-    cancelada = service_order.get_order_status_by_name("Cancelada")
-    rechazada = service_order.get_order_status_by_name("Rechazada")
     
     so1 = service_order.create_order(
-        title = "Revestimiento de grano grueso",
+        title = "Solicitud de revestimiento",
         user = user00,
         service = s1,
         description = "Necesito un revestimiento de grano grueso para las paredes de mi casa",
+        creation_date = "2020-01-01",
+        close_date = "2020-02-02",
     )
     so2 = service_order.create_order(
-        title = "Tinta a revear de grano fino",
+        title = "Solicitud de tinta a revear",
         user = user01,
         service = s3,
         description = "Necesito una tinta para revear de grano fino para las paredes de mi casa",
+        creation_date = "2021-01-01",
+        close_date = "2021-02-02",
     )
     
     so3 = service_order.create_order(
-        title = "Alisado de muchas capas de masilla",
+        title = "Solicitud de alisado",
         user = user02,
         service = s2,
         description = "Necesito un alisado de muchas capas de masilla para las paredes de mi casa",
+        creation_date = "2022-03-03",
+        close_date = "2022-04-04",
     )
     so4 = service_order.create_order(
-        title = "Revestimiento de grano grueso dos",
+        title = "Solicitud de revestimiento 2",
         user = user02,
         service = s1,
         description = "Necesito un revestimiento de grano grueso para las paredes de mi casa",
+        creation_date = "2023-03-01",
+        close_date = "2023-06-01",
     )
     
     service_order.add_comment(
@@ -393,6 +413,7 @@ def assign_roles_to_users():
 def run():
     create_system()
     create_users()
+    create_type_services()
     create_institutions_and_services()
     create_services_orders_status()
     create_services_orders()
