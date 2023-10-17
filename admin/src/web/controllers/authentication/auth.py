@@ -1,7 +1,8 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, session, Response, json
+from flask import Blueprint, render_template, request, flash, redirect, url_for, session, Response, jsonify
 from src.core.models import user as Users
 from src.web.forms import login_form as Forms
 from src.web.helpers import auth
+from src.core.models import user_institution
 
 auth_blueprint = Blueprint("auth", __name__, url_prefix="/login")
 
@@ -50,8 +51,11 @@ def authenticate():
 def update_actual_institution():
     id = request.json['institution_id']
     session['user']['actual_institution'] = id
-    print(session['user'])
-    return redirect(url_for("home.index"))
+    session['user']['layout'] = auth.render_layout(user_institution.get_role_id_by_user_and_institution(id, session['user']['id']))
+    data = {
+        "url": url_for('home.index')
+    }
+    return jsonify(data)
 
 @auth_blueprint.get("/logout")
 def logout():

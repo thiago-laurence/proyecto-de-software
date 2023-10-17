@@ -1,4 +1,4 @@
-console.log("layout.js");
+
 function selectInstitution(id){
     let data = {
         institution_id: id,
@@ -13,10 +13,11 @@ function selectInstitution(id){
     { 
         if (!response.ok) {
             throw new Error('La solicitud no fue exitosa');
+       
         }
         return response.json();
     })
-    .then(json => console.log(json))
+    .then(json => window.location.href = json['url'])
     .catch(err => {
         console.log(err)
     })  

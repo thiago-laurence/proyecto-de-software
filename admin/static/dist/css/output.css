@@ -1118,10 +1118,6 @@ div.flash.update.success {
   position: relative;
 }
 
-.sticky {
-  position: sticky;
-}
-
 .inset-0 {
   inset: 0px;
 }
@@ -1129,51 +1125,6 @@ div.flash.update.success {
 .inset-y-0 {
   top: 0px;
   bottom: 0px;
-}
-
-.inset-x-0 {
-  left: 0px;
-  right: 0px;
-}
-
-.inset-x-10 {
-  left: 2.5rem;
-  right: 2.5rem;
-}
-
-.-inset-y-px {
-  top: -1px;
-  bottom: -1px;
-}
-
-.-inset-y-1 {
-  top: -0.25rem;
-  bottom: -0.25rem;
-}
-
-.-inset-y-1\/2 {
-  top: -50%;
-  bottom: -50%;
-}
-
-.inset-x-1 {
-  left: 0.25rem;
-  right: 0.25rem;
-}
-
-.inset-x-1\/2 {
-  left: 50%;
-  right: 50%;
-}
-
-.-inset-x-1\/2 {
-  left: -50%;
-  right: -50%;
-}
-
-.-inset-x-2\/3 {
-  left: -66.666667%;
-  right: -66.666667%;
 }
 
 .bottom-0 {
@@ -1214,10 +1165,6 @@ div.flash.update.success {
 
 .top-3 {
   top: 0.75rem;
-}
-
-.top-\[100vh\] {
-  top: 100vh;
 }
 
 .z-10 {
@@ -1775,10 +1722,6 @@ div.flash.update.success {
   flex-direction: column;
 }
 
-.flex-col-reverse {
-  flex-direction: column-reverse;
-}
-
 .flex-wrap {
   flex-wrap: wrap;
 }
@@ -2177,6 +2120,11 @@ div.flash.update.success {
   background-color: rgb(253 246 178 / var(--tw-bg-opacity));
 }
 
+.bg-indigo-300 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(180 198 252 / var(--tw-bg-opacity));
+}
+
 .bg-opacity-50 {
   --tw-bg-opacity: 0.5;
 }
@@ -2389,14 +2337,6 @@ div.flash.update.success {
 
 .text-right {
   text-align: right;
-}
-
-.align-middle {
-  vertical-align: middle;
-}
-
-.align-bottom {
-  vertical-align: bottom;
 }
 
 .text-2xl {
@@ -2857,6 +2797,10 @@ div.flash.update.success {
   z-index: 10;
 }
 
+.focus\:border:focus {
+  border-width: 1px;
+}
+
 .focus\:border-blue-500:focus {
   --tw-border-opacity: 1;
   border-color: rgb(63 131 248 / var(--tw-border-opacity));
@@ -2880,6 +2824,11 @@ div.flash.update.success {
 .focus\:border-primary-600:focus {
   --tw-border-opacity: 1;
   border-color: rgb(37 99 235 / var(--tw-border-opacity));
+}
+
+.focus\:border-indigo-700:focus {
+  --tw-border-opacity: 1;
+  border-color: rgb(81 69 205 / var(--tw-border-opacity));
 }
 
 .focus\:bg-gray-100:focus {

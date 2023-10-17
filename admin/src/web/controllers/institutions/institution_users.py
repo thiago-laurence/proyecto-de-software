@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect,url_for, jsonify, flash
+from flask import Blueprint, render_template, request, redirect,url_for, jsonify, flash, session, abort
 from src.core.models import institution
 from src.core.models import user_institution
 from src.core.models import user
@@ -16,13 +16,18 @@ def index(institution_id):
     query = request.args.get("query", "", type=str)
     active = request.args.get("active", "", type=str)
 
-    if active != "":
-        active = True if active == "True" else False
-
-    users = institution.list_users_from_institution(institution_id,page, query, active)
+    ins = session['user']['actual_institution']
     
-    i = institution.get_institution_by_id(institution_id)
-    return render_template("institutions/institution_users.html", institution=i,users=users[0], total_pages=users[1], page=page, query=query, active=active)
+    if (str(institution_id) == str(ins)):
+        if active != "":
+            active = True if active == "True" else False
+
+        users = institution.list_users_from_institution(institution_id,page, query, active)
+        
+        i = institution.get_institution_by_id(institution_id)
+        return render_template("institutions/institution_users.html", institution=i,users=users[0], total_pages=users[1], page=page, query=query, active=active)
+    else:
+        return abort(404)
 
 @iu_blueprint.post("/<institution_id>/add-user")
 @auth.permission_required("ui_create")
