@@ -24,21 +24,13 @@
             <div>
                 <label for="type_service" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipo de servicio:</label>
                 <select id="type_service" name="type_service" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option value="" selected>Todos</option>
-                        <option value="">Analisis</option>
-                        <option value="">Consultoria</option>
-                        <option value="">Desarrollo</option>
+                    {{ InputForm.OptionSelect(type_service, type_list) }}
                 </select>
             </div>
             <div>
                 <label for="state" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Estado:</label>
                 <select id="status" name="status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                        <option value="" selected>Todos</option>
-                        <option value="">Aceptada</option>
-                        <option value="">Rechazada</option>
-                        <option value="">En proceso</option>
-                        <option value="">Finalizada</option>
-                        <option value="">Cancelada</option>
+                  {{ InputForm.OptionSelect(status, status_list) }}
                 </select>
             </div>
             <div>
@@ -50,7 +42,7 @@
                             <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
                           </svg>
                       </div>
-                      <input name="date_from" type="text" placeholder="Desde" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-4  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                      <input name="date_from" value="{{ date_from }}" type="text" placeholder="Desde" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-4  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                     </div>
                     <span class="px-4 text-gray-500"> - </span>
                     <div class="relative w-full">
@@ -59,7 +51,7 @@
                             <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
                           </svg>
                       </div>
-                      <input name="date_to" type="text" placeholder="Hasta" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-4  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                      <input name="date_to" value="{{ date_to }}" type="text" placeholder="Hasta" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 p-4  dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
                   </div>
                 </div>  
             </div>
@@ -230,23 +222,28 @@
                     <div class="h-full flex items-start">
                       <div class="w-12 flex-shrink-0 flex flex-col text-center leading-none">
                         <span class="text-gray-500 pb-2 mb-2 border-b-2 border-gray-200">
-                          {{ issue.creation_date.strftime('%b') }}
+                          {{ issue.inserted_at.strftime('%b') }}
                         </span>
                         <span class="font-medium text-lg pb-2 mb-2 border-b-2 text-gray-800 title-font leading-none">
-                          {{ issue.creation_date.strftime('%d') }}
+                          {{ issue.inserted_at.strftime('%d') }}
                         </span>
                         <span class="font-medium text-base text-gray-800 title-font leading-none">
-                          {{ issue.creation_date.strftime('%Y') }}
+                          {{ issue.inserted_at.strftime('%Y') }}
                         </span>
                       </div>
                       <div class="flex-grow pl-6">
                         {{ StateIssue.StateIssue((issue.status_changes | last).service_order_status.name) }}
                         <h2 class="tracking-widest text-base title-font font-medium text-indigo-500 mb-1 mt-2">
-                          {{ issue.service.type.upper() }}
+                          {{ issue.service.type_service.name.upper() }}
                         </h2>
                         <h1 class="title-font text-xl font-medium text-gray-900 mb-3">
                           {{ issue.title }}
                         </h1>
+                        <h2 class="title-font text-base font-medium text-gray-700 mb-3">
+                          {{ issue.creation_date.strftime('%d') }} {{ issue.creation_date.strftime('%B') }} {{ issue.creation_date.strftime('%Y') }}
+                          |
+                          {{ issue.close_date.strftime('%d') }} {{ issue.close_date.strftime('%B') }} {{ issue.close_date.strftime('%Y') }}
+                        </h2>
                         <p class="leading-relaxed mb-5">
                           {{ issue.description }}
                         </p>
@@ -287,7 +284,9 @@
     <div class="flex justify-center">
       <!-- Pagination -->
       {% if total_pages > 0 %}
-        {{ Paginator.Pagination(page, total_pages, 'issues.issue_index', query, active) }}
+        {{ Paginator.GenericPaginator(page, total_pages, 'issues.issue_index', 
+          {'user_email': user_email, 'type_service': type_service, 'status': status, 'date_from': date_from, 'date_to': date_to}) 
+        }}
       {% endif %}
       <!-- End pagination -->     
     </div>

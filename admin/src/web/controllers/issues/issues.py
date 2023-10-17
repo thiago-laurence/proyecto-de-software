@@ -1,5 +1,6 @@
-from flask import Blueprint, render_template, request, redirect, url_for
+from flask import Blueprint, render_template, request, redirect, url_for, session
 from src.core.models import service_order as ServiceOrders
+from src.core.models import institution as Institutions
 from src.core.models import user as Users
 from src.web.helpers import auth
 
@@ -12,20 +13,26 @@ def issue_index():
     """
         Muestra el listado de todos los issues.
     """
-
     page = request.args.get("page", 1, type=int)
     user_email = request.args.get("user_email", "", type=str)
     status = request.args.get("status", "", type=str)
     type_service = request.args.get("type_service", "", type=str)
     date_from = request.args.get("date_from", "", type=str)
     date_to = request.args.get("date_to", "", type=str)
-    orders = ServiceOrders.list_page_service_request(page, type_service, status, date_from, date_to, user_email)
     
+    orders = ServiceOrders.list_page_service_request(session['user']['actual_institution'], 
+        page, type_service, status, date_from, date_to, user_email)
+    
+    type_list = Institutions.index_type_service()
+    status_list = ServiceOrders.index_status()
     return render_template("issues/index.html", 
                            issues=orders[0], 
                            page=page, 
-                           total_pages=orders[1], 
+                           total_pages=orders[1],
+                           type_list=type_list,
+                           status_list=status_list,
                            user_email=user_email, 
+                           type_service=type_service,
                            status=status, 
                            date_from=date_from, 
                            date_to=date_to)
@@ -38,7 +45,7 @@ def issue_show(issue_id):
         Muestra la información de un issue.
     """
     service_order = ServiceOrders.service_request_show(issue_id)
-    list_status = ServiceOrders.list_status()
+    list_status = ServiceOrders.index_status()
 
     return render_template("issues/info.html", issue=service_order, list_status=list_status)
 

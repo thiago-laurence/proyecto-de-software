@@ -87,7 +87,7 @@
                 <div class="p-12 w-full flex flex-col items-start">
                     <div class="text-center w-full">
                         <h2 class="tracking-widest text-xl title-font font-medium text-indigo-500 mb-1 mt-2">
-                            {{ issue.service.type.upper() }}
+                            {{ issue.service.type_service.name.upper() }}
                         </h2>
                         <h2 class="text-4xl title-font font-medium text-gray-900 mb-4">
                             {{ issue.title }}
@@ -134,8 +134,8 @@
                                 <div class="my-2">
                                     {% set status_name = issue.status_changes | map(attribute='service_order_status.name')|join(', ') %}
                                     <label for="status" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Cambiar el estado:</label>
-                                    <select id="status" name="status" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                        <option value="" selected>Todos</option>
+                                    <select id="status" name="status" required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-4 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
+                                        <option value="" selected disabled>Seleccione una opcion</option>
                                         {% for status in (list_status | rejectattr('name', 'in', status_name)) %}
                                             <option value="{{ status.name }}">{{ status.name }}</option>
                                         {% endfor %}
@@ -360,6 +360,11 @@
                 <button type="submit" class="flex my-4 mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">
                     Enviar
                 </button>
+                <a href="{{ url_for('issues.issue_index') }}">
+                    <button type="button" class="my-4 mx-auto text-white bg-primary-500 border-0 py-2 px-8 focus:outline-none hover:bg-primary-600 rounded text-base">
+                        Volver
+                    </button>
+                </a>
             </form>
         </div>
     </section>
