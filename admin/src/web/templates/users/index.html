@@ -111,7 +111,9 @@
     </section>
     <div class="flex justify-center">
         <!-- Pagination -->
-        {{ Paginator.Pagination(page, total_pages, 'users.user_index', query, active) }}
+        {% if total_pages > 0 %}
+            {{ Paginator.Pagination(page, total_pages, 'users.user_index', query, active) }}
+        {% endif %}
         <!-- End pagination -->     
     </div>
     
