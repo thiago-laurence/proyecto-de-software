@@ -29,24 +29,26 @@ def user_requests():
     
     page = request.args.get('page', 1, type=int)
     per_page = request.args.get('per_page', 10, type=int)
-    total_pages = orders.total_orders_pages(per_page)
-    
-    if(page <= total_pages and page > 0):
-        service_orders = orders.list_orders_paginated_by_user(page, per_page,user.id)
-        data = service_orders_schema.dump(service_orders)
+    if(page == 0 or per_page == 0):
+        return jsonify({"error": "Parámetros inválidos"}), 400
         
-        response = [
-            {
-                "data": data,
-                "page": page,
-                "per_page": per_page,
-                "total": total_pages
-            }
-        ]
-        return jsonify(response) 
-    else:
-        response = {"error": "Parámetros inválidos"}
-        return jsonify(response), 400
+    service_orders = orders.list_orders_paginated_by_user(page, per_page, user.id)
+    total_pages = orders.total_orders_pages(per_page,user.id)
+    
+    if(service_orders[1]):
+        return jsonify({"error": "Parámetros inválidos"}), 400
+    
+    data = service_orders_schema.dump(service_orders[0])
+    
+    response = [
+        {
+            "data": data,
+            "page": page,
+            "per_page": per_page,
+            "total": total_pages
+        }
+    ]
+    return jsonify(response) 
 
 
 @api_logged_user.get("/requests/<id>")
@@ -66,7 +68,7 @@ def user_request_by_id(id):
         return jsonify(data)
     
 
-
+#tanto en la creacion de pedidos de servicios como de comentarios a los mismos comente la logica de los usuarios para poder probarlo con el cliente thunder client
 @api_logged_user.post("/requests")
 #@auth.login_required
 def create_order():

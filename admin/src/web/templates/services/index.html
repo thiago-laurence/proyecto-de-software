@@ -55,9 +55,19 @@
                 <li>
                     <div class="container">
                         <div class="content font-bold">
-                            <div class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 grid grid-cols-2">
-                            <div>
-                                <h6 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{service.name}}</h6>
+                            <div class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 ">                                                 
+                                <div class="flex justify-between mb-4 rounded-t sm:mb-5">
+                                    <h6 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{{service.name}}</h6>
+                                    <div class="flex items-end">
+                                        {% if service.is_enabled %}
+                                            <span class="px-2 py-1
+                                            font-semibold leading-tight text-green-700 bg-green-100 rounded-sm"> Habilitado </span>
+                                        {% else %}
+                                            <span class="px-2 py-1
+                                            font-semibold leading-tight text-red-700 bg-red-100 rounded-sm"> Deshabilitado </span>
+                                        {% endif %}
+                                    </div>
+                                </div>
                                 <br>
                                 <dl>
                                     <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Tipo de servicio: </dt>
@@ -66,13 +76,12 @@
                                     <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Descripcion:</dt>
                                     <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">{{service.info}}</dd>
                                 </dl>
-                            </div>
-                            <div class="flex justify-end  mt-auto">
-
-                                <div class="flex justify-center m-5">
-                                    <button onclick="putValues('{{service.id}}','{{service.name}}','{{service.info}}','{{service.key_words}}','{{service.type}}')"  data-modal-toggle="updateProductModal" class="block text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" type="button">
-                                    Editar
-                                    </button>
+                                <div class="flex items-end justify-end mt-auto">
+                                    <div class="flex justify-center m-5">
+                                        <button onclick="putValues('{{service.id}}','{{service.name}}','{{service.info}}','{{service.key_words}}','{{service.type}}','{{service.is_enabled}}')"  data-modal-toggle="updateProductModal" class="block text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" type="button">
+                                        Editar
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -216,7 +225,11 @@
                             <input type="text" value="" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
                         </div>
                         <div>
-                            
+                            <label for="is_enabled" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Estado</label>
+                            <select id="is_enabled" name="is_enabled" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                <option value="0">Habilitado</option>
+                                <option value="1">Deshabilitado</option>
+                            </select>
                         </div>
                         <div>
                             <label for="key_words" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Palabras clave para busqueda</label>

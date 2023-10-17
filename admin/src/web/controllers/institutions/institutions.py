@@ -58,15 +58,9 @@ def institution_add():
         if (existe):
             flash("La institución " + form.name.data + " ya se encuentra registrada.", "error")
             return redirect(url_for("institutions.index"))
-
-        institution.create_institution(
-            name= form.name.data,
-            info= form.info.data,
-            address = form.address.data,
-            web = form.web.data,
-            social_networks = form.social_networks.data,
-            phone = form.phone.data
-        )
+        data = form.data
+        print(data)
+        institution.create_institution(**data)
         flash("La institución " + form.name.data + " fue registrada correctamente.", "success")   
         return index()
     
@@ -117,7 +111,8 @@ def institution_update(institution_id):
             "address":request.json['data']['address'],
             "web":request.json['data']['web'],
             "social_networks":request.json['data']['social_networks'],
-            "phone":request.json['data']['phone']
+            "phone":request.json['data']['phone'],
+            "is_enabled":request.json['data']['is_enabled']
         }
         if kwargs["name"] == "":
             kwargs["name"] = insti.name
@@ -131,6 +126,10 @@ def institution_update(institution_id):
             kwargs["social_networks"] = insti.social_networks
         if kwargs["phone"] == "":
             kwargs["phone"] = insti.phone
+        if kwargs["is_enabled"] == "0":
+            kwargs["is_enabled"] = True
+        else:
+            kwargs["is_enabled"] = False
             
         institution.edit_institution(insti, **kwargs)
         

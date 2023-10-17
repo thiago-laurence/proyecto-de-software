@@ -14,3 +14,5 @@ class InstitutionForm(FlaskForm):
     web = StringField("Pagina web", validators=[DataRequired(), Length(min=2, max=100)])
     phone = StringField("Telefono", validators=[DataRequired(), Length(min=2, max=50)])
     social_networks = StringField("Redes sociales", validators=[DataRequired(), Length(min=2, max=100)])
+    localization = StringField("Localización", validators=[DataRequired(), Length(min=2, max=100)])
+    atencion_days = StringField("Días y horarios de atención", validators=[DataRequired(), Length(min=2, max=100)])

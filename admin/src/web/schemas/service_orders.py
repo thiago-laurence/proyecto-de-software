@@ -22,6 +22,7 @@ class CreateServiceOrderSchema(Schema):
     service_id = fields.Int(dump_only=True) #para saber a que servicio pertenece
     title = fields.Str(required=True, validate=validate.Length(min=1, max=50))
     description = fields.Str(required=True, validate=validate.Length(min=1, max=200))
+    creation_date = fields.DateTime() #para saber desde cuando se necesita el servicio
     close_date = fields.DateTime() #para saber hasta cuando
     
 create_service_order_schema = CreateServiceOrderSchema(unknown=EXCLUDE)

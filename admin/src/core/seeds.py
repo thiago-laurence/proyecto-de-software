@@ -25,7 +25,9 @@ def create_institutions_and_services():
         address = "Av. 52 e/ 121 y 122",
         web = "cidepint.ing.unlp.edu.ar",
         phone = "+54 0221 421-2433",
-        social_networks = "@cidepint"
+        social_networks = "@cidepint",
+        atencion_days = "Lunes a Viernes de 8:00 a 18:00 hs",
+        localization = "12234, 345567"
     )
     i1 = institution.create_institution(
         name="Alba pinturas",
@@ -33,7 +35,9 @@ def create_institutions_and_services():
         address="1 y 122",
         web="albapinturas.com.ar",
         phone="221-35123192",
-        social_networks="@albapinturas"
+        social_networks="@albapinturas",
+        atencion_days = "Lunes a Viernes de 8:00 a 18:00 hs",
+        localization = "12234, 345567"
     )
     i2 = institution.create_institution(
         name="Ancaflex",
@@ -41,7 +45,9 @@ def create_institutions_and_services():
         address="13 y 57",
         web="ancaflex.com.ar",
         phone="221-29812732",
-        social_networks="@ancaflex"
+        social_networks="@ancaflex",
+        atencion_days = "Lunes a Viernes de 8:00 a 18:00 hs",
+        localization = "12234, 345567"
     )
     print("----> Creando servicios...")
     s1 = institution.create_service(

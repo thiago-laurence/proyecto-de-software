@@ -39,20 +39,15 @@ def service_add(institution_id):
         service = institution.get_service_by_name_and_institution(form.name.data,institution_id)
         
         existe = service is not None
-        
         if existe:
             flash("El servicio " + form.name.data + " ya se encuentra registrado para esta institucion.", "error")
         
         else:     
             insti = institution.get_institution_by_id(institution_id)
+            data = form.data
             institution.assign_service(
                 insti,
-                institution.create_service(
-                    name= form.name.data,
-                    info= form.info.data,
-                    type= form.type.data,
-                    key_words = form.key_words.data,
-                )
+                institution.create_service(**data)
             )
             flash("El servicio " + form.name.data + " fue registrado correctamente.", "success")   
         return redirect(url_for("services.index",institution_id=institution_id))
@@ -97,7 +92,7 @@ def service_edit(service_id):
     check = institution.get_service_by_name_and_institution(request.json['data']['name'],service.institution_id)
     
     existe = check is not None and check.id != service.id
-    
+    print(request.json['data'])
     if existe:
         flash("El servicio " + request.json['data']['name'] + " ya se encuentra registrado para esta institucion.", "error")
     
@@ -107,8 +102,8 @@ def service_edit(service_id):
             "info": request.json['data']['info'],
             "type": request.json['data']['type'],
             "key_words": request.json['data']['key_words'],
+            "is_enabled": request.json['data']['is_enabled']
         }
-
         if kwargs["name"] == "":
             kwargs["name"] = service.name
         if kwargs["info"] == "":
@@ -117,7 +112,10 @@ def service_edit(service_id):
             kwargs["type"] = service.type
         if kwargs["key_words"] == "":
             kwargs["key_words"] = service.key_words
-            
+        if kwargs["is_enabled"] == "0":
+            kwargs["is_enabled"] = True
+        else:
+            kwargs["is_enabled"] = False
         institution.edit_service(service, **kwargs)
         flash("El servicio " + kwargs["name"] + " se edito con exito.", "success")
     

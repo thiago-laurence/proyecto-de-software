@@ -62,7 +62,13 @@
                                 {{institution.name}}</h6>
                             <p class="font-normal text-gray-700 dark:text-gray-400">{{institution.info}}</p>
                         </div>
-                        
+                        <div class="flex items-center">
+                            {% if institution.is_enabled %}
+                                <div class="h-2.5 w-2.5 rounded-full bg-green-500 mr-2"></div> Habilitada
+                            {% else %}
+                                <div class="h-2.5 w-2.5 rounded-full bg-red-500 mr-2"></div> Deshabilitada
+                            {% endif %}
+                        </div>
                     </a>
                     
                 </div>
@@ -130,38 +136,17 @@
                     <div class="grid gap-6 mb-6 sm:grid-cols-2">
                         {{ form.csrf_token }}
                         {{ form.hidden_tag() }}
+                        {% for input in form %}
+                            <div>
+                                {{ input.label(
+                                    class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                                ) }}
+                                {{ input(
+                                    class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                                ) }}
+                            </div>
+                        {% endfor %}
                         <!--<div>
-                            <label for="institution.name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre de la institucion</label>
-                            <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Pintura de Calidad" required>
-                        </div>
-                        <div>
-                            <label for="institution.web" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pagina web</label>
-                            <input type="text" name="web" id="web" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="www.pinturaDeCalidad.com" required>
-                        </div>
-                        <div>
-                            <label for="institution.phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Telefono</label>
-                            <input type="phonenumber" name="phone" id="phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="22115542345" required>
-                        </div>
-                        <div>
-                            <label for="institution.owner" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Dueño</label>
-                            <select id="owner" name="owner" required class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                {% if users %}
-                                    {% for user in users %}
-                                        <option value="{{user.id}}">{{user.username}}</option>
-                                    {% endfor %}
-                                {% endif %}
-                            </select>
-                        </div>
-                        <div>
-                            <label for="institution.social_networks" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Redes sociales</label>
-                            <input type="text" name="social_networks" id="social_networks" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="" required>
-                        </div>
-                        <div>
-                            <label for="institution.address" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Direccion</label>
-                            <input type="text" name="address" id="address" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="53 entre 3 y 4" required>
-                        </div>
-                        <div>-->
-                        <div>
                             {{form.name.label (class="block mb-2 text-sm font-medium text-gray-900 dark:text-white")}}
                             {{form.name (class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500")}}
                         </div>
@@ -177,13 +162,6 @@
                             {{form.address.label (class="block mb-2 text-sm font-medium text-gray-900 dark:text-white")}}
                             {{form.address (class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500")}}
                         </div>
-                        
-                        
-                    </div>
-                    <div class="sm:col-span-2">
-                        <!--<label for="institution.info" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Informacion de la institucion</label>
-                        <textarea id="info" name="info" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="Escribe la informacion de la institucion aqui"></textarea>                    
-                        -->
                         <div>
                             {{form.social_networks.label (class="block mb-2 text-sm font-medium text-gray-900 dark:text-white")}}
                             {{form.social_networks (class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500")}}
@@ -191,7 +169,9 @@
                         <div>
                             {{form.info.label (class="block mb-2 text-sm font-medium text-gray-900 dark:text-white")}}
                             {{form.info (class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500")}}
-                        </div>
+                        </div>-->
+
+                        
                     </div>
                     <div class="flex justify-start mt-4 sm:mt-5">
                         <button type="submit" class="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
