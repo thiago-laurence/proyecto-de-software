@@ -85,8 +85,6 @@ def create_order():
     
     else:
         #data['user_id']= user.id
-        data['status'] = "Pendiente"
-        data['statusChanged'] = datetime.utcnow()
         
         errors = create_service_order_schema.validate(data)
         if errors:
