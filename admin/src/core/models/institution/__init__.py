@@ -71,6 +71,7 @@ def edit_institution(institution, **kwargs):
     institution.web = kwargs.get("web")
     institution.social_networks = kwargs.get("social_networks")
     institution.phone = kwargs.get("phone")
+    institution.is_enabled = kwargs.get("is_enabled")
     
     db.session.add(institution)
     db.session.commit()
@@ -156,6 +157,7 @@ def edit_service(service, **kwargs):
     service.info = kwargs.get("info")
     service.type = kwargs.get("type")
     service.key_words = kwargs.get("key_words")
+    service.is_enabled = kwargs.get("is_enabled")
     
     institution.services.append(service)
     db.session.add(service)

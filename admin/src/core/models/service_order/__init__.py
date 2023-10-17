@@ -17,13 +17,14 @@ def list_orders_paginated_by_user(page, per_page, user_id):
     """
     
     orders = Service_order.query.filter(Service_order.user_id == user_id).paginate(page=page, per_page=per_page, error_out=False)
-    return orders
+    orders_in_page = orders.total < page * per_page
+    return orders, orders_in_page
 
-def total_orders_pages(per_page):
+def total_orders_pages(per_page, user_id):
     """
     Me devuelve la cantidad de paginas que ocupan los pedidos de servicios.
     """
-    total_orders = Service_order.query.count()  # Total de pedidos
+    total_orders = Service_order.query.filter(Service_order.user_id == user_id).count()  # Total de pedidos por persona
     if(total_orders == 0):
         return 1
     total_pages = (total_orders + per_page - 1)// per_page  # Cálculo de páginas
