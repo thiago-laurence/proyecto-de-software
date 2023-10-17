@@ -66,9 +66,27 @@ def create_institutions_and_services():
     institution.assign_service(i1,s1)
     institution.assign_service(i1,s3)
     institution.assign_service(i2,s2)
+    print("----> Finalizado! <----")   
+
+def create_services_orders_status():
+    print("----> Creando estados de pedidos de servicios...")
+    service_order.create_order_status(
+        name = "Aceptada"
+    )
+    service_order.create_order_status(
+        name = "Rechazada"
+    )
+    service_order.create_order_status(
+        name = "En proceso"
+    )
+    service_order.create_order_status(
+        name = "Finalizada"
+    )
+    service_order.create_order_status(
+        name = "Cancelada"
+    )
     print("----> Finalizado! <----")
-    
-    
+ 
 def create_services_orders():
     print("----> Creando pedidos de servicios...")
     user00 = user.find_user("User00")
@@ -77,34 +95,49 @@ def create_services_orders():
     s1 = institution.get_service_by_name("Revestimiento")
     s2 = institution.get_service_by_name("Alisado")
     s3 = institution.get_service_by_name("Tinta a revear")
+    en_proceso = service_order.get_order_status_by_name("En proceso")
+    aceptada = service_order.get_order_status_by_name("Aceptada")
+    finalizada = service_order.get_order_status_by_name("Finalizada")
+    cancelada = service_order.get_order_status_by_name("Cancelada")
+    rechazada = service_order.get_order_status_by_name("Rechazada")
+    
     so1 = service_order.create_order(
         title = "Revestimiento de grano grueso",
         user = user00,
         service = s1,
         description = "Necesito un revestimiento de grano grueso para las paredes de mi casa",
-        status = "Pendiente"
     )
     so2 = service_order.create_order(
         title = "Tinta a revear de grano fino",
         user = user01,
         service = s3,
         description = "Necesito una tinta para revear de grano fino para las paredes de mi casa",
-        status = "Pendiente"
     )
+    
     so3 = service_order.create_order(
         title = "Alisado de muchas capas de masilla",
         user = user02,
         service = s2,
         description = "Necesito un alisado de muchas capas de masilla para las paredes de mi casa",
-        status = "Pendiente"
     )
     so4 = service_order.create_order(
         title = "Revestimiento de grano grueso dos",
         user = user02,
         service = s1,
         description = "Necesito un revestimiento de grano grueso para las paredes de mi casa",
-        status = "Pendiente"
     )
+    
+    service_order.add_comment(
+        comment = "No se puede realizar el servicio, por favor ayuda",
+        user = user01,
+        service_order = so2
+    )
+    service_order.add_comment(
+        comment = "No te voy a ayudar, jodete",
+        user = user00,
+        service_order = so2
+    )
+    
     print("----> Finalizado! <----")
 
 def create_users():
@@ -361,6 +394,7 @@ def run():
     create_system()
     create_users()
     create_institutions_and_services()
+    create_services_orders_status()
     create_services_orders()
     create_roles()
     create_permissions()
