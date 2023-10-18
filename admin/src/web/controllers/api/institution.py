@@ -7,7 +7,7 @@ from src.web.schemas.institutions import institutions_schema
 api_institutions = Blueprint("api_institutions", __name__, url_prefix="/institutions")
 
 @api_institutions.get("/")
-#@auth.login_required
+#@auth.permission_required("institution_index") 
 def get_institutions():
     """
     Retorna en formato JSON la información de las instituciones.

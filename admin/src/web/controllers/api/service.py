@@ -9,10 +9,10 @@ from src.web.schemas.services import services_schema,service_schema
 api_services = Blueprint("api_services", __name__, url_prefix="/services")
 
 @api_services.get("/search")
+#@auth.permission_required("service_index")
 def search():
     """
-    Retorna en formato JSON la información de los servicios que coincidan con la búsqueda.
-    Por ahora solo busca por id de insti, faltan mas parametros en la url
+    Retorna en formato JSON la información de los servicios habilitados que coincidan con la búsqueda.
     """
     if  not "q" in request.args:
         return jsonify({"error": "Parámetros inválidos"}), 400
@@ -44,7 +44,7 @@ def search():
         return jsonify({"error":"No hay elementos en esa pagina"})
 
 @api_services.get("/<service_id>")
-@auth.login_required
+#@auth.permission_required("service_show")
 def search_by_id(service_id):
     """
     Retorna en formato JSON la información del servicio que coincida con la búsqueda.
