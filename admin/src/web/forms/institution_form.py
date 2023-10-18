@@ -12,3 +12,4 @@ class InstitutionForm(FlaskForm):
     social_networks = StringField("Redes sociales", validators=[InputRequired(), Length(min=2, max=100)])
     localization = StringField("Localización", validators=[InputRequired(), Length(min=2, max=100),Regexp(r'^[\d,]+$', message="Ingrese dos coordenadas separadas por coma")])
     atencion_days = StringField("Días y horarios de atención", validators=[InputRequired(), Length(min=2, max=100)])
+    

@@ -18,14 +18,15 @@ def search():
         return jsonify({"error": "Parámetros inválidos"}), 400
         
     substr = request.args.get("q")
+    tipo = request.args.get("type","",type=str)
     page = request.args.get("page", 1, type=int)
     per_page = request.args.get("per_page", 10, type=int)
     
-    total_pages = Institutions.total_services_pages_for_search(substr,page,per_page)
+    total_pages = Institutions.total_services_pages_for_search(substr,page,per_page,tipo)
     
     if(page <= total_pages and page > 0):
     
-        services = Institutions.services_serch(substr,page,per_page)
+        services = Institutions.services_serch(substr,page,per_page,tipo)
 
         if services.total == 0:
             return jsonify({"mensaje": "No se encontraron resultados"}), 200
