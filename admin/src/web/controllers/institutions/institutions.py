@@ -64,7 +64,18 @@ def institution_add():
         flash("La institución " + form.name.data + " fue registrada correctamente.", "success")   
         return index()
     
-    return render_template("institutions/index.html", form=form)
+    total_pages=institution.total_intitutions_pages(system.pages())
+    
+    errors = form.errors
+    field_errors = errors.items()
+    
+    # Obtén el primer campo con errores (esto es un par clave-valor)
+    first_field, first_error = next(iter(field_errors), (None, None))
+
+    if first_error:
+        flash(first_error[0], "error")
+            
+    return redirect(url_for("institutions.index", page=total_pages))
        
        
 @institutions_blueprint.route("/institutions-delete/<institution_id>", methods=["DELETE"])
