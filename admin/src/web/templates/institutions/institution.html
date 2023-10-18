@@ -57,25 +57,25 @@
                 </div>
                 <div class="text-xl text-gray-900 md:text-xl dark:text-white">
                     <h5 class="font-semibold">
-                        Informacion de la institucion
+                        Información de la institución
                     </h5>
                 </div>
                 <br>
                 <div >
                     <dl class="grid grid-cols-2">
-                        <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Descripcion</dt>
-                        <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Dias y horarios de atencion</dt>
+                        <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Descripción</dt>
+                        <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Días y horarios de atención</dt>
                         <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">{{institution.info}}</dd>
                         <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">{{institution.atencion_days}}</dd>
-                        <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Pagina web</dt>
+                        <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Página web</dt>
                         <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Redes sociales</dt>
                         <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">{{institution.web}}</dd>
                         <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">{{institution.social_networks}}</dd>
-                        <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Direccion</dt>
-                        <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Localizacion</dt>
+                        <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Dirección</dt>
+                        <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Localización</dt>
                         <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">{{institution.address}}</dd>
                         <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">{{institution.localization}}</dd>
-                        <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Telefono de contacto</dt>
+                        <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Teléfono de contacto</dt>
                         <dt></dt>
                         <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">{{institution.phone}}</dd>
                     </dl>
@@ -118,7 +118,7 @@
                 <!-- Modal header -->
                 <div class="flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600">
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                        Editar institucion
+                        Editar institución
                     </h3>
                     <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="updateProductModal">
                         <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
@@ -129,35 +129,25 @@
                 <form id="formUpdate">
                     <div class="grid gap-6 mb-6 sm:grid-cols-2">
                         <div>
-                            <label for="institution.name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre de la institucion</label>
-                            <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" value="{{institution.name}}" placeholder="{{institution.name}}">
+                            <label for="institution.name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre de la institución</label>
+                            <input type="text" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" value="{{institution.name}}" placeholder="{{institution.name}}" required maxlength="50">
                         </div>
                         <div>
-                            <label for="institution.web" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Pagina web</label>
-                            <input type="text" name="web" id="web" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" value="{{institution.web}}" placeholder="{{institution.web}}">
+                            <label for="institution.web" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Página web</label>
+                            <input type="text" name="web" id="web" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" value="{{institution.web}}" placeholder="{{institution.web}}" required maxlength="100">
                         </div>
                         <div>
-                            <label for="institution.phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Telefono</label>
-                            <input type="phonenumber" name="phone" id="phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" value="{{institution.phone}}" placeholder="{{institution.phone}}">
+                            <div id="phoneError" class="block mb-2 text-sm font-medium" style="display: none; color: red;">Por favor introduzca un telefono válido y sin espacios</div>
+                            <label for="institution.phone" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Teléfono</label>
+                            <input type="phonenumber" name="phone" id="phone" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" value="{{institution.phone}}" placeholder="{{institution.phone}}" required maxlength="50">
                         </div>
-                        <!--<div>
-                            <label for="institution.owner" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Dueño</label>
-                            <select id="owner" name="owner" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                <option selected value="{{institution.owner}}">{{institution.owner}}</option>
-                                {% if users %}
-                                    {% for user in users %}
-                                        <option value="{{user.id}}">{{user.username}}</option>
-                                    {% endfor %}
-                                {% endif %}
-                            </select>
-                        </div>-->
                         <div>
                             <label for="institution.social_networks" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Redes sociales</label>
-                            <input type="text" name="social_networks" id="social_networks" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" value="{{institution.social_networks}}" placeholder="{{institution.social_networks}}">
+                            <input type="text" name="social_networks" id="social_networks" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" value="{{institution.social_networks}}" placeholder="{{institution.social_networks}}" required maxlength="100">
                         </div>
                         <div>
-                            <label for="institution.address" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Direccion</label>
-                            <input type="text" name="address" id="address" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" value="{{institution.address}}" placeholder="{{institution.address}}">
+                            <label for="institution.address" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Dirección</label>
+                            <input type="text" name="address" id="address" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" value="{{institution.address}}" placeholder="{{institution.address}}" required maxlength="100">
                         </div>
                         <div>
                             <label for="institution.is_enabled" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Estado</label>
@@ -171,9 +161,18 @@
                                 {% endif %}
                             </select>
                         </div>
+                        <div>
+                            <div id="localizationError" class="block mb-2 text-sm font-medium" style="display: none; color: red;">Introduzca dos coordenadas separadas por coma, sin espacios</div>
+                            <label for="institution.localization" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Localización</label>
+                            <input type="text" name="localization" id="localization" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" value="{{institution.localization}}" placeholder="{{institution.localization}}" required maxlength="100">
+                        </div>
+                        <div>
+                            <label for="institution.atencion_days" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Días y horarios de atención</label>
+                            <input type="text" name="atencion_days" id="atencion_days" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" value="{{institution.atencion_days}}" placeholder="{{institution.atencion_days}}" required maxlength="100">
+                        </div>
                     <div class="sm:col-span-2">
-                        <label for="institution.info" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Informacion de la institucion</label>
-                        <textarea id="info" name="info" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="{{institution.info}}">{{institution.info}}</textarea>                    
+                        <label for="institution.info" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Información de la institución</label>
+                        <textarea id="info" name="info" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="{{institution.info}}" required maxlength="200">{{institution.info}}</textarea>                    
                     </div>
                     
                 </form>
@@ -181,7 +180,7 @@
             </div>
             <div class="flex items-center space-x-4">
                 <button onclick="Update('formUpdate','{{institution.id}}','institutions')" class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                    Editar institucion
+                    Editar institución
                 </button>
             </div>
         </div>

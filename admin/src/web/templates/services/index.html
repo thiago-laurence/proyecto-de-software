@@ -73,7 +73,7 @@
                                     <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Tipo de servicio: </dt>
                                     <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">{{service.type_service.name}}</dd>
                                 
-                                    <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Descripcion:</dt>
+                                    <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Descripción:</dt>
                                     <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">{{service.info}}</dd>
                                 </dl>
                                 <div class="flex items-end justify-end mt-auto">
@@ -222,7 +222,7 @@
                     <div class="grid gap-4 mb-4 sm:grid-cols-2">
                         <div>
                             <label for="service" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre</label>
-                            <input type="text" value="" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                            <input type="text" value="" name="name" id="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required maxlength="50">
                         </div>
                         <div>
                             <label for="is_enabled" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Estado</label>
@@ -233,13 +233,13 @@
                         </div>
                         <div>
                             <label for="key_words" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Palabras clave para busqueda</label>
-                            <input type="text" value="" name="key_words" id="key_words" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" >
+                            <input type="text" value="" name="key_words" id="key_words" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required maxlength="200">
                         </div>
                         <div>
                             <label for="type_service_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipo</label>
                             <select id="type_service_id" name="type_service_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                <option value="1">Analisis</option>
-                                <option value="2">Consultoria</option>
+                                <option value="1">Análisis</option>
+                                <option value="2">Consultoría</option>
                                 <option value="3">Desarrollo</option>
                             </select>
                         </div>
@@ -247,8 +247,8 @@
                             
                         </div> 
                         <div class="sm:col-span-2">
-                            <label for="info" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
-                            <textarea id="info" value="" name="info" rows="8" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" ></textarea> 
+                            <label for="info" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Descripción</label>
+                            <textarea id="info" value="" name="info" rows="8" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" required maxlength="200"></textarea> 
                         </div>
                     </div>
                     
