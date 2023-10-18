@@ -100,20 +100,34 @@
                 
               </td>
               <td class="px-4 py-3 text-sm border">{{ user.inserted_at.strftime('%m-%Y') }}</td>
-              <td class="px-4 py-3 text-sm border text-center">
-                <button id="editUserButton" onclick="editUser('{{ user.username }}')" data-modal-toggle="editUserModal" class="text-red focus:ring-4 focus:outline-none">
-                  <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.109 17H1v-2a4 4 0 0 1 4-4h.87M10 4.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm7.95 2.55a2 2 0 0 1 0 2.829l-6.364 6.364-3.536.707.707-3.536 6.364-6.364a2 2 0 0 1 2.829 0Z"/>
-                  </svg>
-                </button>
-              </td>
-              <td class="px-4 py-3 text-sm border text-center">
-                <button onclick="removeUser({{ institution.id }},{{ user.id }})" class="text-red focus:ring-4 focus:outline-none">
-                  <svg class="w-6 h-6 text-red-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m13 7-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
-                  </svg>
-                </button>
-              </td>
+              {% if user.id != session['user']['id'] %}
+                <td class="px-4 py-3 text-sm border text-center">
+                  
+                  <button id="editUserButton" onclick="editUser('{{ user.username }}')" data-modal-toggle="editUserModal" class="text-red focus:ring-4 focus:outline-none">
+                    <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.109 17H1v-2a4 4 0 0 1 4-4h.87M10 4.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm7.95 2.55a2 2 0 0 1 0 2.829l-6.364 6.364-3.536.707.707-3.536 6.364-6.364a2 2 0 0 1 2.829 0Z"/>
+                    </svg>
+                  </button>
+                </td>
+                <td class="px-4 py-3 text-sm border text-center">
+                  <button onclick="removeUser({{ institution.id }},{{ user.id }})" class="text-red focus:ring-4 focus:outline-none">
+                    <svg class="w-6 h-6 text-red-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m13 7-6 6m0-6 6 6m6-3a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                    </svg>
+                  </button>
+                  
+                </td>
+                {% else %}
+                <td class="px-4 py-3 text-xs border">
+
+                </td>
+                <td class="px-4 py-3 text-xs border">
+
+                </td>
+
+                {% endif %}
+
+               
             </tr>
             {% endfor %}
           </tbody>
