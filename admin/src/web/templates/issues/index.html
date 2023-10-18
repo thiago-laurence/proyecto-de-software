@@ -3,23 +3,20 @@
 
 {% block content_main %}
 
-    <section class="text-gray-600 body-font">
-        <div class="container px-5 pt-3 mx-auto">
-            <div class="flex flex-wrap w-full mb-5">
-                <div class="lg:w-full w-full mb-6 lg:mb-0">
-                    <h2 class="text-xs text-indigo-500 tracking-widest font-medium title-font mb-1">
-                        Administración
-                    </h2>
-                    <h1 class="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">
-                        Solicitudes de servicios
-                    </h1>
-                    <div class="h-1 w-full bg-indigo-500 rounded"></div>
-                </div>
-            </div>
-        </div>
-    </section>
+  <div class="lg:w-full w-full mb-6 lg:mb-0 content grid flex-col xl:grid-cols-2 ">
+    <div class="xl:col-start-1">
+        <h2 class="text-xs text-indigo-500 tracking-widest font-medium title-font mb-1">
+            Administración
+        </h2>
+        <h1 class="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">
+          Solicitudes de servicios
+        </h1>
+    </div>
+  </div>
+  <div class="h-1 w-full bg-indigo-500 rounded"></div>
+  {{ Flash.flash_form() }}
 
-    <form action="{{ url_for('issues.issue_index') }}" method="GET">
+    <form action="{{ url_for('issues.issue_index') }}" method="GET" class="mt-5">
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
             <div>
                 <label for="type_service" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipo de servicio:</label>

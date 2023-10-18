@@ -139,11 +139,20 @@
     </div>
   </section>
 
-  <div class="flex justify-center items-center">
+  <!-- <div class="flex justify-center items-center"> -->
     <!-- Pagination -->
-    {{ Paginator.PaginationInstitution(page, total_pages, 'institution_users.index', query, active, institution.id) }}
+    {#{{ Paginator.PaginationInstitution(page, total_pages, 'institution_users.index', query, active, institution.id) }}#}
     <!-- End pagination -->     
-  </div>
+  <!-- </div> -->
+  <div class="flex justify-center">
+        <!-- Pagination -->
+        {% if total_pages > 0 %}
+            {{ Paginator.GenericPaginator(page, total_pages, 'institution_users.index', 
+                {'query': query, 'active': active, 'institution_id': institution.id}) 
+            }}
+        {% endif %}
+        <!-- End pagination -->     
+    </div>
  
 
   <div id="editUserModal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
@@ -245,8 +254,6 @@
                       </div>
                       
                     </div>
-                <div>
-                
             </form>
         </div>
     </div>
