@@ -45,6 +45,7 @@ def service_add(institution_id):
         else:     
             insti = institution.get_institution_by_id(institution_id)
             data = form.data
+            data["type_service_id"] = int(data["type_service_id"])
             institution.assign_service(
                 insti,
                 institution.create_service(**data)
@@ -100,7 +101,7 @@ def service_edit(service_id):
         kwargs = {
             "name": request.json['data']['name'],
             "info": request.json['data']['info'],
-            "type": request.json['data']['type'],
+            "type_service_id": int(request.json['data']['type_service_id']),
             "key_words": request.json['data']['key_words'],
             "is_enabled": request.json['data']['is_enabled']
         }
@@ -108,8 +109,6 @@ def service_edit(service_id):
             kwargs["name"] = service.name
         if kwargs["info"] == "":
             kwargs["info"] = service.info
-        if kwargs["type"] == "":
-            kwargs["type"] = service.type
         if kwargs["key_words"] == "":
             kwargs["key_words"] = service.key_words
         if kwargs["is_enabled"] == "0":

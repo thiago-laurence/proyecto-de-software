@@ -55,7 +55,7 @@ class Service_order_status_changed(db.Model):
 class Service_order(db.Model):
     __tablename__ = "service_orders"
     id = db.Column(db.Integer, primary_key=True, unique=True)
-    title = db.Column(db.String(100), unique=True)
+    title = db.Column(db.String(100))
     description = db.Column(db.String(200))
     creation_date = db.Column(db.DateTime, default=datetime.utcnow)
     close_date = db.Column(db.DateTime, default=datetime.utcnow)

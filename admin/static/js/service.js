@@ -1,13 +1,12 @@
-function putValues(id,name,info,key_words,type,is_enabled){
+function putValues(id,name,info,key_words,type_id,type_name,is_enabled){
     form = document.getElementById("formUpdate");
     form.querySelector("input[name='name']").value = name;
     form.querySelector("textarea[name='info']").value = info;
     form.querySelector("input[name='key_words']").value = key_words;
-    select = form.querySelector("select[name='type']")
-    select.value = type;
+    select = form.querySelector("select[name='type_service_id']")
+    select.value = type_id;
     select_state = form.querySelector("select[name='is_enabled']")
 
-    console.log(is_enabled);
     if(is_enabled == "True"){
         console.log("entre al if");
         is_enabled = "0";
@@ -16,7 +15,8 @@ function putValues(id,name,info,key_words,type,is_enabled){
         is_enabled = "1";
     }
     select_state.value = is_enabled;
-    select.querySelector(`option[value="${type}"]`).selected = true;
+
+    select.querySelector(`option[value="${type_id}"]`).selected = true;
     select_state.querySelector(`option[value="${is_enabled}"]`).selected = true;
 
     document.getElementById("update").addEventListener("click", function(){

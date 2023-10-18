@@ -71,14 +71,14 @@
                                 <br>
                                 <dl>
                                     <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Tipo de servicio: </dt>
-                                    <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">{{service.type}}</dd>
+                                    <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">{{service.type_service.name}}</dd>
                                 
                                     <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Descripcion:</dt>
                                     <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">{{service.info}}</dd>
                                 </dl>
                                 <div class="flex items-end justify-end mt-auto">
                                     <div class="flex justify-center m-5">
-                                        <button onclick="putValues('{{service.id}}','{{service.name}}','{{service.info}}','{{service.key_words}}','{{service.type}}','{{service.is_enabled}}')"  data-modal-toggle="updateProductModal" class="block text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" type="button">
+                                        <button onclick="putValues('{{service.id}}','{{service.name}}','{{service.info}}','{{service.key_words}}','{{service.type_service.id}}','{{service.type_service.name}}','{{service.is_enabled}}')"  data-modal-toggle="updateProductModal" class="block text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" type="button">
                                         Editar
                                         </button>
                                     </div>
@@ -187,8 +187,8 @@
                                 <option value="{{"Consultoria"}}">Consultoria</option>
                                 <option value="{{"Desarrollo"}}">Desarrollo</option>
                             </select>-->
-                            {{ form.type.label (class="block mb-2 text-sm font-medium text-gray-900 dark:text-white")}}
-                            {{ form.type(class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500") }}
+                            {{ form.type_service_id.label (class="block mb-2 text-sm font-medium text-gray-900 dark:text-white")}}
+                            {{ form.type_service_id(class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500") }}
                         </div>
 
                         <button type="submit"
@@ -236,11 +236,11 @@
                             <input type="text" value="" name="key_words" id="key_words" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" >
                         </div>
                         <div>
-                            <label for="type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipo</label>
-                            <select id="type" name="type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
-                                <option value="Analisis">Analisis</option>
-                                <option value="Consultoria">Consultoria</option>
-                                <option value="Desarrollo">Desarrollo</option>
+                            <label for="type_service_id" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipo</label>
+                            <select id="type_service_id" name="type_service_id" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500">
+                                <option value="1">Analisis</option>
+                                <option value="2">Consultoria</option>
+                                <option value="3">Desarrollo</option>
                             </select>
                         </div>
                         <div>

@@ -78,10 +78,13 @@ def create_order():
     #user = Users.find_user(session['user']['email'])
     data = request.get_json()
     service = institution.get_service_by_id(data['service_id'])
+    insti = institution.get_institution_by_id(service.institution_id)
+    
+    if(not insti.is_enabled):
+        return jsonify({"error": "Institucion deshabilitada"}), 400
     
     if(service is None or data['title'] == None or data['description'] == None):
-        response = {"error": "Parámetros inválidos"}
-        return jsonify(response), 400
+        return jsonify({"error": "Parámetros inválidos"}), 400
     
     else:
         #data['user_id']= user.id

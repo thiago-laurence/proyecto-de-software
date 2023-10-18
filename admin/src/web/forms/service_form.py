@@ -9,6 +9,6 @@ class ServiceCreateForm(FlaskForm):
     """
     name = StringField("Nombre", validators=[InputRequired(), Length(max=50)])     
     info = StringField("Información", validators=[InputRequired(), Length(max=200)])
-    type = SelectField("Tipo", choices=[("Analisis", "Análisis"), ("Consultoria", "Consultoría"), ("Desarrollo", "Desarrollo")],validators=[InputRequired(), Length(max=50)])
+    type_service_id = SelectField("Tipo", choices=[("1", "Análisis"), ("2", "Consultoría"), ("3", "Desarrollo")],validators=[InputRequired(), Length(max=50)])
     key_words = StringField("Palabras clave", validators=[InputRequired(), Length(max=200)])
 

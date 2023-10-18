@@ -156,7 +156,7 @@ def edit_service(service, **kwargs):
     
     service.name = kwargs.get("name")
     service.info = kwargs.get("info")
-    service.type = kwargs.get("type")
+    service.type_service_id = kwargs.get("type_service_id")
     service.key_words = kwargs.get("key_words")
     service.is_enabled = kwargs.get("is_enabled")
     
