@@ -64,7 +64,18 @@ def institution_add():
         flash("La institución " + form.name.data + " fue registrada correctamente.", "success")   
         return index()
     
-    return render_template("institutions/index.html", form=form)
+    total_pages=institution.total_intitutions_pages(system.pages())
+    
+    errors = form.errors
+    field_errors = errors.items()
+    
+    # Obtén el primer campo con errores (esto es un par clave-valor)
+    first_field, first_error = next(iter(field_errors), (None, None))
+
+    if first_error:
+        flash(first_error[0], "error")
+            
+    return redirect(url_for("institutions.index", page=total_pages))
        
        
 @institutions_blueprint.route("/institutions-delete/<institution_id>", methods=["DELETE"])
@@ -112,7 +123,9 @@ def institution_update(institution_id):
             "web":request.json['data']['web'],
             "social_networks":request.json['data']['social_networks'],
             "phone":request.json['data']['phone'],
-            "is_enabled":request.json['data']['is_enabled']
+            "is_enabled":request.json['data']['is_enabled'],
+            "localization":request.json['data']['localization'],
+            "atencion_days":request.json['data']['atencion_days']
         }
         if kwargs["name"] == "":
             kwargs["name"] = insti.name
@@ -126,6 +139,10 @@ def institution_update(institution_id):
             kwargs["social_networks"] = insti.social_networks
         if kwargs["phone"] == "":
             kwargs["phone"] = insti.phone
+        if kwargs["localization"] == "":
+            kwargs["localization"] = insti.localization
+        if kwargs["atencion_days"] == "":
+            kwargs["atencion_days"] = insti.atencion_days
         if kwargs["is_enabled"] == "0":
             kwargs["is_enabled"] = True
         else:
