@@ -73,6 +73,8 @@ def edit_institution(institution, **kwargs):
     institution.social_networks = kwargs.get("social_networks")
     institution.phone = kwargs.get("phone")
     institution.is_enabled = kwargs.get("is_enabled")
+    institution.localization = kwargs.get("localization")
+    institution.atencion_days = kwargs.get("atencion_days")
     
     db.session.add(institution)
     db.session.commit()

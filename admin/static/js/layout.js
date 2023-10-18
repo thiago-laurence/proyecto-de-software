@@ -34,6 +34,7 @@ function Update(idForm, idObject, module){
         var input = elements[i];
         data[input.name] = input.value; 
     }
+    console.log(data);
     if(module == "institutions"){
         console.log(data['phone']);
         checkparams_institutions(data['phone'],data['localization']);

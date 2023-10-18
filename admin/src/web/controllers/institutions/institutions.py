@@ -123,7 +123,9 @@ def institution_update(institution_id):
             "web":request.json['data']['web'],
             "social_networks":request.json['data']['social_networks'],
             "phone":request.json['data']['phone'],
-            "is_enabled":request.json['data']['is_enabled']
+            "is_enabled":request.json['data']['is_enabled'],
+            "localization":request.json['data']['localization'],
+            "atencion_days":request.json['data']['atencion_days']
         }
         if kwargs["name"] == "":
             kwargs["name"] = insti.name
@@ -137,6 +139,10 @@ def institution_update(institution_id):
             kwargs["social_networks"] = insti.social_networks
         if kwargs["phone"] == "":
             kwargs["phone"] = insti.phone
+        if kwargs["localization"] == "":
+            kwargs["localization"] = insti.localization
+        if kwargs["atencion_days"] == "":
+            kwargs["atencion_days"] = insti.atencion_days
         if kwargs["is_enabled"] == "0":
             kwargs["is_enabled"] = True
         else:
