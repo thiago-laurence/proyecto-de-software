@@ -56,3 +56,13 @@ def get_role_id_by_user_and_institution(institution_id, user_id):
         return ui.role_id
     else:
         return None
+    
+def get_institution_owner(institution_id):
+    """
+        retorna el usuario duenio de la institucion
+    """
+    print(institution_id)
+    duenio = role.get_role_by_name("Dueño/a")
+    userinstitution = UserInstitution.query.filter_by(institution_id = institution_id, role_id = duenio.id).first()
+    
+    return userinstitution.user

@@ -4,15 +4,38 @@
     <link rel="stylesheet" href="{{ url_for('static',filename='css/notifications.css') }}">
 {% endblock %}
 {% block content_main %}
-    <div class="">
+
+    <div class="lg:w-full w-full mb-6 lg:mb-0 content grid flex-col xl:grid-cols-2 ">
+        <div class="xl:col-start-1">
+            <h2 class="text-xs text-indigo-500 tracking-widest font-medium title-font mb-1">
+                Administración
+            </h2>
+            <h1 class="sm:text-3xl text-2xl font-medium title-font mb-2 text-gray-900">
+                Servicios
+            </h1>
+        </div>
+        
+        <div class="flex flex-row-reverse p-4 w-full ">    
+            <button type="button" data-modal-target="authentication-modal" data-modal-toggle="authentication-modal" class="flex items-center text-white bg-indigo-500 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm pl-3 pr-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                Añadir servicio
+            </button>
+        </div>
+    </div>
+    <div class="h-1 w-full bg-indigo-500 rounded"></div>
+    {{ Flash.flash_form() }}
+
+    <!-- <div class="">
         <div class="content grid flex-col xl:grid-cols-3 xl:">
-            <div class="flex max-md:place-content-center mb-1 md:mb-0"> <!-- Agregar espacio vertical en resoluciones pequeñas -->
+            <div class="flex max-md:place-content-center mb-1 md:mb-0"> Agregar espacio vertical en resoluciones pequeñas
                 <h2 class=" text-2xl md:text-4xl font-bold dark:text-white">Servicios</h2>
             </div>
-            {% with messages = get_flashed_messages(with_categories=true) %}
+            {#{% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 {% for category, message in messages %}
-                <div id="toast" class="max-sm:mb-1 md:mx-2 max-md:mb-1"> <!-- Agregar espacio vertical en resoluciones pequeñas -->
+                <div id="toast" class="max-sm:mb-1 md:mx-2 max-md:mb-1"> Agregar espacio vertical en resoluciones pequeñas
                     <div class="{{ category }} text-sm text-white rounded-md shadow-lg dark:bg-gray-900" role="alert">
                         <div class="flex items-center p-2.5">
                             <p>{{ message }}</p>
@@ -29,7 +52,7 @@
                 </div>
                 {% endfor %}
             {% endif %}
-            {% endwith %}
+            {% endwith %}#}
             <div class="flex flex-col  md:flex-row-reverse md:col-start-3">
                 <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal"
                     class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
@@ -38,7 +61,7 @@
                 </button>
             </div>
         </div>
-    </div>
+    </div> -->
 
 
 
@@ -75,6 +98,9 @@
                                 
                                     <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Descripción:</dt>
                                     <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">{{service.info}}</dd>
+
+                                    <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Palabras clave de busqueda:</dt>
+                                    <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">{{service.key_words}}</dd>
                                 </dl>
                                 <div class="flex items-end justify-end mt-auto">
                                     <div class="flex justify-center m-5">

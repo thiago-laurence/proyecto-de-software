@@ -1,6 +1,7 @@
 from flask import Blueprint, render_template, request, flash, redirect,url_for, json, Response
 from src.core.models import institution
 from src.web.forms.institution_form import InstitutionForm
+from src.core.models import user_institution
 from src.core.models import user, system
 from src.web.helpers import auth
 
@@ -38,11 +39,13 @@ def institution_show(institution_id):
     print("entro al show")
 
     insti = institution.get_institution_by_id(institution_id)
+    duenio = user_institution.get_institution_owner(institution_id)
+    
     if insti is None:
         flash("La institución no existe.", "error")
         return redirect(url_for("institutions.index"))
     
-    return render_template("institutions/institution.html", institution=insti)
+    return render_template("institutions/institution.html", institution=insti, duenio=duenio)
 
 
 @institutions_blueprint.post("/institution-add")
@@ -52,6 +55,9 @@ def institution_add():
     Metodo para agregar una nueva institucion
     """
     form = InstitutionForm(request.form)
+    email_duenio = request.form.get("duenio")
+    print(email_duenio)
+    duenio = user.find_user(email_duenio)
     
     if(form.validate_on_submit()):
         existe = institution.check_if_institution_exists_by_name(form.name.data)
@@ -59,8 +65,9 @@ def institution_add():
             flash("La institución " + form.name.data + " ya se encuentra registrada.", "error")
             return redirect(url_for("institutions.index"))
         data = form.data
-        print(data)
-        institution.create_institution(**data)
+        insti = institution.create_institution(**data)
+        user_institution.create_user_institution_role(user_id=duenio.id, institution_id=insti.id, role_id=2)
+        
         flash("La institución " + form.name.data + " fue registrada correctamente.", "success")   
         return index()
     
