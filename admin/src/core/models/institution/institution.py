@@ -14,8 +14,8 @@ class Institution(db.Model):
     web = db.Column(db.String(100))
     phone = db.Column(db.String(50))
     social_networks = db.Column(db.String(100))
-    users = db.relationship('UserInstitution', back_populates ='institution', lazy=True)
-    services = db.relationship('Service', back_populates ='institution', lazy=True)
+    users = db.relationship('UserInstitution', back_populates ='institution', lazy=True, cascade="all, delete-orphan")
+    services = db.relationship('Service', back_populates ='institution', lazy=True, cascade="all, delete-orphan")
     
     updated_at = db.Column(
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow

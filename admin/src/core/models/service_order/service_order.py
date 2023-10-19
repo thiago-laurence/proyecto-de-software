@@ -59,12 +59,12 @@ class Service_order(db.Model):
     description = db.Column(db.String(200))
     creation_date = db.Column(db.DateTime, default=datetime.utcnow)
     close_date = db.Column(db.DateTime, default=datetime.utcnow)
-    comments = db.relationship('Comment', back_populates='service_order', lazy=True)
+    comments = db.relationship('Comment', back_populates='service_order', lazy=True, cascade="all, delete-orphan")
     user = db.relationship('User', back_populates='service_orders')
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', ondelete="CASCADE"))
     service = db.relationship('Service', back_populates='service_orders')
     service_id = db.Column(db.Integer, db.ForeignKey("services.id", ondelete="CASCADE"))
-    status_changes = db.relationship('Service_order_status_changed', back_populates='service_order', lazy=True)
+    status_changes = db.relationship('Service_order_status_changed', back_populates='service_order', lazy=True, cascade="all, delete-orphan")
     
     @property
     def status_actual(self):

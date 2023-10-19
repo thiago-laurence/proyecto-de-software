@@ -34,7 +34,7 @@ class Service(db.Model):
     is_enabled = db.Column(db.Boolean(), default=True)
     institution_id = db.Column(db.Integer, db.ForeignKey('institutions.id'))
     institution = db.relationship("Institution", back_populates="services")
-    service_orders = db.relationship('Service_order', back_populates='service', lazy=True)
+    service_orders = db.relationship('Service_order', back_populates='service', lazy=True, cascade="all, delete-orphan")
     
     updated_at = db.Column(
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
