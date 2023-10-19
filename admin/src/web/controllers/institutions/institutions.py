@@ -37,7 +37,7 @@ def institution_show(institution_id):
         flash("La institución no existe.", "error")
         return redirect(url_for("institutions.index"))
     
-    return render_template("institutions/institution.html", institution=insti, duenio=duenio)
+    return render_template("institutions/institution.html", institution=insti, duenios=duenio)
 
 
 @institutions_blueprint.post("/institution-add")
@@ -146,18 +146,17 @@ def institution_update(institution_id):
         else:
             kwargs["is_enabled"] = False
 
-
-        email_user = request.form.get("duenio")
-        user = user.find_user(email_user)
+        email_user = request.json['data']['duenio']
+        us = user.find_user(email_user)
         role_owner = role.get_role_by_name("Dueño/a")
 
-
         # si el usuario se encuentra en la institucion, lo pongo como owner, si no, lo asigno a la institucion como owner
-        if (user_institution.check_ui(institution_id, user.id)):
+        if (user_institution.check_ui(institution_id, us.id)):
             #2 = role owner
-            user_institution.edit_user_role(institution_id, user.id, role_owner.id)
+            user_institution.edit_user_role(institution_id, us.id, role_owner.id)
         else:
-            user_institution.create_user_institution_role(user_id=user.id, institution_id=insti.id, role_id=role_owner.id)
+            user_institution.create_user_institution_role(user_id=us.id, institution_id=insti.id, role_id=role_owner.id)
+            # user_institution.remove_user_from_institution(insti.id, us.id)
 
         institution.edit_institution(insti, **kwargs)
         

@@ -26,7 +26,6 @@ function selectInstitution(id){
 function Update(idForm, idObject, module){
     var form = document.getElementById(idForm);
     var url = `/` + module + `/` + module + `-update/${idObject}`;
-
     var elements = form.elements;
 
     var data = {};
