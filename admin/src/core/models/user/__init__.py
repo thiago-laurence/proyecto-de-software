@@ -17,7 +17,7 @@ def get_users_emails():
     #users_emails = User.query(User.email).all()
     role_root = role.get_role_by_name("SuperAdministrador/a")
     user_root = UserInstitution.query.filter(UserInstitution.role_id == role_root.id).first()
-    users_emails = [user.email for user in db.session.query(User.email).filter(User.id != user_root.id).all()]
+    users_emails = [user.email for user in db.session.query(User.email).filter(User.id != user_root.user_id).all()]
     
     return users_emails
 
