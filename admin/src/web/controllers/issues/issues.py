@@ -26,16 +26,8 @@ def issue_index():
     type_list = Institutions.index_type_service()
     status_list = ServiceOrders.index_status()
     return render_template("issues/index.html", 
-                           issues=orders[0], 
-                           page=page, 
-                           total_pages=orders[1],
-                           type_list=type_list,
-                           status_list=status_list,
-                           user_email=user_email, 
-                           type_service=type_service,
-                           status=status, 
-                           date_from=date_from, 
-                           date_to=date_to)
+        issues=orders[0], page=page, total_pages=orders[1], type_list=type_list, status_list=status_list,
+        user_email=user_email, type_service=type_service, status=status, date_from=date_from, date_to=date_to)
 
 
 @issues_blueprint.get("/<issue_id>")
@@ -48,16 +40,6 @@ def issue_show(issue_id):
     list_status = ServiceOrders.index_status()
 
     return render_template("issues/info.html", issue=service_order, list_status=list_status)
-
-@issues_blueprint.get("/<issue_id>/messages")
-@auth.permission_required("request_service_show")
-def issue_show_messages(issue_id):
-    """
-        Muestra los mensajes enviados en el issue.
-    """
-    # issue = Issues.issue_show(issue_id)
-
-    return render_template("issues/messages.html", issue=None)
 
 
 @issues_blueprint.post("/create-comment")

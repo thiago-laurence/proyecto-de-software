@@ -250,7 +250,7 @@ def list_users_not_in_institution(institution_id, query, page, active):
     user_root = UserInstitution.query.filter(UserInstitution.role_id == role_root.id).first()
 
     # Realiza una consulta para obtener los IDs de los usuarios en la institución
-    subquery = db.session.query(UserInstitution.user_id).filter(UserInstitution.institution_id == institution_id).subquery()
+    subquery = db.session.query(UserInstitution.user_id).filter(UserInstitution.institution_id == institution_id).subquery().select()
 
     # Realiza una consulta para obtener los usuarios que NO están en la institución
     # usuarios_no_en_institucion = User.query.filter(User.id != user_root.id, User.id.notin_(subquery)).paginate(page=page, per_page=system.pages(), error_out=False)
