@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for, session, jsonify
 from src.core.models import user as Users
+from src.core.models import user_institution
 from src.web.forms import user_form as Forms
 from src.web.helpers import auth
 from src.web import mail as Mail
@@ -228,7 +229,9 @@ def user_destroy(user_id):
             Redireccion a la pagina de listado de usuarios.
     """
     user_id = int(user_id)
-    Users.user_destroy(user_id)
-    flash("El usuario fue eliminado correctamente", "success")
-    
+    if (not user_institution.check_unique_owner(user_id)):
+        Users.user_destroy(user_id)
+        flash("El usuario fue eliminado correctamente", "success")
+    else:
+        flash("El usuario no se puede eliminar porque es el unico dueño en alguna institución", "error")
     return jsonify({"url": "/users/"}), 200

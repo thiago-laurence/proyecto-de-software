@@ -92,11 +92,6 @@
                                 Ver servicios
                             </button>
                         </a>
-                        <a href="{{url_for('.institution_users.index', institution_id = institution.id)}}">          
-                            <button type="button" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
-                                Ver usuarios
-                            </button>
-                        </a>
                     </div>     
                     
                     <div class="flex items-center space-x-3 sm:space-x-4">
@@ -175,17 +170,44 @@
                         <label for="institution.info" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Información de la institución</label>
                         <textarea id="info" name="info" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500" placeholder="{{institution.info}}" required maxlength="200">{{institution.info}}</textarea>                    
                     </div>
+                 </div>
+                        <div>
+                            <label for="duenio" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Dueño</label>
+                            <div class='w-full flex items-start'>
+                                <div class='relative searchable-list w-full'>
+                                    <input type='text' name="duenio" class='data-list peer bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-blue-600 focus:border-blue-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500' spellcheck="false" placeholder="Seleccione un dueño" required></input>
+                                    <svg class="outline-none cursor-pointer fill-gray-400 absolute transition-all duration-200 h-full w-4 -rotate-90 right-2 top-[50%] -translate-y-[50%]"
+                                        viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+                                        xmlns:xlink="http://www.w3.org/1999/xlink">
+                                        <path d="M0 256l512 512L1024 256z"></path>
+                                    </svg>
+                                    <ul class='absolute option-list overflow-y-scroll max-h-64 min-h-[0px] flex flex-col top-12 
+                                        left-0 max-w-[120%] min-w-[120%] bg-white rounded-sm   scale-0 opacity-0 
+                                        transition-all 
+                                        duration-200 origin-top-left'>
+                                    </ul>
+    
+                                </div>
+
+                                
+                            </div>
+
+                            <div class="w-full mt-4 flex items-center space-x-4">
+                                <button onclick="Update('formUpdate','{{institution.id}}','institutions')" class="text-white w-full bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                                    Editar institución
+                                </button>
+                            </div>
+    
+                        </div>
                     
                 </form>
                 
-            </div>
-            <div class="flex items-center space-x-4">
-                <button onclick="Update('formUpdate','{{institution.id}}','institutions')" class="text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                    Editar institución
-                </button>
-            </div>
+            
+            
         </div>
         </div>
     </div>
 
+    <script src="{{url_for('static',filename='js/institution.js')}}"></script>
+    
 {% endblock %}

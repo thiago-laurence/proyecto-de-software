@@ -61,8 +61,28 @@ def get_institution_owner(institution_id):
     """
         retorna el usuario duenio de la institucion
     """
-    print(institution_id)
     duenio = role.get_role_by_name("Dueño/a")
     userinstitution = UserInstitution.query.filter_by(institution_id = institution_id, role_id = duenio.id).first()
     
     return userinstitution.user
+
+
+def check_ui(institution_id, user_id):
+    """
+    Me retorna si el usuario se encuentra en la institucion
+    """
+    ui = UserInstitution.query.filter_by(institution_id = institution_id, user_id = user_id).first()
+    return ui is not None
+
+def check_unique_owner(user_id):
+    """
+    Me retorna si el usuario es el unico duenio en alguna institucion
+    """
+    role_owner = role.get_role_by_name("Dueño/a")
+    uis = UserInstitution.query.filter_by(user_id=user_id, role_id=role_owner.id).all()
+    
+    for ui in uis:
+        owners = UserInstitution.query.filter_by(institution_id = ui.institution_id, role_id= role_owner.id).all()
+        if (len(owners) == 1):
+            return True
+    return False

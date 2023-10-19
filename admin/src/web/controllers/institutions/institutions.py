@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, request, flash, redirect,url_for, 
 from src.core.models import institution
 from src.web.forms.institution_form import InstitutionForm
 from src.core.models import user_institution
-from src.core.models import user, system
+from src.core.models import user, system, role
 from src.web.helpers import auth
 
 
@@ -56,7 +56,7 @@ def institution_add():
     """
     form = InstitutionForm(request.form)
     email_duenio = request.form.get("duenio")
-    print(email_duenio)
+
     duenio = user.find_user(email_duenio)
     
     if(form.validate_on_submit()):
@@ -117,8 +117,9 @@ def institution_update(institution_id):
     """
     insti = institution.get_institution_by_id(institution_id)
     existe = institution.get_institution_by_name(request.json['data']['name'])
-    print(existe)
-    print(request.json['data'])
+    
+    
+
     if (existe is not None and existe.id != insti.id):
          flash("La institución " + request.json['data']['name'] + " ya se encuentra registrada.", "error")
      
@@ -154,7 +155,20 @@ def institution_update(institution_id):
             kwargs["is_enabled"] = True
         else:
             kwargs["is_enabled"] = False
-            
+
+
+        email_user = request.form.get("duenio")
+        user = user.find_user(email_user)
+        role_owner = role.get_role_by_name("Dueño/a")
+
+
+        # si el usuario se encuentra en la institucion, lo pongo como owner, si no, lo asigno a la institucion como owner
+        if (user_institution.check_ui(institution_id, user.id)):
+            #2 = role owner
+            user_institution.edit_user_role(institution_id, user.id, role_owner.id)
+        else:
+            user_institution.create_user_institution_role(user_id=user.id, institution_id=insti.id, role_id=role_owner.id)
+
         institution.edit_institution(insti, **kwargs)
         
         flash("La institución " + kwargs["name"] + " fue editada correctamente.", "success")   
