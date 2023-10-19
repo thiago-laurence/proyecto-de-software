@@ -2,7 +2,7 @@ from sqlalchemy.orm import validates
 from core.models.validation import validation_string, validation_identifier
 from src.core.database import db
 from datetime import datetime
-
+from sqlalchemy.orm import relationship
 
 class User(db.Model):
     __tablename__ = "users"
@@ -14,9 +14,9 @@ class User(db.Model):
     lastname = db.Column(db.String(50))
     active = db.Column(db.Boolean, default=True)
     confirmed = db.Column(db.Boolean, default=False)
-    institutions = db.relationship("UserInstitution", back_populates="user", lazy=True)
-    comments = db.relationship('Comment', back_populates='user', lazy=True)
-    service_orders = db.relationship('Service_order', back_populates='user', lazy=True)
+    institutions = db.relationship("UserInstitution", back_populates="user", lazy=True, cascade="all, delete-orphan")
+    comments = db.relationship('Comment', back_populates='user', lazy=True, cascade="all, delete-orphan")
+    service_orders = db.relationship('Service_order', back_populates='user', lazy=True, cascade="all, delete-orphan")
     
     updated_at = db.Column(
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
