@@ -18,13 +18,12 @@ def list_institutions():
     institutions = Institution.query.all()
     return institutions
 
-def list_institutions_paginated(page, per_page):
+def list_institutions_paginated(page):
     """
     Me devuelve todas las instituciones.
     """
-    
-    institutions = Institution.query.paginate(page=page, per_page=per_page, error_out=False)
-    return institutions
+    institutions = Institution.query.filter(Institution.name != "CIDEPINT").paginate(page=page, per_page=system.pages(), error_out=False)
+    return institutions, institutions.pages
 
 def total_intitutions_pages(per_page):
     """
@@ -105,7 +104,7 @@ def list_services_by_institution(institution_id):
     Me devuelve todos los servicios de una institucion
     """   
     services = Service.query.filter(Service.institution_id == institution_id).all()
-    print(services)
+    
     return services
 
 def list_services_by_intitution_paginated(page,institution_id):

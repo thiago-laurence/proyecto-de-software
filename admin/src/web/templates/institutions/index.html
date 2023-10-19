@@ -66,7 +66,8 @@
 
 <br>
 <ul>
-    {% if institutions.total == 0 %}
+
+    {% if total_pages == 0 %}
         <div class="flex justify-center items-center">
             <div class="flex flex-col justify-center items-center">
                 <h1 class="text-2xl font-bold text-gray-900 dark:text-white">No hay instituciones registradas</h1>
@@ -74,68 +75,38 @@
         </div>
     {% else %}
         {% for institution in institutions %}
-        <li>
-            <div class="container">
-                <div class="content font-bold">
+            <li>
+                <div class="container">
+                    <div class="content font-bold">
 
-                    <a href="{{ url_for('institutions.institution_show',institution_id=institution.id)}}"
-                        class="block p-6 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700 grid grid-cols-2">
-                        <div>
-                            <h6 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                                {{institution.name}}</h6>
-                            <p class="font-normal text-gray-700 dark:text-gray-400">{{institution.info}}</p>
-                        </div>
-                        <div class="flex items-center">
-                            {% if institution.is_enabled %}
-                                <div class="h-2.5 w-2.5 rounded-full bg-green-500 mr-2"></div> Habilitada
-                            {% else %}
-                                <div class="h-2.5 w-2.5 rounded-full bg-red-500 mr-2"></div> Deshabilitada
-                            {% endif %}
-                        </div>
-                    </a>
-                    
+                        <a href="{{ url_for('institutions.institution_show',institution_id=institution.id)}}"
+                            class="grid grid-cols-1 md:grid-cols-2 p-4 bg-white border border-gray-200 rounded-lg shadow hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                            <div>
+                                <h6 class="mb-2 text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+                                    {{institution.name}}</h6>
+                                <p class="font-normal text-gray-700 dark:text-gray-400">{{institution.info}}</p>
+                            </div>
+                            <div class="flex items-center">
+                                {% if institution.is_enabled %}
+                                    <div class="h-2.5 w-2.5 rounded-full bg-green-500 mr-2"></div> Habilitada
+                                {% else %}
+                                    <div class="h-2.5 w-2.5 rounded-full bg-red-500 mr-2"></div> Deshabilitada
+                                {% endif %}
+                            </div>
+                        </a>
+                        
+                    </div>
                 </div>
-            </div>
-        </li>
+            </li>
         <br>
         {% endfor %}
-        <div  class="flex justify-center items-center" >
-            <nav aria-label="Page navigation example">
-                <ul class="flex items-center -space-x-px h-8 text-sm">
-                    <li>
-                        <a href="{{url_for('institutions.index',page=page-1)}}" class="flex items-center justify-center px-3 h-8 ml-0 leading-tight text-gray-500 bg-white border border-gray-300 rounded-l-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                        <span class="sr-only">Previous</span>
-                        <svg class="w-2.5 h-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
-                        </svg>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="{{url_for('institutions.index',page=1)}}" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">1</a>
-                    </li>
-                    <li>
-                        <a href="{{url_for('institutions.index',page=2)}}" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">2</a>
-                    </li>
-                    <li>
-                        <a href="{{url_for('institutions.index',page=3)}}" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">3</a>
-                    </li>
-                    <li>
-                        <a href="{{url_for('institutions.index',page=4)}}" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">4</a>
-                    </li>
-                    <li>
-                        <a href="{{url_for('institutions.index',page=5)}}" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
-                    </li>
-                    <li>
-                        <a href="{{url_for('institutions.index',page=page+1)}}" class="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 rounded-r-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-                        <span class="sr-only">Next</span>
-                        <svg class="w-2.5 h-2.5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
-                        </svg>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </div>        
+        <div class="flex justify-center">
+            <!-- Pagination -->
+            {% if total_pages > 0 %}
+                {{ Paginator.GenericPaginator(page, total_pages, 'institutions.index') }}
+            {% endif %}
+            <!-- End pagination -->     
+        </div>
     {% endif %}
 </ul>
 

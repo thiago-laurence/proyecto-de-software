@@ -276,6 +276,7 @@ def list_page_users(page, query, active):
     if active == "":
         users = User.query.filter(User.id != user_root.id, or_(User.email.ilike(f"%{query}%"))).paginate(page=page, per_page=system.pages(), error_out=False)
     else:
+        active = True if active == "True" else False
         users = User.query.filter(User.id != user_root.id, or_(User.email.ilike(f"%{query}%")), User.active == active).paginate(page=page, per_page=system.pages(), error_out=False)
     
     return users, users.pages

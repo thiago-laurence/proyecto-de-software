@@ -126,9 +126,6 @@ def user_index():
     query = request.args.get("query", "", type=str)
     active = request.args.get("active", "", type=str)
 
-    if active != "":
-        active = True if active == "True" else False
-
     users = Users.list_page_users(page, query, active)
     
     return render_template("users/index.html", form_create=form_create, users=users[0], total_pages=users[1], page=page, query=query, active=active)

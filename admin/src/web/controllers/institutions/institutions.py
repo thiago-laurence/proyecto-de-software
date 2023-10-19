@@ -4,8 +4,6 @@ from src.web.forms.institution_form import InstitutionForm
 from src.core.models import user_institution
 from src.core.models import user, system, role
 from src.web.helpers import auth
-
-
 from src.web.controllers.institutions.institution_users import iu_blueprint
 
 institutions_blueprint = Blueprint("institutions", __name__, url_prefix="/institutions")
@@ -19,15 +17,10 @@ def index():
     Renderiza el template para las instituciones y las muestra.
     """
     form = InstitutionForm(request.form)
-    
     page = request.args.get("page", 1, type=int)
-    total_pages=institution.total_intitutions_pages(system.pages())
-    institutions = institution.list_institutions_paginated(page,system.pages())
+    institutions = institution.list_institutions_paginated(page)
     
-    if(page <= total_pages and page > 0):
-        return render_template("institutions/index.html", institutions=institutions, users = user.get_users(), page=page, form=form)
-    else:
-        return redirect(url_for("institutions.index", page=total_pages))
+    return render_template("institutions/index.html", institutions=institutions[0], total_pages=institutions[1], page=page, form=form)
 
 
 @institutions_blueprint.get("/<institution_id>")
@@ -36,7 +29,6 @@ def institution_show(institution_id):
     """"
     Renderiza el template para una institucion especifica y lo muestra y las muestra.
     """
-    print("entro al show")
 
     insti = institution.get_institution_by_id(institution_id)
     duenio = user_institution.get_institution_owner(institution_id)
@@ -118,8 +110,6 @@ def institution_update(institution_id):
     insti = institution.get_institution_by_id(institution_id)
     existe = institution.get_institution_by_name(request.json['data']['name'])
     
-    
-
     if (existe is not None and existe.id != insti.id):
          flash("La institución " + request.json['data']['name'] + " ya se encuentra registrada.", "error")
      
