@@ -11,7 +11,7 @@ def index():
     """
         Redirige a la configuración del sistema
     """
-    system = System.system_show(1)
+    system = System.system_show()
     form = Forms.SystemForm()
     form.message.data = system.message
     form.info.data = system.info
@@ -27,7 +27,7 @@ def system_update():
     form = Forms.SystemForm()
     if form.validate_on_submit():
         form.activate.data = True if form.activate.data == "True" else False
-        System.system_update(1, **form.data)
+        System.system_update(**form.data)
         flash("La información del sistema ha sido actualizada con exito!", "success")
     
     return redirect(url_for("system.index"))

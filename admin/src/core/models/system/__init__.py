@@ -1,13 +1,9 @@
 from src.core.models.system.system import System
 from src.core.database import db
 
-def system_show(system_id):
+def system_show():
     """
         Busca y retorna el sistema.
-        
-        args:
-        
-            name_system -> nombre del sistema a buscar.
             
         return:
         
@@ -16,17 +12,15 @@ def system_show(system_id):
             None -> el sistema no existe.
     """
     
-    system = System.query.filter(System.id == system_id).first()
+    system = System.query.filter(System.id == 1).first()
     
     return system
 
-def system_update(system_id, **kwargs):
+def system_update(**kwargs):
     """
         Actualiza la información del sistema.
         
         args:
-            system_id -> id del sistema a modificar.
-            
             kwargs -> campos del objeto sistema actualizados.
         
         return:
@@ -34,7 +28,7 @@ def system_update(system_id, **kwargs):
             
             None -> el sistema no existe.
     """
-    system = system_show(system_id)
+    system = system_show()
     if system is None:
         return None
     
