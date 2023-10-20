@@ -4,6 +4,7 @@ from src.core.models import user
 from flask import Blueprint, jsonify, request
 from src.web.helpers import auth
 from src.web.schemas.services import services_schema,service_schema
+from src.core.models import system
 
 
 api_services = Blueprint("api_services", __name__, url_prefix="/services")
@@ -20,7 +21,7 @@ def search():
     substr = request.args.get("q")
     tipo = request.args.get("type","",type=str)
     page = request.args.get("page", 1, type=int)
-    per_page = request.args.get("per_page", 10, type=int)
+    per_page = request.args.get("per_page", system.pages(), type=int)
     
     total_pages = Institutions.total_services_pages_for_search(substr,page,per_page,tipo)
     

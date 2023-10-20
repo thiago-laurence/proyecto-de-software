@@ -5,6 +5,7 @@ from src.web.helpers import auth
 from src.core.models import service_order as orders
 from src.web.schemas.service_orders import service_orders_schema, service_order_schema, service_order_schema_with_id, create_service_order_schema, comment_schema, create_comment_schema
 from src.web.schemas.users import user_schema, create_user_schema
+from src.core.models import system
 
 api_logged_user= Blueprint("logged_user", __name__, url_prefix="/me")
 
@@ -51,7 +52,7 @@ def user_requests():
     user = Users.find_user(session['user']['email'])
     
     page = request.args.get('page', 1, type=int)
-    per_page = request.args.get('per_page', 10, type=int)
+    per_page = request.args.get('per_page', system.pages(), type=int)
     if(page == 0 or per_page == 0):
         return jsonify({"error": "Parámetros inválidos"}), 400
         
@@ -75,7 +76,7 @@ def user_requests():
 
 
 @api_logged_user.get("/requests/<id>")
-#@auth.permission_required("request_service_show")
+@auth.permission_required("request_service_show")
 def user_request_by_id(id):
     """
     Retorna en formato JSON la solicitud del usuario logueado.
@@ -93,12 +94,12 @@ def user_request_by_id(id):
 
 # Tanto en la creacion de pedidos de servicios como de comentarios a los mismos comente la logica de los usuarios para poder probarlo con el cliente thunder client
 @api_logged_user.post("/requests")
-#@auth.permission_required("request_service_create")
+@auth.permission_required("request_service_create")
 def create_order():
     """
     Crea una orden de servicio.
     """
-    #user = Users.find_user(session['user']['email'])
+    user = Users.find_user(session['user']['email'])
     data = request.get_json()
     service = institution.get_service_by_id(data['service_id'])
     insti = institution.get_institution_by_id(service.institution_id)
@@ -110,7 +111,7 @@ def create_order():
         return jsonify({"error": "Parámetros inválidos"}), 400
     
     else:
-        #data['user_id']= user.id
+        data['user_id']= user.id
         
         errors = create_service_order_schema.validate(data)
         if errors:
@@ -122,21 +123,20 @@ def create_order():
         return service_order_schema_with_id.dumps(obj_new_order), 201
 
 @api_logged_user.post("/requests/<id>/notes")
-#@auth.permission_required("request_service_update")
+@auth.permission_required("request_service_update")
 def add_comment(id):
     """
     Crea un comentario en una orden de servicio.
     """
     data = request.get_json()
-    #user = Users.find_user(session['user']['email'])
+    user = Users.find_user(session['user']['email'])
     order = orders.get_order_by_id(id)
-    
-    #order.user_id != user.id or 
-    if(data['comment'] == None):
+
+    if(order.user_id != user.id or data['comment'] == None):
         response = {"error": "Parámetros inválidos"}
         return jsonify(response), 400
     
-    #data['user_id']= user.id
+    data['user_id']= user.id
     data['service_order_id']= id
     
     errors = create_comment_schema.validate(data)
