@@ -18,9 +18,9 @@ class CreateUserSchema(Schema):
     """
         Schema de usuario para crear uno nuevo
     """
-    username = fields.String(required=True, validate=validate.Length(min=1, max=50))
-    email = fields.Email(required=True, validate=validate.Length(min=1, max=50))
-    name = fields.String(required=True, validate=validate.Length(min=1, max=50))
-    lastname = fields.String(required=True, validate=validate.Length(min=1, max=50))
+    username = fields.String(required=True, validate=validate.Length(min=1, max=50, error="El nombre de usuario debe tener entre 1 y 50 caracteres"), error_messages={"required": "El nombre de usuario es requerido"})
+    email = fields.Email(required=True, error_messages={"required": "El email es requerido", "invalid": "El email no posee un formato válido"})
+    name = fields.String(required=True, validate=validate.Length(min=1, max=50, error="El nombre debe tener entre 1 y 50 caracteres"), error_messages={"required": "El nombre es requerido"})
+    lastname = fields.String(required=True, validate=validate.Length(min=1, max=50, error="El apellido debe tener entre 1 y 50 caracteres"), error_messages={"required": "El apellido es requerido"})
 
 create_user_schema = CreateUserSchema()

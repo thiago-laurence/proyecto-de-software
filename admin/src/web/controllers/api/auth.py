@@ -9,7 +9,10 @@ api_auth = Blueprint("api_auth", __name__, url_prefix="/auth")
 @api_auth.post("/")
 def create_jwt():
     params = request.get_json()
-    data = create_auth_schema.load(params)
+    try:
+        data = create_auth_schema.load(params)
+    except Exception as err:
+        return jsonify({"error": err.messages}), 400
     user = User.check_auth_user(data["email"],data["password"])
     if(user is None):
         return jsonify({"error": "Parámetros inválidos"}), 400

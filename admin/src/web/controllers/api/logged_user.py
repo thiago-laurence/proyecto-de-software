@@ -1,11 +1,10 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for, session, jsonify
+from flask import Blueprint, request, session, jsonify
 from src.core.models import user as Users
 from src.core.models import institution
 from src.web.helpers import auth
 from src.core.models import service_order as orders
 from src.web.schemas.service_orders import service_orders_schema, service_order_schema, service_order_schema_with_id, create_service_order_schema, comment_schema, create_comment_schema
 from src.web.schemas.users import user_schema, create_user_schema
-from datetime import datetime
 
 api_logged_user= Blueprint("logged_user", __name__, url_prefix="/me")
 
@@ -13,22 +12,25 @@ api_logged_user= Blueprint("logged_user", __name__, url_prefix="/me")
 @api_logged_user.get("/profile")
 @auth.login_required
 def user_show():
-    # Requiere validacion de JWT
-    
+    # Requiere recepcion y validacion de JWT
     user = Users.find_user(session['user']['email'])
     if user is None:
         return jsonify({"error": "Parámetros inválidos"}), 400
     
-    data = user_schema.dump(user)
+    data = user_schema.dumps(user)
     
     return data, 200
 
-#prueba de creacion de usuario a traves de la api
+
 @api_logged_user.post("/user-create")
-#@auth.permission_required("user_create")
+@auth.permission_required("user_create")
 def user_create():
     data = request.get_json()
-    new_user = create_user_schema.load(data)
+    try:
+        new_user = create_user_schema.load(data)
+    except Exception as err:
+        return jsonify({"error": err.messages}), 400
+    
     if Users.exists_user(new_user["email"]):
         return jsonify({"error": "El email ya existe, por favor ingresa otro"}), 400
     
@@ -41,7 +43,7 @@ def user_create():
 
 
 @api_logged_user.get("/requests")
-#@auth.permission_required("request_service_index")
+# @auth.permission_required("request_service_index")
 def user_requests():
     """
     Retorna en formato JSON las solicitudes del usuario logueado.
@@ -89,7 +91,7 @@ def user_request_by_id(id):
         return jsonify(data)
     
 
-#tanto en la creacion de pedidos de servicios como de comentarios a los mismos comente la logica de los usuarios para poder probarlo con el cliente thunder client
+# Tanto en la creacion de pedidos de servicios como de comentarios a los mismos comente la logica de los usuarios para poder probarlo con el cliente thunder client
 @api_logged_user.post("/requests")
 #@auth.permission_required("request_service_create")
 def create_order():

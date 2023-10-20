@@ -88,11 +88,10 @@ def confirm_email(token):
     """
     try:
         email = Token.confirm_token(token)
+        user = Users.find_user(email)
     except:
         flash('El enlace de confirmacion es invalido o ha exipirado.', 'error')
         return redirect(url_for('auth.login'))
-        
-    user = Users.find_user(email)
     
     if user.confirmed:
         flash('La cuenta ya ha sido confirmada, por favor ingrese sesion', 'success')
