@@ -114,37 +114,8 @@ def institution_update(institution_id):
          flash("La institución " + request.json['data']['name'] + " ya se encuentra registrada.", "error")
      
     else:
-        kwargs = {
-            "name":request.json['data']['name'],
-            "info":request.json['data']['info'],
-            "address":request.json['data']['address'],
-            "web":request.json['data']['web'],
-            "social_networks":request.json['data']['social_networks'],
-            "phone":request.json['data']['phone'],
-            "is_enabled":request.json['data']['is_enabled'],
-            "localization":request.json['data']['localization'],
-            "atencion_days":request.json['data']['atencion_days']
-        }
-        if kwargs["name"] == "":
-            kwargs["name"] = insti.name
-        if kwargs["info"] == "":
-            kwargs["info"] = insti.info
-        if kwargs["address"] == "":
-            kwargs["address"] = insti.address
-        if kwargs["web"] == "":
-            kwargs["web"] = insti.web
-        if kwargs["social_networks"] == "":
-            kwargs["social_networks"] = insti.social_networks
-        if kwargs["phone"] == "":
-            kwargs["phone"] = insti.phone
-        if kwargs["localization"] == "":
-            kwargs["localization"] = insti.localization
-        if kwargs["atencion_days"] == "":
-            kwargs["atencion_days"] = insti.atencion_days
-        if kwargs["is_enabled"] == "0":
-            kwargs["is_enabled"] = True
-        else:
-            kwargs["is_enabled"] = False
+        kwargs = request.json['data']
+        kwargs["is_enabled"] = True if kwargs["is_enabled"] == "0" else False
 
         email_user = request.json['data']['duenio']
         us = user.find_user(email_user)

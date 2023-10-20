@@ -27,44 +27,6 @@
     <div class="h-1 w-full bg-indigo-500 rounded"></div>
     {{ Flash.flash_form() }}
 
-    <!-- <div class="">
-        <div class="content grid flex-col xl:grid-cols-3 xl:">
-            <div class="flex max-md:place-content-center mb-1 md:mb-0"> Agregar espacio vertical en resoluciones pequeñas
-                <h2 class=" text-2xl md:text-4xl font-bold dark:text-white">Servicios</h2>
-            </div>
-            {#{% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                <div id="toast" class="max-sm:mb-1 md:mx-2 max-md:mb-1"> Agregar espacio vertical en resoluciones pequeñas
-                    <div class="{{ category }} text-sm text-white rounded-md shadow-lg dark:bg-gray-900" role="alert">
-                        <div class="flex items-center p-2.5">
-                            <p>{{ message }}</p>
-                            <div class="mt-0 ml-auto">
-                                <button type="button" data-dismiss-target="#toast" class="ml-auto -mx-1.5 -my-1.5  text-gray-300 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700" data-dismiss-target="#toast-success" aria-label="Close">
-                                    <span class="sr-only">Close</span>
-                                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                {% endfor %}
-            {% endif %}
-            {% endwith %}#}
-            <div class="flex flex-col  md:flex-row-reverse md:col-start-3">
-                <button data-modal-target="authentication-modal" data-modal-toggle="authentication-modal"
-                    class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                    type="button">
-                    Añadir servicio
-                </button>
-            </div>
-        </div>
-    </div> -->
-
-
-
     <br>
     <ul>
         {% if services.total == 0 %}
@@ -104,8 +66,8 @@
                                 </dl>
                                 <div class="flex items-end justify-end mt-auto">
                                     <div class="flex justify-center m-5">
-                                        <button onclick="putValues('{{service.id}}','{{service.name}}','{{service.info}}','{{service.key_words}}','{{service.type_service.id}}','{{service.type_service.name}}','{{service.is_enabled}}')"  data-modal-toggle="updateProductModal" class="block text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" type="button">
-                                        Editar
+                                        <button type="button" onclick="putValues('{{service.id}}','{{service.name}}','{{service.info}}','{{service.key_words}}','{{service.type_service.id}}','{{service.type_service.name}}','{{service.is_enabled}}')"  data-modal-toggle="updateProductModal" class="block text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
+                                            Editar
                                         </button>
                                     </div>
                                 </div>
@@ -179,40 +141,18 @@
                     <form action="{{ url_for('services.service_add',institution_id=institution.id)}}" method="POST"> 
                         {{ form.hidden_tag() }}
                         <div class=" mb-6">
-                            <!--<label for="service.name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Nombre del
-                                servicio</label>
-                            <input type="text" id="name" name="name"
-                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
-                                placeholder="" required>-->
                             {{ form.name.label (class="block mb-2 text-sm font-medium text-gray-900 dark:text-white")}}
                             {{ form.name(class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light")}}
                         </div>
                         <div class="mb-6">
-                            <!--<label for="service.info" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
-                                Información del servicio
-                            </label>
-                            <input type="text" id="info" name="info" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light" required >
-                            -->
                             {{ form.info.label (class="block mb-2 text-sm font-medium text-gray-900 dark:text-white")}}
                             {{ form.info(class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light") }}
                         </div>
                         <div class="mb-6">
-                            <!--<label for="service.key_words"
-                                class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Palabras clave para busquedas</label>
-                            <input type="text" id="key_words" name="key_words"
-                                class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
-                                required>-->
                             {{ form.key_words.label ( class="block mb-2 text-sm font-medium text-gray-900 dark:text-white")}}
                             {{ form.key_words(class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light") }}
                         </div>
                         <div class="mb-6">
-                            <!--<label for="service.type.value"
-                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Tipo</label>
-                            <select required id="type" name="type" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                                <option value="{{"Analisis"}}">Analisis</option>
-                                <option value="{{"Consultoria"}}">Consultoria</option>
-                                <option value="{{"Desarrollo"}}">Desarrollo</option>
-                            </select>-->
                             {{ form.type_service_id.label (class="block mb-2 text-sm font-medium text-gray-900 dark:text-white")}}
                             {{ form.type_service_id(class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500") }}
                         </div>

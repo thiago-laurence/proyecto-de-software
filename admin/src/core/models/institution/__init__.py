@@ -65,16 +65,9 @@ def delete_institution(institution):
     db.session.commit()
     
 def edit_institution(institution, **kwargs):
-    institution.name = kwargs.get("name")
-    institution.info = kwargs.get("info")
-    institution.address = kwargs.get("address")
-    institution.web = kwargs.get("web")
-    institution.social_networks = kwargs.get("social_networks")
-    institution.phone = kwargs.get("phone")
-    institution.is_enabled = kwargs.get("is_enabled")
-    institution.localization = kwargs.get("localization")
-    institution.atencion_days = kwargs.get("atencion_days")
-    
+    for key, value in kwargs.items():
+        setattr(institution, key, value) 
+        
     db.session.add(institution)
     db.session.commit()
     
@@ -155,11 +148,8 @@ def edit_service(service, **kwargs):
     institution = Institution.query.filter(Institution.id == service.institution_id).first()
     institution.services.remove(service)
     
-    service.name = kwargs.get("name")
-    service.info = kwargs.get("info")
-    service.type_service_id = kwargs.get("type_service_id")
-    service.key_words = kwargs.get("key_words")
-    service.is_enabled = kwargs.get("is_enabled")
+    for key, value in kwargs.items():
+        setattr(service, key, value)
     
     institution.services.append(service)
     db.session.add(service)

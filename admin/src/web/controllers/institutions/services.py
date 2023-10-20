@@ -93,28 +93,15 @@ def service_edit(service_id):
     check = institution.get_service_by_name_and_institution(request.json['data']['name'],service.institution_id)
     
     existe = check is not None and check.id != service.id
-    print(request.json['data'])
+    
     if existe:
         flash("El servicio " + request.json['data']['name'] + " ya se encuentra registrado para esta institucion.", "error")
     
     else:
-        kwargs = {
-            "name": request.json['data']['name'],
-            "info": request.json['data']['info'],
-            "type_service_id": int(request.json['data']['type_service_id']),
-            "key_words": request.json['data']['key_words'],
-            "is_enabled": request.json['data']['is_enabled']
-        }
-        if kwargs["name"] == "":
-            kwargs["name"] = service.name
-        if kwargs["info"] == "":
-            kwargs["info"] = service.info
-        if kwargs["key_words"] == "":
-            kwargs["key_words"] = service.key_words
-        if kwargs["is_enabled"] == "0":
-            kwargs["is_enabled"] = True
-        else:
-            kwargs["is_enabled"] = False
+        kwargs = request.json['data']
+        kwargs["is_enabled"] = True if kwargs["is_enabled"] == "0" else False
+        kwargs["type_service_id"] = int(kwargs["type_service_id"])
+
         institution.edit_service(service, **kwargs)
         flash("El servicio " + kwargs["name"] + " se edito con exito.", "success")
     

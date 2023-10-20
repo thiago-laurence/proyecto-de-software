@@ -20,10 +20,10 @@ def get_institutions():
     if(page <= total_pages and page > 0):
     
         institutions = Institutions.list_institutions_paginated(page, per_page)
-        if institutions.total == 0:
+        if institutions[1] == 0:
             return jsonify({"error": "No se encontraron resultados"}), 404
 
-        data = institutions_schema.dump(institutions)
+        data = institutions_schema.dump(institutions[0])
         rta = {
             "data": data,
             "page": page,
