@@ -76,7 +76,6 @@ def user_requests():
 
 
 @api_logged_user.get("/requests/<id>")
-@auth.permission_required("request_service_show")
 def user_request_by_id(id):
     """
     Retorna en formato JSON la solicitud del usuario logueado.
@@ -84,7 +83,7 @@ def user_request_by_id(id):
     user = Users.find_user(session['user']['email'])
     service_order = orders.get_order_by_id(id)
     
-    if(service_order.user_id != user.id):
+    if(service_order is None or service_order.user_id != user.id):
         data = {"error": "Parámetros inválidos"}
         return jsonify(data), 400
     else:     
@@ -92,9 +91,7 @@ def user_request_by_id(id):
         return jsonify(data)
     
 
-# Tanto en la creacion de pedidos de servicios como de comentarios a los mismos comente la logica de los usuarios para poder probarlo con el cliente thunder client
 @api_logged_user.post("/requests")
-@auth.permission_required("request_service_create")
 def create_order():
     """
     Crea una orden de servicio.
@@ -132,7 +129,7 @@ def add_comment(id):
     user = Users.find_user(session['user']['email'])
     order = orders.get_order_by_id(id)
 
-    if(order.user_id != user.id or data['comment'] == None):
+    if(order is None or order.user_id != user.id or data['comment'] == None):
         response = {"error": "Parámetros inválidos"}
         return jsonify(response), 400
     
