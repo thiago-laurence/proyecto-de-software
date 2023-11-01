@@ -77,20 +77,25 @@ def edit_user_role(institution_id):
 
     return redirect(url_for('.index', institution_id = institution_id))
 
-@iu_blueprint.route("/<institution_id>/remove-user/<user_id>", methods=['DELETE'])
+@iu_blueprint.route("/remove-user/<user_id>", methods=['DELETE'])
 @auth.permission_required('ui_destroy')
-def remove_user_from_institution(institution_id, user_id):
-    res = user_institution.remove_user_from_institution(institution_id, user_id)
+def remove_user_from_institution(user_id):
+    institution_id = session['user']['actual_institution']
     data = {
-            'url': '/institutions/' + str(institution_id) + '/users'
-        }
+                'url': '/institutions/' + str(institution_id) + '/users'
+    }
+
+    if (int(user_id) == session['user']['id']):
+        flash("No es posible eliminarse uno mismo", "error")
+        return jsonify(data)
+    res = user_institution.remove_user_from_institution(institution_id, user_id)
+
     if res:
         flash("El usuario fue eliminado correctamente", "success")
     else:
         flash("El usuario no pudo ser eliminado", "error")
+        
     return jsonify(data)
-    
-
 
 @iu_blueprint.get("/<institution_id>/users-not-in")
 @auth.permission_required('ui_index')

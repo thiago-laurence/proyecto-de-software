@@ -185,10 +185,22 @@ async function loadUserList(id, page, query, active) {
     }
   }
 
+// Obtén todos los botones con el nombre "miBoton"
+var botones = document.querySelectorAll('button[name="deleteButton"]');
 
-async function removeUser(institutionId,userId) {
-  console.log(institutionId, userId)
-  let url = '/institutions/' + institutionId + '/remove-user/' + userId
+// Itera sobre los elementos encontrados
+botones.forEach(function(boton) {
+  // Agrega un event listener para el evento 'click'
+  boton.addEventListener('click', function() {
+    // Captura el valor de 'data-id'
+    var dataId = this.getAttribute('data-id');
+    // Llama a la función con el valor capturado
+    removeUser(dataId);
+  });
+});
+
+async function removeUser(userId) {
+  let url = '/institutions/remove-user/' + userId
   try {
     // Realizar una solicitud DELETE al servidor
     const response = await fetch(url, { method: 'DELETE' });

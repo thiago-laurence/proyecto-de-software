@@ -27,8 +27,8 @@ def remove_user_from_institution(institution_id, user_id):
     """
     Elimina al usuario de una institucion
     """
-    ui = UserInstitution.query.filter_by(institution_id = institution_id, user_id = user_id).first()
-    if ui:
+    ui = UserInstitution.query.filter_by(institution_id = int(institution_id), user_id = int(user_id)).first()
+    if ui is not None:
         db.session.delete(ui)
         db.session.commit()
         return True
