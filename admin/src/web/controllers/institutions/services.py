@@ -34,7 +34,6 @@ def service_add(institution_id):
     Metodo para agregar un nuevo servicio
     """
     form = ServiceCreateForm(request.form)
-    
     if(form.validate_on_submit()):
         service = institution.get_service_by_name_and_institution(form.name.data,institution_id)
         
@@ -45,15 +44,27 @@ def service_add(institution_id):
         else:     
             insti = institution.get_institution_by_id(institution_id)
             data = form.data
+            
             data["type_service_id"] = int(data["type_service_id"])
+            
             institution.assign_service(
                 insti,
                 institution.create_service(**data)
             )
             flash("El servicio " + form.name.data + " fue registrado correctamente.", "success")   
+        
         return redirect(url_for("services.index",institution_id=institution_id))
     
-    return render_template("services/index.html", form=form)
+    errors = form.errors
+    field_errors = errors.items()
+    
+    # Obtén el primer campo con errores (esto es un par clave-valor)
+    first_field, first_error = next(iter(field_errors), (None, None))
+
+    if first_error:
+        flash(first_error[0], "error")
+        
+    return redirect(url_for("services.index",institution_id=institution_id))
         
 
 @services_blueprint.route("/services-delete/<service_id>", methods=["DELETE"])

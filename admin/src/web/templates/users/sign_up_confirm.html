@@ -15,7 +15,7 @@
                     <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                         Confirmación de cuenta
                     </h1>
-                    <form class="space-y-4 md:space-y-6" action="{{ url_for('users.confirm_register') }}" method="POST">
+                    <form class="space-y-4 md:space-y-6" method="POST">
                         {% for input in form %}
                             <div>
                                 {{ input.label(

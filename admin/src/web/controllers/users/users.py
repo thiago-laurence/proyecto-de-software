@@ -47,18 +47,28 @@ def register():
     return render_template("users/sign_up.html", form=form)
 
 
-@users_blueprint.post("/sign-up/confirm")
-def confirm_register():
+@users_blueprint.post("/sign-up/confirm-mail/<token>")
+def confirm_register(token):
     """
         Confirma el registro de un usuario.
+        Valida que el token recibido sea valido, y que coincida con el email del usuario a confirmar.
         
         args:
+            token -> token de validacion de email a confirmar \n
             email -> email del usuario a confirmar \n
             username -> nobre de usuario \n
             password -> contraseña del usuario \n
     """
     
     form = Forms.UserConfirmRegisterForm()
+    try:
+        email = Token.confirm_token(token)
+        if (email != form.email.data):
+            raise Exception
+    except:
+        flash("El token de confirmacion es invalido al email del usuario", "error")
+        return render_template("users/sign_up_confirm.html", form=form)
+    
     user = Users.find_user(form.email.data)
     
     if user and user.confirmed:
@@ -81,11 +91,12 @@ def confirm_register():
     return render_template("users/sign_up_confirm.html", form=form)
 
 
-@users_blueprint.route('/sign-up/confirm-mail/<token>')
+@users_blueprint.get('/sign-up/confirm-mail/<token>')
 def confirm_email(token):
     """
         Valida el token de confirmacion de cuenta.
     """
+    
     try:
         email = Token.confirm_token(token)
         user = Users.find_user(email)
@@ -145,6 +156,9 @@ def user_show(user_id):
         Redirige a la página de información de un usuario.
     """
     user = Users.user_show(int(user_id))
+    if user is None:
+        flash("El usuario no existe", "error")
+        return redirect(url_for("users.user_index"))
     form = Forms.UserUpdateForm()
     
     return render_template("users/info.html", user=user, form=form)
@@ -195,6 +209,9 @@ def user_update(user_id):
     form = Forms.UserUpdateForm()
     user_id = int(user_id)
     user = Users.user_show(user_id)
+    if user is None:
+        flash("El usuario no existe", "error")
+        return redirect(url_for("users.user_index"))
     
     if form.validate_on_submit():
         if not Users.validate_identifier(user_id, form.email.data):
@@ -225,6 +242,10 @@ def user_destroy(user_id):
             Redireccion a la pagina de listado de usuarios.
     """
     user_id = int(user_id)
+    if Users.user_show(user_id) is None:
+        flash("El usuario no existe", "error")
+        return redirect(url_for("users.user_index"))
+    
     if (not user_institution.check_unique_owner(user_id)):
         Users.user_destroy(user_id)
         flash("El usuario fue eliminado correctamente", "success")

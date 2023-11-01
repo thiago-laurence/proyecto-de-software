@@ -292,7 +292,15 @@ def index_type_service():
 
 def get_type_service_by_name(name):
     """
-    Me devuelve un tipo de servicio por id.
+    Me devuelve un tipo de servicio por nombre.
     """   
     type_service = TypeService.query.filter(TypeService.name == name).first()
+    return type_service
+
+
+def get_type_service_by_id(id):
+    """
+    Me devuelve un tipo de servicio por id.
+    """   
+    type_service = TypeService.query.filter(TypeService.id == id).first()
     return type_service
