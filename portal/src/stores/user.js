@@ -24,6 +24,7 @@ export const useUserStore = defineStore({
             });
             localStorage.removeItem('jwt');
             localStorage.removeItem('user');
+            window.location.href = '/';
         },
         async login(email, password){
             await API.post('/auth/', {email, password})
