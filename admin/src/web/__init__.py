@@ -36,7 +36,7 @@ def create_app(env="development", static_folder="../../static"):
     app.jinja_env.globals.update(is_authenticated=auth.is_authenticated)
     oauth.init_app(app)
     jwt = JWTManager(app)
-    cors = CORS(app, resources={r"/api/*": {"origins": ["http://localhost:5173"]}})
+    cors = CORS(app, resources={r"/api/*": {"origins": ["http://localhost:5173","https://grupo10.proyecto2023.linti.unlp.edu.ar"]}})
     
     #Endpoints
     @app.get("/")
