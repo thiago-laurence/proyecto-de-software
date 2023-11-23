@@ -23,6 +23,14 @@ class Config(object):
     # Configuracion de seguridad para formularios WTF
     WTF_CSRF_ENABLED = False
     
+    # Configuracion de Google cloud
+    GOOGLE_CLIENT_ID = "835796648231-pbl9o1302ab9t1doeo1cqmu2ptdm47b3.apps.googleusercontent.com"
+    GOOGLE_CLIENT_SECRET = "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"
+    
+    #configuracion del JWT
+    JWT_TOKEN_LOCATION = "headers"
+    JWT_ALGORITHM = "HS256"
+    JWT_SECRET_KEY = "Grupo10-app"
 class ProductionConfig(Config):
     """ configuracion de prod """
     

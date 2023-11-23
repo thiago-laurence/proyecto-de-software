@@ -81,7 +81,7 @@ function Delete(idObject, module){
 function checkparams_institutions(phone, localization){
 
     const patron_phone = /^[0-9-]+$/;
-    const patron_localization = /^[0-9,]+$/;
+    const patron_localization = /^[-0-9,.]+$/;
     var msjPhone = document.getElementById("phoneError");
     var msjLoc = document.getElementById("localizationError");
 
@@ -95,7 +95,6 @@ function checkparams_institutions(phone, localization){
         input.focus(); // Enfocar nuevamente el campo
         return false;
     }
-    console.log(localization);
     if(patron_localization.test(localization)){
         // El valor es válido, no hacer nada
         msjLoc.style.display = "none"; // Ocultar el mensaje de error

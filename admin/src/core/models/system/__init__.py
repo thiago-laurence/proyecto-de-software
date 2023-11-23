@@ -78,3 +78,10 @@ def pages():
     """
     system = System.query.first()
     return system.element_page
+
+def contact():
+    """
+    Retorna la informacion de contacto.
+    """
+    system = System.query.first()
+    return system.info

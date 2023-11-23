@@ -1,19 +1,22 @@
 from marshmallow import Schema, fields, validate, EXCLUDE
+from src.web.schemas.state_orders import state_order_schema_one
+from src.web.schemas.users import UserSchema
 
-class ServiceOrderSchema(Schema):
+class ServiceOrderStatusSchema(Schema):
     """
-        Schema de orden de servicio para retornar su perfil
+    Schema para el estado de la orden de servicio
     """
     id = fields.Int(dump_only=True)
-    title = fields.Str()
-    creation_date = fields.DateTime()
-    close_date = fields.DateTime()
-    status = fields.Str()
-    description = fields.Str()
+    name = fields.Str()
+
+class ServiceOrderStatusChangedSchema(Schema):
+    """
+    Schema para los cambios de estado de la orden de servicio
+    """
+    id = fields.Int(dump_only=True)
+    service_order_status = fields.Nested(ServiceOrderStatusSchema, only=['name'])
     
-service_order_schema = ServiceOrderSchema(exclude=['id'])
-service_order_schema_with_id = ServiceOrderSchema()
-service_orders_schema = ServiceOrderSchema(many=True, exclude=['id'])
+
 
 class CreateServiceOrderSchema(Schema):
     """
@@ -33,8 +36,25 @@ class CommentSchema(Schema):
     """
     id = fields.Int(dump_only=True)
     comment = fields.Str()
+    user = fields.Nested(UserSchema, only=['username'])
 
 comment_schema = CommentSchema()
+
+class ServiceOrderSchema(Schema):
+    """
+        Schema de orden de servicio para retornar su perfil
+    """
+    id = fields.Int(dump_only=True)
+    title = fields.Str()
+    creation_date = fields.DateTime()
+    close_date = fields.DateTime()
+    description = fields.Str()
+    status_changes = fields.Nested(ServiceOrderStatusChangedSchema, many=True)
+    comments = fields.Nested(CommentSchema, many=True)
+    
+service_order_schema = ServiceOrderSchema(exclude=['id'])
+service_order_schema_with_id = ServiceOrderSchema()
+service_orders_schema = ServiceOrderSchema(many=True, exclude=['comments'])
 
 class CreateCommentSchema(Schema):
     """
