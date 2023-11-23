@@ -22,7 +22,7 @@ export default {
                 { text: 'HOME', link: '/' },
                 { text: 'SERVICIOS', link: '/search-services' },
                 { text: 'MIS PEDIDOS', link: '/service-orders' },
-                { text: 'ESTÁDISTICAS', link: '/stadistics' },
+                { text: 'ESTADÍSTICAS', link: '/stadistics' },
             ],
             isMobileMenuOpen: false,
         }
