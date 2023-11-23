@@ -16,17 +16,11 @@ class TypeService(db.Model):
         db.DateTime, default=datetime.utcnow
     )
 
-class Tipo(Enum):
-    Analisis = 1
-    Consultoria = 2
-    Desarrollo = 3
-
 class Service(db.Model):
     __tablename__ = "services"
     id = db.Column(db.Integer, primary_key=True, unique=True)
     name = db.Column(db.String(50), nullable=False)
     info = db.Column(db.String(200),nullable=False)
-    # type = db.Column(db.String(50), nullable=False)
     type_service_id = db.Column(db.Integer, db.ForeignKey("type_services.id", ondelete="CASCADE"))
     type_service = db.relationship("TypeService", back_populates="services", lazy=True)
     

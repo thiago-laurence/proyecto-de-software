@@ -1,6 +1,7 @@
 from src.core.database import db
 from datetime import datetime
 from src.core.models.user.user import User
+from sqlalchemy.ext.hybrid import hybrid_property, hybrid_method
 
 class Comment(db.Model):
     __tablename__ = "comments"
@@ -65,13 +66,24 @@ class Service_order(db.Model):
     service = db.relationship('Service', back_populates='service_orders')
     service_id = db.Column(db.Integer, db.ForeignKey("services.id", ondelete="CASCADE"))
     status_changes = db.relationship('Service_order_status_changed', back_populates='service_order', lazy=True, cascade="all, delete-orphan")
-    
+    _end_date = db.Column(db.DateTime, nullable=True)
+        
     @property
     def status_actual(self):
         service_order = Service_order_status_changed.query.filter(Service_order_status_changed.service_order_id == self.id)\
             .order_by(Service_order_status_changed.id.desc()).first()
         
         return service_order.service_order_status_id
+
+    @hybrid_property
+    def end_date(self):
+        if self._end_date is None:
+            return datetime.utcnow()
+        return self._end_date
+    
+    @end_date.setter
+    def end_date(self, value):
+        self._end_date = value
     
     updated_at = db.Column(
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow

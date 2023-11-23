@@ -3,14 +3,14 @@ from src.core.models.institution import service as Service
 from src.core.models import user
 from flask import Blueprint, jsonify, request
 from src.web.helpers import auth
-from src.web.schemas.services import services_schema,service_schema
-from src.core.models import system
+from src.web.schemas.services import services_schema,service_schema, types_services_schema
+from src.web.schemas.state_orders import state_order_schema
+from src.core.models import system, service_order as orders
 
 
 api_services = Blueprint("api_services", __name__, url_prefix="/services")
 
 @api_services.get("/search")
-#@auth.permission_required("service_index")
 def search():
     """
     Retorna en formato JSON la información de los servicios habilitados que coincidan con la búsqueda.
@@ -63,15 +63,17 @@ def get_services_types():
     """
     Retorna en formato JSON los tipos de servicios disponibles.
     """
-    if "Authorization" in request.headers:
-        username = request.headers["Authorization"].split(":")[0]
+    types_services = Institutions.index_type_service()
     
-        usuario = user.find_user(username)
-        
-        if usuario is not None:
-            return jsonify({"data": [service.name for service in Service.Tipo]}), 200
+    return types_services_schema.dump(types_services), 200
 
-    # Si la autenticación falla
-    return jsonify({"error": "Autenticación fallida"}), 401
+@api_services.get("/orders-state")
+def get_orders_state():
+    """
+    Retorna en formato JSON los estados de las solicitudes.
+    """
+    states = orders.index_status()
+    
+    return state_order_schema.dump(states), 200
 
     

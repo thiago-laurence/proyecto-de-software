@@ -5,6 +5,7 @@ from src.web.forms import user_form as Forms
 from src.web.helpers import auth
 from src.web import mail as Mail
 from src.web import token as Token
+from src.web.oauth import oauth as OAuth
 
 users_blueprint = Blueprint("users", __name__, url_prefix="/users")
 
@@ -46,6 +47,54 @@ def register():
     
     return render_template("users/sign_up.html", form=form)
 
+@users_blueprint.route("/sign-up/register-google/<email>/<lastname>/<name>")
+def register_google(email, lastname, name):
+    """
+        Registra un nuevo usuario a traves de Google (de forma parcial).
+        
+        args: \n
+            email -> email del usuario a registrar. \n
+            name -> nombre del usuario a registrar. \n
+            lastname -> apellido del usuario a registrar. \n
+    """
+    form = Forms.UserRegisterForm()
+    user = Users.find_user(email)
+    if user:
+        flash("El email ingresado ya está registrado, por favor seleccione otra cuenta", "error")
+        return render_template("users/sign_up.html", form=form)
+    data = {"email": email, "name": name, "lastname": lastname}
+    user = Users.parcial_register_user(**data)
+    
+    token = Token.generate_confirmation_token(user.email)
+    confirm_url = url_for('users.confirm_email', token=token, _external=True)
+    html = render_template('users/_email-confirm-account.html', confirm_url=confirm_url)
+    subject = "Confirme su cuenta"
+    Mail.send_email(user.email, subject, html)
+    
+    flash("Registro parcial exitoso. Se ha enviado un correo de confirmación al gmail seleccionado", "success")
+    
+    return render_template("users/sign_up.html", form=form)
+
+
+@users_blueprint.route("/sign-up/register-google")
+def authentication_google():
+    """
+        Autenticacion de usuario a traves de google cloud
+    """
+    redirect_uri = url_for('users.register_google_callback', _external=True)
+
+    return OAuth.google.authorize_redirect(redirect_uri)
+
+@users_blueprint.route("/sign-up/google-callback")
+def register_google_callback():
+    """
+        URI de callback de google cloud
+    """
+    token = OAuth.google.authorize_access_token()
+    user = token['userinfo']
+
+    return redirect(url_for("users.register_google", email=user["email"], lastname=user["family_name"], name=user["given_name"]))
+
 
 @users_blueprint.post("/sign-up/confirm-mail/<token>")
 def confirm_register(token):
@@ -81,7 +130,7 @@ def confirm_register(token):
             return render_template("users/sign_up_confirm.html", form=form)
         
         Users.confirm_user(email=form.email.data, username=form.username.data, password=form.password.data)
-        flash('La cuenta ya ha sido confirmada, por favor ingrese sesion', 'success')
+        flash('La cuenta ha sido confirmada, por favor inicie sesion', 'success')
         
         return redirect(url_for("auth.login"))
     
@@ -105,7 +154,7 @@ def confirm_email(token):
         return redirect(url_for('auth.login'))
     
     if user.confirmed:
-        flash('La cuenta ya ha sido confirmada, por favor ingrese sesion', 'success')
+        flash('La cuenta ha sido confirmada, por favor inicie sesion', 'success')
         return redirect(url_for('auth.login'))
     
     form = Forms.UserConfirmRegisterForm()

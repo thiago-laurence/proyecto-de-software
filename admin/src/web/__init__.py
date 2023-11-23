@@ -3,6 +3,8 @@ import logging
 # Import third-party modules
 from flask import Flask, redirect, url_for
 from flask_session import Session
+from flask_jwt_extended import JWTManager
+from flask_cors import CORS
 # Import local modules
 from src.core import models
 from src.core import database
@@ -12,6 +14,7 @@ from src.web import routes
 from src.web.helpers import auth
 from src.web import mail
 from src.web import token
+from src.web import oauth
 from src.core import seeds
 
 logging.basicConfig()
@@ -31,6 +34,9 @@ def create_app(env="development", static_folder="../../static"):
     error.register_error_handlers(app)
     routes.register_blueprints(app)
     app.jinja_env.globals.update(is_authenticated=auth.is_authenticated)
+    oauth.init_app(app)
+    jwt = JWTManager(app)
+    cors = CORS(app, resources={r"/api/*": {"origins": ["http://localhost:5173"]}})
     
     #Endpoints
     @app.get("/")

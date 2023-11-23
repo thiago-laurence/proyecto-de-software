@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, request, redirect, url_for, session
+from flask import Blueprint, render_template, request, redirect, url_for, session, flash
 from src.core.models import service_order as ServiceOrders
 from src.core.models import institution as Institutions
 from src.core.models import user as Users
@@ -67,10 +67,17 @@ def issue_change_status():
     """
     issue = ServiceOrders.get_order_by_id(request.form.get("issue_id"))
     status = ServiceOrders.get_order_status_by_name(request.form.get("status"))
-    ServiceOrders.change_status_order(
-        service_order_status = status,
-        service_order = issue,
-        note = request.form.get("note")
-    )
+    if status is None:
+        flash("El estado seleccionado no existe", "error")
+        return redirect(url_for("issues.issue_show", issue_id=request.form.get("issue_id")))
+    
+    change = ServiceOrders.change_status_order(
+            service_order_status = status,
+            service_order = issue,
+            note = request.form.get("note")
+        )
+    
+    if status.name in ["Finalizada", "Cancelada", "Rechazada"]:
+        ServiceOrders.update_end_date(issue.id, change.inserted_at)
 
     return redirect(url_for("issues.issue_show", issue_id=request.form.get("issue_id")))
