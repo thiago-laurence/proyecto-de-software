@@ -10,10 +10,6 @@
       <div class="bg-white rounded-xl border-2 pt-2 px-2 mt-4 mx-6">
         <p class="text-sm font-normal text-gray-800" v-for="item in service_institution" :key="item">
           {{ item }}
-          0) Prueba de carbono 14. - Museo de Cs. Naturales UNLP - 1 solicitudes
-          1) Reuniones cientificas y tecnologicas - CONICET - 2 solicitudes
-          2) Subsidios para trabajo - CONICET - 1 solicitudes
-          3) Taller de apoyo para Proyecto de software - Facultad de informatica - 2 solicitudes
         </p>
       </div>
     </div>
