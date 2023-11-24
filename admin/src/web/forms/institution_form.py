@@ -10,6 +10,6 @@ class InstitutionForm(FlaskForm):
     web = StringField("Pagina web", validators=[InputRequired(), Length(min=2, max=100,message="El campo página web tiene un máximo de 100 caracteres")])
     phone = StringField("Teléfono", validators=[InputRequired(), Length(min=2, max=50,message="El campo de teléfono tiene un máximo de 50 caracteres"),Regexp(r'^[\d-]+$', message="Ingrese un número de teléfono válido")])
     social_networks = StringField("Redes sociales", validators=[InputRequired(), Length(min=2, max=100,message="El campo de redes sociales tiene un máximo de 100 caracteres")])
-    localization = StringField("Localización", validators=[InputRequired(), Length(min=2, max=100, message="El campo localización tiene un máximo de 100 caracteres"),Regexp(r'^[\d,]+$', message="Ingrese dos coordenadas separadas por coma")])
+    localization = StringField("Localización", validators=[InputRequired(), Length(min=2, max=100, message="El campo localización tiene un máximo de 100 caracteres"),Regexp(r'^[-]?\d{1,10}\.\d{1,15},[-]?\d{1,10}\.\d{1,15}$', message="Ingrese dos coordenadas separadas por coma sin espacios")])
     atencion_days = StringField("Días y horarios de atención", validators=[InputRequired(), Length(min=2, max=100, message="El campo de días y horarios de atención tiene un máximo de 100 caracteres")])
     
