@@ -65,7 +65,6 @@ def parcial_register_user(**kwargs):
     """
     kwargs['email'] = kwargs['email'].lower()
     user = User(**kwargs)
-    user.confirmed = False
     db.session.add(user)
     db.session.commit()
     

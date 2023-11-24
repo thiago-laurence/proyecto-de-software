@@ -24,9 +24,14 @@ def create_jwt():
     
     if(user is None):
         return jsonify({"error": "Acceso no autorizado"}), 401
-    else:
-        access_token = create_access_token(identity=user.id)
-        return jsonify({"token": access_token}), 200
+    
+    if not user.active:
+        return jsonify({'error': 'Usted esta baneado del sistema, por favor comuniquese con administración'}), 401
+    if not user.confirmed:
+        return jsonify({'error': 'Esta cuenta no ha sido confirmada, por favor revise su casilla de correo o comuniquese con administración'}), 401
+    
+    access_token = create_access_token(identity=user.id)
+    return jsonify({"token": access_token}), 200
 
 @api_auth.post("/sign-up")
 def sign_up():
@@ -51,23 +56,6 @@ def sign_up():
     
     return jsonify({"success": "El registro parcial fue exitoso, por favor verifique su casilla de correo"}), 201
 
-@api_auth.post("/google")
-def login_google():
-    data = request.get_json()['userInfo']
-    user = User.find_user(data["email"])
-    
-    if(user is None):
-        new_user = {
-            "email": data["email"], 
-            "lastname": data["family_name"], 
-            "name": data["given_name"],
-            "username": data["email"].split("@")[0]
-        }
-        user = User.parcial_register_user(**new_user)    
-        
-    access_token = create_access_token(identity=user.id)
-    return jsonify({"token": access_token}), 200
-
 
 @api_auth.route('/verify-token', methods=['POST'])
 def verify_token():
@@ -83,9 +71,15 @@ def verify_token():
                 "email": user_info["email"], 
                 "lastname": user_info["family_name"], 
                 "name": user_info["given_name"],
-                "username": user_info["email"].split("@")[0]
+                "username": user_info["email"].split("@")[0],
+                "confirmed": True
             }
             user = User.parcial_register_user(**new_user)
+        else:
+            if not user.confirmed:
+                return jsonify({'error': 'Esta cuenta no ha sido confirmada, por favor revise su casilla de correo o comuniquese con administración'}), 401
+            if not user.active:
+                return jsonify({'error': 'Usted esta baneado del sistema, por favor comuniquese con administración'}), 401
         
         access_token = create_access_token(identity=user.id)
         return jsonify({"token": access_token}), 200
