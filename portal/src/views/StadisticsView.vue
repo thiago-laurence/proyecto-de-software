@@ -69,53 +69,31 @@ import BubbleChart from '@/components/BubbleChart.vue'
         </div>
     </div>
 
-    <div class="grid grid-cols-1  lg:grid-cols-3 content-start items-strech my-4">
+    <div class="grid grid-cols-1 lg:grid-cols-3 items-start my-4">
         <div class="bg-indigo-50 rounded-xl p-2 m-4 shadow-lg shadow-indigo-300">
-            <div class="flex flex-col">
-                <div class="flex flex-row justify-center h-2/3 items-center">
-                    <div class="flex justify-center w-full lg:h-80">
-                        <PieChart />
-                    </div>
-                </div>
-                <div class="flex flex-row justify-center h-1/3 items-center">
-                    <p class="text-base font-normal text-gray-600 mt-8 p-4 h-full bg-gray-200 rounded-xl">
-                        "Análisis", "Consultoria", "Desarrollo" corresponden a los tipos de solicitudes registradas, junto a
-                        la cantidad de
-                        solicitudes procesadas para cada uno.
-                    </p>
+            <div class="flex justify-center">
+                <div class="h-full">
+                    <PieChart />
                 </div>
             </div>
-
+            <p class="text-base font-normal text-gray-600 mt-8 p-4 bg-gray-200 rounded-xl border-2 border-gray-300">
+                "Análisis", "Consultoria", "Desarrollo" corresponden a los tipos de solicitudes registradas, junto a la cantidad de 
+                solicitudes procesadas para cada uno.
+            </p>
         </div>
-        
         <div class="bg-green-50 rounded-xl p-2 m-4 shadow-lg shadow-green-300">
-            <div class="flex flex-col">
-                <div class="flex flex-row justify-center h-2/3 items-center">
-                    <div class="flex justify-center w-full lg:h-80">
-                        <BarChart />
-                    </div>
-                </div>
-                <div class="flex flex-row justify-center h-1/3 items-center">
-                    <p class="text-base font-normal text-gray-600 mt-8 p-4 bg-gray-200 rounded-xl">
-                        Servicio solicitado e institución que lo brinda, junto a la cantidad de solicitudes procesadas para el mismo.
-                    </p>
-                </div>
-            </div>
+            <BarChart />
+            <p class="text-base font-normal text-gray-600 mt-8 p-4 bg-gray-200 rounded-xl border-2 border-gray-300">
+                Servicio solicitado e institución que lo brinda, junto a la cantidad de solicitudes procesadas para el mismo.
+            </p>
         </div>
         <div class="bg-red-50 rounded-xl p-2 m-4 shadow-lg shadow-red-300">
-            <div class="flex flex-col">
-                <div class="flex flex-row justify-center h-2/3 items-center">
-                    <div class="flex justify-center w-full lg:h-80">
-                        <BubbleChart />
-                    </div>
-                </div>
-                <div class="flex flex-row justify-center h-1/3 items-center">
-                    <p class="text-base font-normal text-gray-600 mt-8 p-4 bg-gray-200 rounded-xl">
-                        Tiempo de resolución: Tiempo promedio que tarda una institución en responder una solicitud. <br>
-                        Los tiempos son aproximados en cantidad de dias (eje X) y horas (eje Y) (dd:hh).
-                    </p>
-                </div>
-            </div>
+            <BubbleChart />
+            <p class="text-base font-normal text-gray-600 mt-8 p-4 bg-gray-200 rounded-xl border-2 border-gray-300">
+                Tiempo de resolución: Tiempo promedio que tarda una institución en responder una solicitud. <br>
+                Los tiempos son aproximados en cantidad de dias (eje X) y horas (eje Y) (dd:hh).
+            </p>
         </div>
     </div>
+
 </template>

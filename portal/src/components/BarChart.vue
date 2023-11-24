@@ -7,9 +7,13 @@
           :data="chartData"
         />
       </div>
-      <div class="bg-white rounded-xl border-2 pt-2 px-2">
-        <p class="text-sm font-medium text-gray-800" v-for="item in service_institution" :key="item">
+      <div class="bg-white rounded-xl border-2 pt-2 px-2 mt-4 mx-6">
+        <p class="text-sm font-normal text-gray-800" v-for="item in service_institution" :key="item">
           {{ item }}
+          0) Prueba de carbono 14. - Museo de Cs. Naturales UNLP - 1 solicitudes
+          1) Reuniones cientificas y tecnologicas - CONICET - 2 solicitudes
+          2) Subsidios para trabajo - CONICET - 1 solicitudes
+          3) Taller de apoyo para Proyecto de software - Facultad de informatica - 2 solicitudes
         </p>
       </div>
     </div>
@@ -47,8 +51,8 @@
         };
         let i = 0;
         for (const prop in response.data) {
-          this.chartData.labels.push(i);
-          this.service_institution.push(i + ") " + prop + " - " + response.data[prop] + " solicitudes");
+          this.chartData.labels.push("(" + i + ")");
+          this.service_institution.push("(" + i + ") " + prop + " - " + response.data[prop] + " solicitudes");
           this.chartData.datasets[0].backgroundColor.push(colors[i]);
           this.chartData.datasets[0].data.push(response.data[prop]);
           i ++;
