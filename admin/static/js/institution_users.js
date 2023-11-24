@@ -60,7 +60,7 @@ async function loadUserList(id, page, query, active) {
           navPagination.classList.remove('hidden')
           const listItem = document.createElement('li');
           listItem.innerHTML = `
-            <div id=li-${user.username} class="flex items-center rounded p-3 space-x-4 my-2 hover:bg-indigo-400">
+            <div id=li-${user.username} class="flex items-center rounded p-3 space-x-4 my-2 hover:bg-indigo-400 cursor-pointer">
               <div class="flex-shrink-0">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
@@ -83,11 +83,11 @@ async function loadUserList(id, page, query, active) {
               document.getElementById('username').value = selectedUser;
   
               if (selectedListItem) {
-                selectedListItem.classList.remove('bg-indigo-300');
+                selectedListItem.classList.remove('bg-indigo-400');
               }
         
               // Agrega la clase bg-indigo-700 al nuevo elemento seleccionado
-              newListItem.classList.add('bg-indigo-300');
+              newListItem.classList.add('bg-indigo-400');
   
               // Actualiza la variable global al nuevo elemento seleccionado
               selectedListItem = newListItem;
