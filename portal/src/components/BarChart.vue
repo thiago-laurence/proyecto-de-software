@@ -1,10 +1,19 @@
 <template>
-    <Bar
-        id="BarChart"
-        v-if="loaded"
-        :data="chartData"
-      />
-  </template>
+    <div class="grid grid-cols-1 w-full">
+      <div>
+        <Bar
+          id="BarChart"
+          v-if="loaded"
+          :data="chartData"
+        />
+      </div>
+      <div class="bg-white rounded-xl border-2 pt-2 px-2">
+        <p class="text-sm font-medium text-gray-800" v-for="item in service_institution" :key="item">
+          {{ item }}
+        </p>
+      </div>
+    </div>
+</template>
   
 <script>
   import { API } from '@/api'
@@ -18,7 +27,8 @@
     components: { Bar },
     data: () => ({
       loaded: false,
-      chartData: null
+      chartData: null,
+      service_institution: [],
     }),
     async mounted(){
       this.loaded = false;
@@ -37,7 +47,8 @@
         };
         let i = 0;
         for (const prop in response.data) {
-          this.chartData.labels.push(prop);
+          this.chartData.labels.push(i);
+          this.service_institution.push(i + ") " + prop + " - " + response.data[prop] + " solicitudes");
           this.chartData.datasets[0].backgroundColor.push(colors[i]);
           this.chartData.datasets[0].data.push(response.data[prop]);
           i ++;
