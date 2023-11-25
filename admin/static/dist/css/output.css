@@ -1147,6 +1147,14 @@ div.flash.update.success {
   left: 0px;
 }
 
+.left-2 {
+  left: 0.5rem;
+}
+
+.left-2\.5 {
+  left: 0.625rem;
+}
+
 .right-0 {
   right: 0px;
 }
@@ -1169,6 +1177,10 @@ div.flash.update.success {
 
 .top-3 {
   top: 0.75rem;
+}
+
+.top-3\.5 {
+  top: 0.875rem;
 }
 
 .top-\[50\%\] {
@@ -1934,10 +1946,6 @@ div.flash.update.success {
   white-space: nowrap;
 }
 
-.break-words {
-  overflow-wrap: break-word;
-}
-
 .break-all {
   word-break: break-all;
 }
@@ -2412,6 +2420,10 @@ div.flash.update.success {
 
 .pl-6 {
   padding-left: 1.5rem;
+}
+
+.pl-8 {
+  padding-left: 2rem;
 }
 
 .pr-5 {
@@ -3425,10 +3437,6 @@ div.flash.update.success {
 
   .sm\:mt-0 {
     margin-top: 0px;
-  }
-
-  .sm\:mt-5 {
-    margin-top: 1.25rem;
   }
 
   .sm\:flex {

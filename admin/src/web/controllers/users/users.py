@@ -189,12 +189,13 @@ def user_index():
     
     return render_template("users/index.html", form_create=form_create, users=users[0], total_pages=users[1], page=page, query=query, active=active)
 
-@users_blueprint.get("/all-users")
+@users_blueprint.get("/all-users/")
 def all_users():
     """
-        me retorna una lista con los emails de todos los usuarios
+        Retorna una lista con los emails de todos los usuarios
     """
-    users = Users.get_users_emails()
+    query = request.args.get("q", "", type=str)
+    users = Users.get_users_emails(query)
     return users
     
 
