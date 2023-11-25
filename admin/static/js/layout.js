@@ -33,10 +33,11 @@ function Update(idForm, idObject, module){
         var input = elements[i];
         data[input.name] = input.value; 
     }
-    console.log(data);
     if(module == "institutions"){
-        console.log(data['phone']);
-        checkparams_institutions(data['phone'],data['localization']);
+        if (!checkparams_institutions(data['phone'],data['localization'])){
+            console.log("Validacion incorrecta del telefono y localizacion");
+            return false;
+        }
     }
     
     fetch(url,{
@@ -81,7 +82,7 @@ function Delete(idObject, module){
 function checkparams_institutions(phone, localization){
 
     const patron_phone = /^[0-9-]+$/;
-    const patron_localization = /^[-0-9,.]+$/;
+    const patron_localization = /^[-]?\d{1,10}\.\d{1,15},[-]?\d{1,10}\.\d{1,15}$/;
     var msjPhone = document.getElementById("phoneError");
     var msjLoc = document.getElementById("localizationError");
 
@@ -92,7 +93,6 @@ function checkparams_institutions(phone, localization){
     } else {
         // El valor no es válido, mostrar un mensaje de error o realizar alguna acción
         msjPhone.style.display = "block"; // Mostrar el mensaje de error
-        input.focus(); // Enfocar nuevamente el campo
         return false;
     }
     if(patron_localization.test(localization)){
@@ -102,7 +102,8 @@ function checkparams_institutions(phone, localization){
     else{
         // El valor no es válido, mostrar un mensaje de error o realizar alguna acción
         msjLoc.style.display = "block"; // Mostrar el mensaje de error
-        input.focus(); // Enfocar nuevamente el campo
         return false;
     }
+
+    return true;
 }

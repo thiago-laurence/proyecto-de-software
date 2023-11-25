@@ -51,6 +51,9 @@ def institution_add():
     email_duenio = request.form.get("duenio")
 
     duenio = user.find_user(email_duenio)
+    if duenio is None:
+        flash("El dueño ingresado no se encuentra registrado, por favor seleccione uno válido", "error")
+        return redirect(url_for("institutions.index"))
     
     if(form.validate_on_submit()):
         existe = institution.check_if_institution_exists_by_name(form.name.data)
@@ -59,7 +62,8 @@ def institution_add():
             return redirect(url_for("institutions.index"))
         data = form.data
         insti = institution.create_institution(**data)
-        user_institution.create_user_institution_role(user_id=duenio.id, institution_id=insti.id, role_id=2)
+        role_owner = role.get_role_by_name("Dueño/a")
+        user_institution.create_user_institution_role(user_id=duenio.id, institution_id=insti.id, role_id=role_owner.id)
         
         flash("La institución " + form.name.data + " fue registrada correctamente.", "success")   
         return index()
@@ -110,29 +114,28 @@ def institution_update(institution_id):
     """
     insti = institution.get_institution_by_id(institution_id)
     existe = institution.get_institution_by_name(request.json['data']['name'])
+    email_user = request.json['data']['duenio']
     
     if (existe is not None and existe.id != insti.id):
-         flash("La institución " + request.json['data']['name'] + " ya se encuentra registrada.", "error")
-     
+        flash("La institución " + request.json['data']['name'] + " ya se encuentra registrada.", "error")
     else:
         kwargs = request.json['data']
-        kwargs["is_enabled"] = True if kwargs["is_enabled"] == "0" else False
-
-        email_user = request.json['data']['duenio']
-        us = user.find_user(email_user)
-        role_owner = role.get_role_by_name("Dueño/a")
-
-        # si el usuario se encuentra en la institucion, lo pongo como owner, si no, lo asigno a la institucion como owner
-        if (user_institution.check_ui(institution_id, us.id)):
-            #2 = role owner
-            user_institution.edit_user_role(institution_id, us.id, role_owner.id)
-        else:
-            user_institution.create_user_institution_role(user_id=us.id, institution_id=insti.id, role_id=role_owner.id)
-            # user_institution.remove_user_from_institution(insti.id, us.id)
-
-        institution.edit_institution(insti, **kwargs)
+        kwargs["is_enabled"] = True if kwargs["is_enabled"] == "0" else False    
         
-        flash("La institución " + kwargs["name"] + " fue editada correctamente.", "success")   
+        us = user.find_user(email_user)
+        if us is None:
+            flash("El dueño ingresado no se encuentra registrado, por favor seleccione uno válido", "error")
+        else:
+            role_owner = role.get_role_by_name("Dueño/a")
+            # Si el usuario se encuentra en la institucion, lo pongo como owner, si no, lo asigno a la institucion como owner
+            if (user_institution.check_ui(institution_id, us.id)):
+                user_institution.edit_user_role(institution_id, us.id, role_owner.id)
+            else:
+                user_institution.create_user_institution_role(user_id=us.id, institution_id=insti.id, role_id=role_owner.id)
+                # user_institution.remove_user_from_institution(insti.id, us.id)
+
+            institution.edit_institution(insti, **kwargs)
+            flash("La institución " + kwargs["name"] + " fue editada correctamente.", "success")
         
     data = {
         "url": '/institutions/'+str(institution_id)

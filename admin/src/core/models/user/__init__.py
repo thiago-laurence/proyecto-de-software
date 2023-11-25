@@ -13,11 +13,11 @@ def get_users():
     users = User.query.all()
     return users
   
-def get_users_emails():
-    #users_emails = User.query(User.email).all()
+def get_users_emails(query=""):
     role_root = role.get_role_by_name("SuperAdministrador/a")
     user_root = UserInstitution.query.filter(UserInstitution.role_id == role_root.id).first()
-    users_emails = [user.email for user in db.session.query(User.email).filter(User.id != user_root.user_id).all()]
+    users = User.query.filter(User.id != user_root.user_id, or_(User.email.ilike(f"%{query}%")), User.active == True).paginate(page=1, per_page=system.pages(), error_out=False)
+    users_emails = [user.email for user in users]
     
     return users_emails
 
