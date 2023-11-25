@@ -100,14 +100,13 @@ def list_services_by_institution(institution_id):
     
     return services
 
-def list_services_by_intitution_paginated(page,institution_id):
+def list_services_by_intitution_paginated(institution_id, page, per_page):
     """
-    Me devuelve todas las instituciones.
+    Me devuelve todos los servicios de una institucion paginados
     """
-    
-    services = Service.query.filter(Service.institution_id == institution_id).paginate(page=page, per_page=system.pages(), error_out=False)
+    services = Service.query.filter(Service.institution_id == institution_id).paginate(page=page, per_page=per_page, error_out=False)
 
-    return services
+    return services, services.pages
 
 def total_services_pages(institution_id, per_page):
     """

@@ -34,50 +34,67 @@
                     </h5>
                 </div>
                 <br>
-                <div >
-                    <dl class="grid grid-cols-2">
-                        <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Descripción</dt>
-                        <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Días y horarios de atención</dt>
-                        <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">{{institution.info}}</dd>
-                        <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">{{institution.atencion_days}}</dd>
-                        <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Página web</dt>
-                        <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Redes sociales</dt>
-                        <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">{{institution.web}}</dd>
-                        <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">{{institution.social_networks}}</dd>
-                        <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Dirección</dt>
-                        <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Localización</dt>
-                        <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">{{institution.address}}</dd>
-                        <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">{{institution.localization}}</dd>
-                        <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Teléfono de contacto</dt>
-                        <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Dueño/s</dt>
-                        <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">{{institution.phone}}</dd>
-                        <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
-                            {% for user in duenios %}
-                                {% if not loop.last %}
-                                    {{user.name}} {{user.lastname}} -
-                                {% else %}
-                                    {{user.name}} {{user.lastname}}
-                                {% endif %}
-                            {% endfor %}
-                        </dd>                        
+                <div>
+
+                    <dl class="grid grid-cols-6 gap-6">
+                        <div class="col-span-6 sm:col-span-3">
+                            <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Descripción</dt>
+                            <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">{{institution.info}}</dd>
+                        </div>
+                        <div class="col-span-6 sm:col-span-3">
+                            <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Días y horarios de atención</dt>
+                            <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400 break-all">{{institution.atencion_days}}</dd>
+                        </div>
+                        <div class="col-span-6 sm:col-span-3">
+                            <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Página web</dt>
+                            <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">{{institution.web}}</dd>        
+                        </div>
+                        <div class="col-span-6 sm:col-span-3">
+                            <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Redes sociales</dt>
+                            <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">{{institution.social_networks}}</dd>
+                        </div>
+                        <div class="col-span-6 sm:col-span-3">
+                            <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Dirección</dt>
+                            <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400 break-all">{{institution.address}}</dd>
+                        </div>
+                        <div class="col-span-6 sm:col-span-3">
+                            <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Localización</dt>    
+                            <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400 break-all">{{institution.localization}}</dd>
+                        </div>
+                        <div class="col-span-6 sm:col-span-3">
+                            <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Teléfono de contacto</dt>
+                            <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">{{institution.phone}}</dd>
+                        </div>
+                        <div class="col-span-6 sm:col-span-3">
+                            <dt class="mb-2 font-semibold leading-none text-gray-900 dark:text-white">Dueño/s</dt>
+                            <dd class="mb-4 font-light text-gray-500 sm:mb-5 dark:text-gray-400">
+                                {% for user in duenios %}
+                                    {% if not loop.last %}
+                                        {{user.name}} {{user.lastname}} -
+                                    {% else %}
+                                        {{user.name}} {{user.lastname}}
+                                    {% endif %}
+                                {% endfor %}
+                            </dd>
+                        </div>
                     </dl>
                 </div>
-                <div class="flex justify-between items-center">
-                    <div class="flex items-center space-x-3 sm:space-x-4">
-                        <button type="button" class="text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" id="updateProductButton" data-modal-toggle="updateProductModal">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-8">
+                    <div class="justify-self-center lg:justify-self-start md:w-fit w-full">
+                        <button type="button" class="w-full text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" id="updateProductButton" data-modal-toggle="updateProductModal">
                             <svg aria-hidden="true" class="mr-1 -ml-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path><path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd"></path></svg>
                             Editar
-                        </button>     
-                        <a href="{{url_for('services.index', institution_id = institution.id)}}">          
-                            <button type="button" class="py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
+                        </button>
+                    </div>
+                    <div class="justify-self-center md:w-fit w-full">
+                        <a href="{{ url_for('services.index', institution_id = institution.id) }}">          
+                            <button type="button" class="w-full py-2.5 px-5 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">
                                 Ver servicios
                             </button>
                         </a>
-                    </div>     
-                    
-                    <div class="flex items-center space-x-3 sm:space-x-4">
-                              
-                        <button type="button" class="inline-flex items-center text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900" onclick="Delete('{{institution.id}}','institutions')">
+                    </div>
+                    <div class="justify-self-center lg:justify-self-end md:w-fit w-full">    
+                        <button type="button" class="w-full inline-flex items-center text-white bg-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-900" onclick="Delete('{{institution.id}}','institutions')">
                             <svg aria-hidden="true" class="w-5 h-5 mr-1.5 -ml-1" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
                             Eliminar
                         </button>
@@ -88,8 +105,8 @@
     </div>
 
     <!-- Update modal -->
-    <div id="updateProductModal" tabindex="-1" aria-hidden="true" data-modal-backdrop="static" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
-        <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
+    <div id="updateProductModal" tabindex="-1" aria-hidden="true" data-modal-backdrop="static" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full h-modal">
+        <div class="relative p-4 w-full max-w-2xl h-modal">
             <!-- Modal content -->
             <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
                 <!-- Modal header -->

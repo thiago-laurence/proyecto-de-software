@@ -1,5 +1,31 @@
 {% macro GenericPaginator(page, total_pages, module, params={}) %}
 <div class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
+    <div class="flex flex-1 justify-between sm:hidden">
+        {% if page == 1 %}
+            <a class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
+                Anterior
+            </a>
+        {% else %}
+            <a href="{{ url_for(module, page=page-1, **params) }}" class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
+                Anterior
+            </a>
+        {% endif %}
+
+
+        <a href="{{ url_for(module, page=page, **params) }}" aria-current="page" class="mx-2 relative z-10 inline-flex items-center bg-indigo-600 px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+            {{ page }}
+        </a>
+
+        {% if page == total_pages %}
+            <a class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
+                Siguiente
+            </a>
+        {% else %}
+            <a href="{{ url_for(module, page=page+1, **params) }}" class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">
+                Siguiente
+            </a>
+        {% endif %} 
+    </div>
     <div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
       <div>
         <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">

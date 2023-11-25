@@ -72,8 +72,8 @@
 </ul>
 
     <!-- Main modal -->
-    <div id="defaultModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-modal md:h-full">
-        <div class="relative p-4 w-full max-w-2xl h-full md:h-auto">
+    <div id="defaultModal" data-modal-backdrop="static" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full h-modal">
+        <div class="relative p-4 w-full max-w-2xl h-modal">
             <!-- Modal content -->
             <div class="relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5">
                 <!-- Modal header -->
@@ -88,7 +88,7 @@
                 </div>
                 <!-- Modal body -->
                 <form action="{{ url_for('institutions.institution_add')}}" method="post">
-                    <div class="grid gap-6 mb-6 sm:grid-cols-2">
+                    <div class="grid gap-6 mb-6 grid-cols-1 lg:grid-cols-2">
                         {{ form.csrf_token }}
                         {{ form.hidden_tag() }}
                         {% for input in form %}

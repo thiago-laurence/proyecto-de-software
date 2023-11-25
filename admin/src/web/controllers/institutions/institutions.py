@@ -19,7 +19,7 @@ def index():
     """
     form = InstitutionForm(request.form)
     page = request.args.get("page", 1, type=int)
-    institutions = institution.list_institutions_paginated(page,system.pages())
+    institutions = institution.list_institutions_paginated(page, system.pages())
     
     return render_template("institutions/index.html", institutions=institutions[0], total_pages=institutions[1], page=page, form=form)
 

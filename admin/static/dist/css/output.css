@@ -1171,20 +1171,12 @@ div.flash.update.success {
   top: 0px;
 }
 
-.top-12 {
-  top: 3rem;
-}
-
 .top-3 {
   top: 0.75rem;
 }
 
 .top-3\.5 {
   top: 0.875rem;
-}
-
-.top-\[50\%\] {
-  top: 50%;
 }
 
 .isolate {
@@ -1552,16 +1544,8 @@ div.flash.update.success {
   height: 100vh;
 }
 
-.max-h-64 {
-  max-height: 16rem;
-}
-
 .max-h-full {
   max-height: 100%;
-}
-
-.min-h-\[0px\] {
-  min-height: 0px;
 }
 
 .min-h-screen {
@@ -1636,16 +1620,8 @@ div.flash.update.success {
   width: 100%;
 }
 
-.min-w-\[120\%\] {
-  min-width: 120%;
-}
-
 .max-w-2xl {
   max-width: 42rem;
-}
-
-.max-w-\[120\%\] {
-  max-width: 120%;
 }
 
 .max-w-lg {
@@ -1680,17 +1656,8 @@ div.flash.update.success {
   flex-grow: 1;
 }
 
-.origin-top-left {
-  transform-origin: top left;
-}
-
 .-translate-x-full {
   --tw-translate-x: -100%;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.-translate-y-\[50\%\] {
-  --tw-translate-y: -50%;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
@@ -1714,19 +1681,8 @@ div.flash.update.success {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
-.-rotate-90 {
-  --tw-rotate: -90deg;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
 .rotate-180 {
   --tw-rotate: 180deg;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.scale-0 {
-  --tw-scale-x: 0;
-  --tw-scale-y: 0;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
@@ -1916,6 +1872,18 @@ div.flash.update.success {
   align-self: center;
 }
 
+.justify-self-start {
+  justify-self: start;
+}
+
+.justify-self-end {
+  justify-self: end;
+}
+
+.justify-self-center {
+  justify-self: center;
+}
+
 .overflow-hidden {
   overflow: hidden;
 }
@@ -1930,10 +1898,6 @@ div.flash.update.success {
 
 .overflow-x-hidden {
   overflow-x: hidden;
-}
-
-.overflow-y-scroll {
-  overflow-y: scroll;
 }
 
 .truncate {
@@ -2230,10 +2194,6 @@ div.flash.update.success {
 
 .bg-opacity-50 {
   --tw-bg-opacity: 0.5;
-}
-
-.fill-gray-400 {
-  fill: #9CA3AF;
 }
 
 .object-cover {
@@ -2765,12 +2725,6 @@ div.flash.update.success {
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, -webkit-backdrop-filter;
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
   transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter, -webkit-backdrop-filter;
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  transition-duration: 150ms;
-}
-
-.transition-all {
-  transition-property: all;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
   transition-duration: 150ms;
 }
@@ -3556,10 +3510,6 @@ div.flash.update.success {
     inset: 0px;
   }
 
-  .md\:col-start-3 {
-    grid-column-start: 3;
-  }
-
   .md\:-mx-2 {
     margin-left: -0.5rem;
     margin-right: -0.5rem;
@@ -3616,6 +3566,11 @@ div.flash.update.success {
     width: 50%;
   }
 
+  .md\:w-fit {
+    width: -moz-fit-content;
+    width: fit-content;
+  }
+
   .md\:max-w-md {
     max-width: 28rem;
   }
@@ -3624,12 +3579,12 @@ div.flash.update.success {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .md\:flex-row {
-    flex-direction: row;
+  .md\:grid-cols-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
-  .md\:flex-row-reverse {
-    flex-direction: row-reverse;
+  .md\:flex-row {
+    flex-direction: row;
   }
 
   .md\:items-center {
@@ -3733,6 +3688,14 @@ div.flash.update.success {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
+  .lg\:justify-self-start {
+    justify-self: start;
+  }
+
+  .lg\:justify-self-end {
+    justify-self: end;
+  }
+
   .lg\:px-16 {
     padding-left: 4rem;
     padding-right: 4rem;
@@ -3793,10 +3756,6 @@ div.flash.update.success {
 
   .xl\:grid-cols-2 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .xl\:grid-cols-3 {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
   .xl\:p-0 {

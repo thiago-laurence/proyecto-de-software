@@ -14,16 +14,11 @@ def index(institution_id):
     Renderiza el template para los servicios y los muestra.
     """
     form = ServiceCreateForm(request.form)
-    
-    page = request.args.get('page', 1, type=int)
-    total_pages = institution.total_services_pages(institution_id, system.pages())
-    services = institution.list_services_by_intitution_paginated(page,institution_id)
+    page = request.args.get("page", 1, type=int)
     insti = institution.get_institution_by_id(institution_id)
+    services = institution.list_services_by_intitution_paginated(institution_id, page, system.pages())
     
-    if (page <= total_pages and page > 0):
-        return render_template("services/index.html", services=services,institution=insti, page=page, form=form)
-    else:
-        return redirect(url_for("services.index",institution_id=insti.id, page=total_pages))
+    return render_template("services/index.html", institution=insti, services=services[0], total_pages=services[1], page=page, form=form)
 
 
 
