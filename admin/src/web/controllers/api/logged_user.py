@@ -86,9 +86,13 @@ def user_requests():
         orders_without_filters = orders.list_orders_paginated_by_user(page, per_page, user_id)
         service_orders = orders_without_filters[0]
         total_pages = orders.total_orders_pages(per_page,user_id)
-        
-    if(page > total_pages):
-        return jsonify({"error": "No hay elementos en esa pagina"}), 400
+    
+    print(service_orders)
+    if(service_orders.total == 0):
+        return jsonify({"error": "No se encontraron elementos"}), 400
+    else:    
+        if(page > total_pages):
+            return jsonify({"error": "No hay elementos en esa pagina"}), 400
     
     order_services = orders.order_orders(service_orders, sort, order)
     

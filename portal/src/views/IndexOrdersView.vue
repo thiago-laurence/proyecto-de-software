@@ -1,7 +1,7 @@
 <template>
     <br>
     <div class=" m-5">
-        <form @submit.prevent="searchOrders">
+        <form @submit.prevent="search">
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div>
                     <label for="#data.creation_date" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Rango de fechas:</label>
@@ -139,6 +139,7 @@
             });
         }
     });
+
     function checkParams(){
         if(data.value.sort == "" || data.value.order == ""){
             notifications.value.push({
@@ -150,10 +151,14 @@
         return true;
     }
 
-    async function searchOrders(){
+    async function search(){
         if(!checkParams()){
             return;
         }
+        await searchOrders();
+    }
+
+    async function searchOrders(){
         let url = '/me/requests?sort='+data.value.sort+'&order='+data.value.order+'&status='+data.value.status+'&creation_date='+data.value.creation_date+'&close_date='+data.value.close_date+'&page='+data.value.page+'&per_page='+data.value.per_page;
 
         await API.get(url)
@@ -172,13 +177,22 @@
             
         })
         .catch(error => {
+            console.log(error)
             if(error.response.data.error == "No hay elementos en esa pagina"){
-                data.value.page--;
+                if(data.value.page > 1){
+                    data.value.page--;
+                }
             }
             else{
-                if(error.response.data.msg == "Token has expired"){
-                    user.logout();
-                    window.location.href = '/login';
+                if(error.response.data.error == "No se encontraron elementos"){
+                    document.getElementById("aviso").style.display = "block";
+                    orders.value = null;
+                }
+                else{
+                    if(error.response.data.msg == "Token has expired"){
+                        user.logout();
+                        window.location.href = '/login';
+                    }
                 }
             }
         });
