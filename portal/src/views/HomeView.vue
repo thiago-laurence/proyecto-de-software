@@ -27,7 +27,7 @@ onMounted(async () => {
   <main class="w-full principal py-10">
     <div class="flex flex-col flex-wrap items-center  justify-center">
       <div class="flex xl:flex-row flex-col">
-        <div class="flex flex-col  w-full  justify-center items-center">
+        <div class="flex flex-col xl:h-screen w-full  justify-center items-center">
           <div class="flex flex-row h-2/5 max-xl:mb-2 ">
             <h1 class="text-3xl lg:text-5xl font-light  text-white text-center mb-10 mx-6 drop-shadow-[0_1.2px_1.2px_rgba(0,0,0,0.8)]">
               CENTRO DE INVESTIGACIÓN Y DESARROLLO EN TECNOLOGÍA DE PINTURAS Y RECUBRIMIENTOS
