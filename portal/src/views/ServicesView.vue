@@ -88,6 +88,14 @@
         if(type == null || type == ''){
             type = '';
         }
+        else{
+            if(type != ''){
+                let tipo = services_types.value.find(obj => obj.id == type);
+                if(tipo == null){
+                    type = '';
+                }
+            }
+        }
         if(query == null || query == ''){
             query = '';
         }

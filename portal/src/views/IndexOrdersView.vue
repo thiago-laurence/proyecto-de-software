@@ -148,11 +148,24 @@
             });
             return false;
         }
+        else{
+            if(data.value.status != ""){
+                let state = orders_states.value.find(obj => obj.id == data.value.status);
+                console.log(state);
+                if(state == null){
+                    notifications.value.push({
+                        type: 'error',
+                        message: 'El estado seleccionado no es válido',
+                    });
+                    return false;
+                }
+            }
+        }
         return true;
     }
 
     async function search(){
-        if(!checkParams()){
+        if(! checkParams()){
             return;
         }
         await searchOrders();
