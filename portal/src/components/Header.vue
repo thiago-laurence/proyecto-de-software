@@ -92,14 +92,25 @@ export default {
                                 </span>
                             </button>
                         </RouterLink>
-                        <button v-else @click="user.logout()" class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
-                            <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                                <a class="text-md">
-                                    Cerrar sesión
-                                </a>
-                            </span>
-                        </button>
-                            
+                        <div v-else class="sm:inline-flex">
+                            <div class="flex justify-center sm:mr-4 sm:self-center">
+                                <div class="inline-flex mb-4">
+                                    <img class="w-6 h-6 rounded-full mr-2" src="@/assets/img/user.png" alt="user photo">
+                                    <p class="font-semibold text-base">
+                                        {{ user.data.username }}
+                                    </p>
+                                </div>
+                            </div>
+                            <div>
+                                <button @click="user.logout()" class="w-full relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800">
+                                    <span class="relative px-5 py-2.5 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
+                                        <a class="text-md">
+                                            Cerrar sesión
+                                        </a>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </nav>

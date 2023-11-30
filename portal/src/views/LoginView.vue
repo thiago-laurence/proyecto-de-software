@@ -58,7 +58,17 @@
     })
   }
 
-
+  const check_password = ref(true)
+  function showPassword(){
+    var password = document.getElementById("password");
+    if (password.type === "password") {
+      password.type = "text";
+      check_password.value = false;
+    } else {
+      password.type = "password";
+      check_password.value = true;
+    }
+  }
 
 </script>
 
@@ -88,15 +98,29 @@
             required
             class="flex items-center transition duration-300 px-5 py-4 mr-2 mb-7 text-sm font-medium outline-none rounded-2xl shadow-md shadow-indigo-50 bg-indigo-50 hover:bg-indigo-100 focus:bg-indigo-200 text-gray-900 placeholder:text-gray-700"
           />
+
           <label for="#user.password" class="mb-2 text-base text-start text-gray-900"> Contraseña </label>
-          <input
-            id="password"
-            type="password"
-            v-model="data.password"
-            placeholder="Ingrese su contraseña"
-            required
-            class="flex items-center transition duration-300 px-5 py-4 mr-2 mb-7 text-sm font-medium outline-none rounded-2xl shadow-md shadow-indigo-50 bg-indigo-50 hover:bg-indigo-100 focus:bg-indigo-200 text-gray-900 placeholder:text-gray-700"
-          />
+          <div class="relative mb-7">
+              <input
+                id="password"
+                type="password"
+                v-model="data.password"
+                placeholder="Ingrese su contraseña"
+                required
+                class="block w-full transition duration-300 px-5 py-4 text-sm font-medium outline-none rounded-2xl shadow-md shadow-indigo-50 bg-indigo-50 hover:bg-indigo-100 focus:bg-indigo-200 text-gray-900 placeholder:text-gray-700"
+              />
+              <div class="absolute inset-y-0 end-0 flex items-center pe-3 cursor-pointer">
+                <svg @click="showPassword" v-if="check_password" class="w-5 h-5 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 18">
+                  <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1.933 10.909A4.357 4.357 0 0 1 1 9c0-1 4-6 9-6m7.6 3.8A5.068 5.068 0 0 1 19 9c0 1-3 6-9 6-.314 0-.62-.014-.918-.04M2 17 18 1m-5 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/>
+                </svg>
+                <svg @click="showPassword" v-else class="w-5 h-5 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 14">
+                  <g stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
+                    <path d="M10 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
+                    <path d="M10 13c4.97 0 9-2.686 9-6s-4.03-6-9-6-9 2.686-9 6 4.03 6 9 6Z"/>
+                  </g>
+                </svg>
+              </div>
+          </div>
           <div v-if="error" class="text-red-500 mb-4 text-base font-medium bg-red-50 rounded-full">
             <p>{{ msg }}</p>
           </div>
