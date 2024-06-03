@@ -1,0 +1,30 @@
+services:
+  # Flask service
+  web:
+    container_name: flask-app
+    build: .
+    ports:
+      - "5000:5000"
+    networks:
+      - web_network
+    depends_on:
+      - db
+    env_file:
+      - .env
+
+  # Postgres service
+  db:
+    container_name: postgres-db
+    hostname: ${DB_HOST}
+    image: postgres:15
+    networks:
+      - web_network
+    restart: always
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASS}
+      POSTGRES_DB: ${DB_NAME}
+
+# Red entre web y db
+networks:
+  web_network:
