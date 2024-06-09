@@ -20,4 +20,5 @@ EXPOSE 5000
 
 ENTRYPOINT [ "./entrypoint.sh" ]
 
-CMD ["poetry", "run", "flask", "run", "--debug", "--cert", "adhoc"]
+# CMD ["poetry", "run", "flask", "run", "--debug", "--cert", "adhoc"]
+CMD ["poetry", "run", "flask", "run", "--debug"]

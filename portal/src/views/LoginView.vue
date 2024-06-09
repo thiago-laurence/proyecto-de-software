@@ -158,7 +158,7 @@
           <div class="flex items-center my-5">
             <hr class="h-0 border-b border-solid border-gray-400 grow" />
           </div>
-          <a href="https://admin-grupo10.proyecto2023.linti.unlp.edu.ar/login" target="_blank">
+          <a href="http://localhost:5000/login" target="_blank">
             <button
               type="button"
               class="w-3/4 py-2 mb-3 text-sm font-bold leading-none text-white transition duration-300 rounded-2xl hover:bg-violet-600 focus:ring-4 focus:ring-violet-200 bg-violet-500"
