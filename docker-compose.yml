@@ -2,15 +2,25 @@ services:
   # Flask service
   admin:
     container_name: flask-app
-    build: ./admin
+    image: python:3.8-alpine
+    # build: ./admin
     ports:
       - "5000:5000"
     networks:
       - web_network
     depends_on:
       - db
+    environment:
+      - FLASK_APP=app.py
+      - FLASK_ENV=development
+      - FLASK_RUN_HOST=0.0.0.0
     env_file:
       - .env
+    working_dir: /app
+    entrypoint: ["./entrypoint.sh"]
+    command: ["poetry", "run", "flask", "run", "--debug"]
+    volumes:
+      - ./admin:/app
   
   # Vue service
   client:
