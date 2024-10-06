@@ -8,7 +8,7 @@
 instance/*
 !instance/.gitignore
 .webassets-cache
-.env
+# .env
 
 ### Flask.Python Stack ###
 # Byte-compiled / optimized / DLL files
@@ -276,7 +276,7 @@ test/
 # End of https://www.toptal.com/developers/gitignore/api/python,flask,vue
 
 # Enviroment files
-.env
+# .env
 .envrc
 
 # NodeJS files
@@ -355,7 +355,7 @@ web_modules/
 .yarn-integrity
 
 # dotenv environment variable files
-.env
+# .env
 .env.development.local
 .env.test.local
 .env.production.local
