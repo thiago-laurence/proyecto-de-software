@@ -14,9 +14,13 @@ print("Hola Mundo!, desde VSCode!")
 
 ### Enlaces de acceso al sitio
 
-| <img src="https://as2.ftcdn.net/v2/jpg/04/75/00/99/1000_F_475009987_zwsk4c77x3cTpcI3W1C1LU4pOSyPKaqi.jpg" alt="admin" width="120" height="120"/> | <img src="https://as1.ftcdn.net/v2/jpg/04/75/01/26/1000_F_475012689_7bRHNIeFcP59lv9YA1h7qWr80XkGeUrA.jpg" alt="admin" width="120" height="120"/> |
+| <img src="https://as2.ftcdn.net/v2/jpg/04/75/00/99/1000_F_475009987_zwsk4c77x3cTpcI3W1C1LU4pOSyPKaqi.jpg" alt="admin" width="120" height="120"/> | <img src="https://raw.githubusercontent.com/thiago-laurence/proyecto-de-software/refs/heads/main/admin/static/img/admin-page.png" alt="admin" height="250"/> |
 |--------------|--------------|
-| [Administración](https://admin-grupo10.proyecto2023.linti.unlp.edu.ar/login/) | [Portal público](https://grupo10.proyecto2023.linti.unlp.edu.ar/) |
+| [Administración](https://admin-grupo10.proyecto2023.linti.unlp.edu.ar/login/) |
+
+| <img src="https://as1.ftcdn.net/v2/jpg/04/75/01/26/1000_F_475012689_7bRHNIeFcP59lv9YA1h7qWr80XkGeUrA.jpg" alt="admin" width="120" height="120"/> | <img src="https://raw.githubusercontent.com/thiago-laurence/proyecto-de-software/refs/heads/main/admin/static/img/client-page.png" alt="admin" height="250"/> |
+|--------------|--------------|
+| [Portal público](https://grupo10.proyecto2023.linti.unlp.edu.ar/) |
 
 ##### Credenciales de acceso
     {
